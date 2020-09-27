@@ -1,4 +1,5 @@
 export interface SelectedItemModel {
   name: string;
-  parent: string;
+  path: string;
+  event: MouseEvent;
 }

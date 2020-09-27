@@ -1,12 +1,10 @@
 <template>
-  <menu-bar
-    :items="items"
-    :dock="'TOP'"
-  />
+  <menu-bar :items="items" :on-selected="selected" />
 </template>
 
 <script lang="ts">
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
+import { SelectedItemModel } from "@/models/SelectedItemModel";
 import { defineComponent } from "vue";
 import MenuBar from "./MenuBar.vue";
 
@@ -14,6 +12,15 @@ export default defineComponent({
   name: "HelloWorld",
   components: {
     MenuBar,
+  },
+  setup() {
+    const selected = (data: SelectedItemModel) => {
+      alert(data.name + " _ " + data.path);
+    };
+
+    return {
+      selected,
+    };
   },
   data() {
     return {
@@ -47,7 +54,7 @@ export default defineComponent({
           menu: [{ name: "red" }, { name: "blue" }, { name: "orange" }],
         },
         {
-          name: "selection",
+          name: "selection name",
           menu: [{ name: "red" }, { name: "blue" }, { name: "orange" }],
         },
         {

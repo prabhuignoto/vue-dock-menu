@@ -1,15 +1,11 @@
 <template>
   <div
     ref="menuBarItemRef"
-    class="menu-bar-item-container"
-    :class="menuBarStyle"
+    :class="[...menuBarStyle, 'menu-bar-item-container']"
     @mouseenter="setMenuViewable()"
     @click="toggleMenu()"
   >
-    <span
-      class="name-container"
-      :class="menuBarStyle"
-    >
+    <span :class="[...menuBarStyle, 'name-container']">
       {{ getName }}
     </span>
     <span
@@ -21,6 +17,7 @@
           v-if="menuActive && showMenu"
           :items="menu"
           :dock="dock"
+          :parent="name"
           @selected="handleMenuSelection"
         />
       </transition>
@@ -31,7 +28,15 @@
 <script lang="ts">
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuItemModel } from "@/models/MenuItemModel";
-import { defineComponent, PropType, ref, computed, watch, onMounted, nextTick } from "vue";
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  nextTick,
+} from "vue";
 import Menu from "./Menu.vue";
 
 export default defineComponent({
@@ -54,6 +59,11 @@ export default defineComponent({
       default: false,
       required: true,
     },
+    menuBarActive: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     showMenu: {
       type: Boolean,
       default: false,
@@ -61,7 +71,7 @@ export default defineComponent({
     },
     menuBarDimensions: {
       type: Object as PropType<{ height: number; width: number }>,
-      default: 0,
+      default: {},
       required: true,
     },
     dock: {
@@ -74,7 +84,7 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: ["show", "activate", "selected"],
+  emits: ["show", "activate", "deactivate", "selected"],
   setup(props, { emit }) {
     const menuBarItemRef = ref<HTMLElement>();
     const menuBarItemActive = ref();
@@ -85,27 +95,31 @@ export default defineComponent({
         props.dock === DockPosition.LEFT ||
         props.dock === DockPosition.RIGHT
       ) {
-        return props.name[0];
+        return !props.menuBarActive ? props.name[0] : props.name;
       } else {
         return props.name;
       }
     });
 
     const setMenuViewable = () => {
-      emit("show", props.id);
+      emit("activate", props.id);
     };
 
-    const handleMenuSelection = (name: string) => {
-      emit("selected", {
-        id: props.id,
-        name,
-        parent: props.name
-      })
+    const toggleMenu = () => {
+      emit("show", !props.menuActive);
     };
 
-    const computeStyle = () => {
-      let newStyle = {} as any;
-      debugger;
+    const handleMenuSelection = ($event: any) => {
+      emit("selected", $event);
+    };
+
+    const computeMenuStyle = () => {
+      let newStyle: {
+        top?: string;
+        left?: string;
+        right?: string;
+        bottom?: string;
+      } = {};
 
       if (props.dock === DockPosition.LEFT) {
         newStyle.top = "0px";
@@ -115,34 +129,42 @@ export default defineComponent({
         newStyle.right = `${menuBarItemRef.value?.clientWidth}px`;
       } else if (props.dock === DockPosition.TOP) {
         newStyle.top = `${menuBarItemRef.value?.clientHeight}px`;
-        newStyle.left = 0;
+        newStyle.left = "0px";
       } else if (props.dock === DockPosition.BOTTOM) {
         newStyle.bottom = `${menuBarItemRef.value?.clientHeight}px`;
-        newStyle.left = 0;
+        newStyle.left = "0px";
       }
 
       menuStyle.value = newStyle;
-    }
+    };
 
-    const menuBarStyle = computed(() => `${props.dock.toLowerCase()} ${menuBarItemActive.value ? "active" : ""}`);
-
-    const toggleMenu = () => {
-      emit("activate", !props.menuActive)
-    }
-
-    watch(() => props.showMenu, newValue => {
-      menuBarItemActive.value = newValue;
+    const menuBarStyle = computed(() => {
+      return [
+        props.dock.toLowerCase(),
+        menuBarItemActive.value ? "active" : "",
+        props.menuBarActive ? "expanded" : "",
+      ];
     });
 
-    watch(() => props.dock, () => {
-      nextTick(() => {
-        computeStyle();
-      })
-    });
+    watch(
+      () => props.showMenu,
+      (newValue) => {
+        menuBarItemActive.value = newValue;
+      }
+    );
 
-    onMounted(() => {
-      computeStyle();
-    });
+    watch(
+      () => [props.dock, props.menuBarActive],
+      () => {
+        nextTick(() => {
+          setTimeout(() => {
+            computeMenuStyle();
+          }, 150);
+        });
+      }
+    );
+
+    onMounted(() => computeMenuStyle());
 
     return {
       getName,
@@ -152,7 +174,7 @@ export default defineComponent({
       setMenuViewable,
       toggleMenu,
       handleMenuSelection,
-      computeStyle
+      computeMenuStyle,
     };
   },
 });
@@ -180,7 +202,6 @@ export default defineComponent({
   }
 
   &:hover {
-    /* background: #32323e; */
     cursor: pointer;
   }
 
@@ -197,19 +218,31 @@ export default defineComponent({
 .name-container {
   text-transform: capitalize;
   font-size: 0.95rem;
+  margin: 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &.left,
   &.right {
     align-items: center;
-    background: #4c4c57;
-    border-radius: 50%;
     display: flex;
-    font-size: 1.2rem;
-    height: 2rem;
-    justify-content: center;
-    margin: 0.25rem 0.75rem;
-    text-transform: uppercase;
-    width: 2rem;
+    font-size: 1rem;
+    background: none;
+    width: 100%;
+    justify-content: flex-start;
+    height: 1.5rem;
+
+    &.expanded {
+      padding-left: 1rem;
+    }
+
+    &:not(.expanded) {
+      width: 2rem;
+      font-size: 1.1rem;
+      justify-content: center;
+      text-transform: uppercase;
+    }
   }
 }
 </style>

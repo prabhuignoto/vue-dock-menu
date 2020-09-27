@@ -3,5 +3,5 @@ export interface MenuItemModel {
   id?: string;
   onSelected?: (id: string) => void;
   items?: MenuItemModel[];
-  
+  disable?: boolean;
 }

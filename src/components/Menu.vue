@@ -1,17 +1,19 @@
 <template>
-  <div
-    class="menu-wrapper"
-    :class="dockClass"
-  >
+  <div :class="[dockClass, 'menu-wrapper']">
     <ul class="menu-items">
       <li
         v-for="item of items"
         :key="item.id"
-        class="menu-item"
-        :class="dockClass"
+        :class="[dockClass, 'menu-item', { 'is-parent': !!item.menu }]"
         @mouseenter="item.menu && toggleSubMenu(!!item.menu)"
         @mouseleave="item.menu && toggleSubMenu(!!item.menu)"
-        @click="handleSelection(item.name)"
+        @click="
+          handleSelection({
+            event: $event,
+            name: item.name,
+            isParent: !!item.menu,
+          })
+        "
       >
         <span class="name">{{ item.name }}</span>
         <span
@@ -22,13 +24,13 @@
         </span>
         <div
           v-if="item.menu && showSubMenu"
-          class="sub-menu-wrapper"
-          :class="dockClass"
+          :class="[dockClass, 'sub-menu-wrapper']"
         >
           <component
             :is="MenuComponent"
             :items="item.menu"
             :dock="dock"
+            :parent="item.name"
             @selected="handleSelection"
           />
         </div>
@@ -48,6 +50,7 @@ import {
   computed,
 } from "vue";
 import ChevRight from "./ChevRight.vue";
+import { SelectedItemModel } from "@/models/SelectedItemModel";
 
 export default defineComponent({
   name: "Menu",
@@ -57,7 +60,7 @@ export default defineComponent({
   props: {
     items: {
       type: Array as PropType<MenuItemModel[]>,
-      default: [],
+      default: [] as MenuItemModel[],
       required: true,
     },
     dock: {
@@ -65,9 +68,14 @@ export default defineComponent({
       default: MenuBarDockPosition.TOP,
       type: String,
     },
+    parent: {
+      required: false,
+      default: "",
+      type: String,
+    },
   },
   emits: ["selected"],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const MenuComponent = resolveComponent("Menu");
 
     const showSubMenu = ref(false);
@@ -80,8 +88,18 @@ export default defineComponent({
       }
     };
 
-    const handleSelection = (name: string) => {
-      emit("selected", name)
+    const handleSelection = (selectedItem: SelectedItemModel) => {
+      selectedItem.event.stopPropagation();
+      selectedItem.event.preventDefault();
+
+      const { path, name } = selectedItem;
+
+      emit(
+        "selected",
+        Object.assign({}, selectedItem, {
+          path: `${props.parent}>${path ? path : name}`.toLowerCase(),
+        })
+      );
     };
 
     return {
@@ -89,7 +107,7 @@ export default defineComponent({
       toggleSubMenu,
       showSubMenu,
       dockClass,
-      handleSelection
+      handleSelection,
     };
   },
 });
@@ -100,9 +118,9 @@ export default defineComponent({
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-width: 250px;
+  min-width: 200px;
   background: #32323e;
-  padding: 0.75rem 0;
+  padding: 0.5rem 0;
 
   &.top {
     filter: drop-shadow(2px 14px 8px rgba(0, 0, 0, 0.25));
@@ -139,9 +157,9 @@ export default defineComponent({
   align-items: center;
   color: #ccc;
   display: flex;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   justify-content: flex-start;
-  padding: 0.65rem 0;
+  padding: 0.4rem 0;
   position: relative;
   text-transform: capitalize;
   width: 100%;
@@ -198,5 +216,4 @@ export default defineComponent({
     transform: translateY(-65%);
   }
 }
-
 </style>

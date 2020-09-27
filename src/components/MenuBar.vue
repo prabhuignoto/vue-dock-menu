@@ -1,23 +1,24 @@
 <template>
   <div
     ref="menuBarRef"
-    class="menu-bar-container"
-    :class="dockClass"
+    :class="[dockClass, 'menu-bar-container', expandClass]"
     draggable="true"
     tabindex="0"
     @blur="handleBlur"
     @dragstart="handleDragStart"
-    @dragend="handleDragEnd($event)"
+    @dragend="handleDragEnd"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
     <ul
-      class="menu-bar-items"
-      :class="dockClass"
+      :class="[dockClass, 'menu-bar-items']"
+      draggable="true"
+      @dragstart="handleDragCancel"
     >
       <li
         v-for="item of menuItems"
         :key="item.id"
-        :class="dockClass"
-        class="menu-bar-item-wrapper"
+        :class="[dockClass, 'menu-bar-item-wrapper']"
       >
         <menu-bar-item
           :id="item.id"
@@ -26,6 +27,7 @@
           :menu-bar-dimensions="{ height: barHeight, width: barWidth }"
           :menu="item.menu"
           :name="item.name"
+          :menu-bar-active="menuBarActive"
           :show-menu="item.showMenu"
           @activate="handleActivateMenu"
           @show="handleOnShowMenu"
@@ -41,8 +43,8 @@ import { computed, defineComponent, PropType, ref, onMounted } from "vue";
 import MenuBarItem from "./MenuBarItem.vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
-import { SelectedItemModel } from "@/models/SelectedItemModel";
 import { nanoid } from "nanoid";
+import { SelectedItemModel } from "@/models/SelectedItemModel";
 
 export default defineComponent({
   name: "MenuBar",
@@ -52,13 +54,19 @@ export default defineComponent({
   props: {
     items: {
       required: true,
-      default: [],
+      default: [] as MenuBarItemModel[],
       type: Array as PropType<MenuBarItemModel[]>,
     },
     dock: {
       required: false,
       default: DockPosition.TOP,
       type: String,
+    },
+    onSelected: {
+      required: true,
+      type: Function as PropType<
+        ({ name, path }: { name: string; path: string }) => void
+      >,
     },
   },
   setup(props, {}) {
@@ -70,10 +78,12 @@ export default defineComponent({
 
     const menuActive = ref(false);
 
+    const menuBarActive = ref(false);
+
     // reference to the dock position
     const dockInternal = ref<string>(props.dock);
 
-    const dockClass = computed(() => dockInternal.value.toLowerCase());
+    const dockClass = computed(() => [dockInternal.value.toLowerCase()]);
 
     const barHeight = ref<number>(0);
     const barWidth = ref<number>(0);
@@ -89,13 +99,18 @@ export default defineComponent({
     onMounted(() => {
       const menu = menuBarRef.value;
 
+      // save the bar's height and width on render
       barHeight.value = menu?.clientHeight as number;
       barWidth.value = menu?.clientWidth as number;
     });
 
     const handleDragStart = (event: DragEvent) => {
       dragActive.value = true;
+
+      // close the menu during drag operation
       menuActive.value = false;
+
+      // set a custom ghost image while dragging
       const img = new Image();
       img.src =
         "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
@@ -127,7 +142,7 @@ export default defineComponent({
       }
     };
 
-    const handleOnShowMenu = (id: string) => {
+    const handleActivateMenu = (id: string) => {
       menuItems.value = menuItems.value.map((item) =>
         Object.assign({}, item, {
           showMenu: item.id === id,
@@ -135,10 +150,11 @@ export default defineComponent({
       );
     };
 
-    const handleActivateMenu = (state: boolean) => (menuActive.value = state);
+    const handleOnShowMenu = (state: boolean) => (menuActive.value = state);
 
     const handleBlur = () => {
       menuActive.value = false;
+      menuBarActive.value = false;
 
       menuItems.value = menuItems.value.map((item) =>
         Object.assign({}, item, {
@@ -147,9 +163,42 @@ export default defineComponent({
       );
     };
 
-    const handleSelected = (data: SelectedItemModel) => {
-      debugger;
-      console.log(data);
+    const expandClass = computed(() => {
+      if (
+        dockInternal.value === DockPosition.LEFT ||
+        dockInternal.value === DockPosition.RIGHT
+      ) {
+        return menuBarActive.value ? "expanded" : "not-expanded";
+      }
+    });
+
+    const handleSelected = ({ name, path }: SelectedItemModel) => {
+      // close the menu
+      menuActive.value = false;
+
+      // propagate the selection
+      props.onSelected({
+        name: name,
+        path: path,
+      });
+    };
+
+    // cancels the drag event on the child elements of the menubar
+    const handleDragCancel = (event: DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    // activate the menu bar
+    const handleMouseEnter = () => {
+      menuBarActive.value = true;
+    };
+
+    // deactivate the menubar if active
+    const handleMouseLeave = () => {
+      if (!menuActive.value) {
+        menuBarActive.value = false;
+      }
     };
 
     return {
@@ -161,11 +210,16 @@ export default defineComponent({
       handleDragStart,
       handleOnShowMenu,
       handleActivateMenu,
+      handleMouseEnter,
+      handleMouseLeave,
       handleSelected,
       handleBlur,
       menuActive,
       menuBarRef,
       menuItems,
+      handleDragCancel,
+      expandClass,
+      menuBarActive,
     };
   },
 });
@@ -177,11 +231,23 @@ export default defineComponent({
   display: flex;
   background: #21252b;
   user-select: none;
+  outline: 0;
 
   &.left,
   &.right {
     height: 100%;
     align-items: flex-start;
+
+    &.expanded {
+      width: 150px;
+      animation: expand 0.1s linear;
+      background: rgba(33, 37, 43, 0.85);
+    }
+
+    &.not-expanded {
+      width: 50px;
+      animation: collapse 0.1s linear;
+    }
   }
 
   &.top,
@@ -241,6 +307,28 @@ export default defineComponent({
   &.left,
   &.right {
     width: 100%;
+  }
+}
+
+@keyframes expand {
+  0% {
+    width: 50px;
+    background: #21252b;
+  }
+
+  100% {
+    width: 150px;
+    background: rgba(33, 37, 43, 0.85);
+  }
+}
+
+@keyframes collapse {
+  0% {
+    width: 150px;
+  }
+
+  100% {
+    width: 50px;
   }
 }
 </style>
