@@ -1,5 +1,14 @@
 <template>
-  <menu-bar :items="items" :on-selected="selected" />
+  <menu-bar
+    :items="items"
+    :on-selected="selected"
+    :theme="{
+      primary: '#001B48',
+      secondary: '#02457a',
+      tertiary: '#018abe',
+      textColor: '#fff'
+    }"
+  />
 </template>
 
 <script lang="ts">

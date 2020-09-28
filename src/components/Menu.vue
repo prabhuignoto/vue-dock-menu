@@ -1,10 +1,14 @@
 <template>
-  <div :class="[dockClass, 'menu-wrapper']">
+  <div
+    :class="[dockClass, 'menu-wrapper']"
+    :style="{ background: theme.secondary }"
+  >
     <ul class="menu-items">
       <li
         v-for="item of items"
         :key="item.id"
         :class="[dockClass, 'menu-item', { 'is-parent': !!item.menu }]"
+        :style="menuItemStyle"
         @mouseenter="item.menu && toggleSubMenu(!!item.menu)"
         @mouseleave="item.menu && toggleSubMenu(!!item.menu)"
         @click="
@@ -31,6 +35,7 @@
             :items="item.menu"
             :dock="dock"
             :parent="item.name"
+            :theme="theme"
             @selected="handleSelection"
           />
         </div>
@@ -73,6 +78,21 @@ export default defineComponent({
       default: "",
       type: String,
     },
+    theme: {
+      required: false,
+      type: Object as PropType<{
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        textColor: string;
+      }>,
+      default: {
+        primary: "#21252b",
+        secondary: "#32323e",
+        tertiary: "#4c4c57",
+        textColor: "#fff"
+      },
+    },
   },
   emits: ["selected"],
   setup(props, { emit }) {
@@ -102,12 +122,18 @@ export default defineComponent({
       );
     };
 
+    const menuItemStyle = computed(() => ({
+      "--background-color-hover": props.theme.tertiary,
+      "--fore-color": props.theme.textColor
+    }));
+
     return {
       MenuComponent,
       toggleSubMenu,
       showSubMenu,
       dockClass,
       handleSelection,
+      menuItemStyle,
     };
   },
 });
@@ -119,7 +145,6 @@ export default defineComponent({
   align-items: flex-start;
   justify-content: center;
   min-width: 200px;
-  background: #32323e;
   padding: 0.5rem 0;
 
   &.top {
@@ -146,7 +171,6 @@ export default defineComponent({
 .icon-wrap {
   align-items: center;
   display: flex;
-  fill: red;
   height: 1rem;
   justify-content: center;
   margin-left: auto;
@@ -155,7 +179,7 @@ export default defineComponent({
 
 .menu-item {
   align-items: center;
-  color: #ccc;
+  color: var(--fore-color);
   display: flex;
   font-size: 0.9rem;
   justify-content: flex-start;
@@ -166,7 +190,7 @@ export default defineComponent({
   cursor: pointer;
 
   &:hover {
-    background: #4c4c57;
+    background: var(--background-color-hover);
     cursor: pointer;
   }
 

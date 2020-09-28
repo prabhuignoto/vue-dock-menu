@@ -4,6 +4,7 @@
     :class="[dockClass, 'menu-bar-container', expandClass]"
     draggable="true"
     tabindex="0"
+    :style="{ background: theme.primary }"
     @blur="handleBlur"
     @dragstart="handleDragStart"
     @dragend="handleDragEnd"
@@ -29,6 +30,7 @@
           :name="item.name"
           :menu-bar-active="menuBarActive"
           :show-menu="item.showMenu"
+          :theme="theme"
           @activate="handleActivateMenu"
           @show="handleOnShowMenu"
           @selected="handleSelected"
@@ -67,6 +69,21 @@ export default defineComponent({
       type: Function as PropType<
         ({ name, path }: { name: string; path: string }) => void
       >,
+    },
+    theme: {
+      required: false,
+      type: Object as PropType<{
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        textColor: string;
+      }>,
+      default: {
+        primary: "#21252b",
+        secondary: "#32323e",
+        tertiary: "#4c4c57",
+        textColor: "#fff"
+      },
     },
   },
   setup(props, {}) {
@@ -229,7 +246,6 @@ export default defineComponent({
 .menu-bar-container {
   position: fixed;
   display: flex;
-  background: #21252b;
   user-select: none;
   outline: 0;
 
@@ -241,7 +257,6 @@ export default defineComponent({
     &.expanded {
       width: 150px;
       animation: expand 0.1s linear;
-      background: rgba(33, 37, 43, 0.85);
     }
 
     &.not-expanded {
@@ -313,12 +328,10 @@ export default defineComponent({
 @keyframes expand {
   0% {
     width: 50px;
-    background: #21252b;
   }
 
   100% {
     width: 150px;
-    background: rgba(33, 37, 43, 0.85);
   }
 }
 

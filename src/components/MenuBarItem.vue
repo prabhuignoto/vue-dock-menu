@@ -2,10 +2,14 @@
   <div
     ref="menuBarItemRef"
     :class="[...menuBarStyle, 'menu-bar-item-container']"
+    :style="{ background: bgColor }"
     @mouseenter="setMenuViewable()"
     @click="toggleMenu()"
   >
-    <span :class="[...menuBarStyle, 'name-container']">
+    <span
+      :class="[...menuBarStyle, 'name-container']"
+      :style="{color: theme.textColor}"
+    >
       {{ getName }}
     </span>
     <span
@@ -18,6 +22,7 @@
           :items="menu"
           :dock="dock"
           :parent="name"
+          :theme="theme"
           @selected="handleMenuSelection"
         />
       </transition>
@@ -82,6 +87,21 @@ export default defineComponent({
     id: {
       required: true,
       type: String,
+    },
+    theme: {
+      required: false,
+      type: Object as PropType<{
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        textColor: string;
+      }>,
+      default: {
+        primary: "#21252b",
+        secondary: "#32323e",
+        tertiary: "#4c4c57",
+        textColor: "#fff"
+      },
     },
   },
   emits: ["show", "activate", "deactivate", "selected"],
@@ -166,6 +186,12 @@ export default defineComponent({
 
     onMounted(() => computeMenuStyle());
 
+    const bgColor = computed(() => {
+      if (menuBarItemActive.value) {
+        return props.theme.secondary;
+      }
+    });
+
     return {
       getName,
       menuBarItemRef,
@@ -175,6 +201,7 @@ export default defineComponent({
       toggleMenu,
       handleMenuSelection,
       computeMenuStyle,
+      bgColor,
     };
   },
 });
@@ -206,7 +233,7 @@ export default defineComponent({
   }
 
   &.active {
-    background: #32323e;
+    /* background: #32323e; */
   }
 }
 

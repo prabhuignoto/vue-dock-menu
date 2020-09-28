@@ -3,6 +3,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/65c2863c31644d5a98ae5bb83c1bd104)](https://www.codacy.com/manual/prabhuignoto/vue-dock-menu/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prabhuignoto/vue-dock-menu&amp;utm_campaign=Badge_Grade)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/prabhuignoto/vue-dock-menu.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prabhuignoto/vue-dock-menu/context:javascript)
 [![Depfu](https://badges.depfu.com/badges/f3a16c4fe1fcbd36df15d6949d9846bc/overview.svg)](https://depfu.com/github/prabhuignoto/vue-dock-menu?project_id=16495)
+[![Known Vulnerabilities](https://snyk.io/test/github/prabhuignoto/vue-dock-menu/badge.svg?targetFile=package.json)](https://snyk.io/test/github/prabhuignoto/vue-dock-menu?targetFile=package.json)
 
 ![logo](./readme-assets/logo.png)
 
@@ -60,6 +61,7 @@ const items = [
 | dock        | Position where you want the Menu to be docked. Can be any one of `TOP`, `LEFT`, `RIGHT`, `BOTTOM` | `TOP`   |
 | on-selected | Callback that will be called on a menu item selection                                             |         |
 | items       | Data for the Menu bar                                                                             | []      |
+| theme       | prop to customize the color theme                                                                 |         |
 
 ### Dock
 
@@ -117,6 +119,25 @@ const items = [
     dock="BOTTOM"
   </vue-dock-menu>
 ```
+
+### Custom theme
+
+use the `theme` prop to customize the colors of the menu bar.
+
+```sh
+  <menu-bar
+    :items="items"
+    :on-selected="selected"
+    :theme="{
+      primary: '#001B48',
+      secondary: '#02457a',
+      tertiary: '#018abe',
+      textColor: '#fff'
+    }"
+  />
+```
+
+![theme](./readme-assets/theme.png)
 
 ## 🔨 Built with
 
