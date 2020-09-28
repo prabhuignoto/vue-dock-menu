@@ -2,7 +2,7 @@
   <div
     ref="menuBarRef"
     :class="[dockClass, 'menu-bar-container', expandClass]"
-    draggable="true"
+    :draggable="draggable"
     tabindex="0"
     :style="{ background: theme.primary }"
     @blur="handleBlur"
@@ -69,6 +69,11 @@ export default defineComponent({
       type: Function as PropType<
         ({ name, path }: { name: string; path: string }) => void
       >,
+    },
+    draggable: {
+      required: false,
+      type: Boolean,
+      default: true
     },
     theme: {
       required: false,
@@ -267,7 +272,7 @@ export default defineComponent({
 
   &.top,
   &.bottom {
-    height: 3rem;
+    height: 2.5rem;
     width: 100%;
     align-items: center;
     left: 0;

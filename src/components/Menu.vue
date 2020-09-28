@@ -90,7 +90,7 @@ export default defineComponent({
         primary: "#21252b",
         secondary: "#32323e",
         tertiary: "#4c4c57",
-        textColor: "#fff"
+        textColor: "#fff",
       },
     },
   },
@@ -124,7 +124,7 @@ export default defineComponent({
 
     const menuItemStyle = computed(() => ({
       "--background-color-hover": props.theme.tertiary,
-      "--fore-color": props.theme.textColor
+      "--fore-color": props.theme.textColor,
     }));
 
     return {
@@ -146,14 +146,6 @@ export default defineComponent({
   justify-content: center;
   min-width: 200px;
   padding: 0.5rem 0;
-
-  &.top {
-    filter: drop-shadow(2px 14px 8px rgba(0, 0, 0, 0.25));
-  }
-
-  &.bottom {
-    filter: drop-shadow(2px -14px 8px rgba(0, 0, 0, 0.25));
-  }
 }
 
 .menu-items {

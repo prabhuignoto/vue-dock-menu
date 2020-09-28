@@ -52,6 +52,8 @@ const items = [
 
 ## 📺 Demo
 
+Here is a demo of a much complex menu bar setup with docking done via drag and drop.
+
 ![demo](./readme-assets/demo.gif)
 
 ## Props
@@ -62,6 +64,7 @@ const items = [
 | on-selected | Callback that will be called on a menu item selection                                             |         |
 | items       | Data for the Menu bar                                                                             | []      |
 | theme       | prop to customize the color theme                                                                 |         |
+| draggable   | enables/disbales dragging on the menubar.                                                         | True    |
 
 ### Dock
 

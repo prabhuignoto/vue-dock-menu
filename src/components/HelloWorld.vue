@@ -3,10 +3,10 @@
     :items="items"
     :on-selected="selected"
     :theme="{
-      primary: '#001B48',
-      secondary: '#02457a',
-      tertiary: '#018abe',
-      textColor: '#fff'
+      primary: '#b2b2b2',
+      secondary: '#e5e5e5',
+      tertiary: '#ccc',
+      textColor: '#000',
     }"
   />
 </template>
@@ -48,7 +48,8 @@ export default defineComponent({
                 {
                   name: "Themes",
                   menu: [{
-                    name: "White"
+                    name: "White",
+                    menu: [{name: "white 1"}, {name: "white 2"}]
                   }, {
                     name: "Black"
                   }]
