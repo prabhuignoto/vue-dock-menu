@@ -9,11 +9,13 @@
 
 > Dockable Menu bar for Vue 3
 
+[![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
+
 ## Features
 
 :large_blue_diamond: **Dockable Menu** - Dock your menus with ease.
 
-:large_blue_diamond: **Dock with drag** - Quickly dock the Menubar by dragging the Menu bar and dropping to the edges of the screen.
+:large_blue_diamond: **Dock with drag** - Quickly dock the Menubar by dragging and dropping to the edges of the screen.
 
 :large_blue_diamond: **Nested Menus** - Support for nested menus up to any levels.
 
@@ -123,7 +125,7 @@ const items = [
   </vue-dock-menu>
 ```
 
-### Custom theme
+### 🎨 Custom color scheme
 
 use the `theme` prop to customize the colors of the menu bar.
 
