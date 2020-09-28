@@ -13,9 +13,9 @@
 
 ## Features
 
-:large_blue_diamond: **Dockable Menu** - Dock your menus with ease.
+:large_blue_diamond: **Dockable Menu Bar** - Dock your menu with ease.
 
-:large_blue_diamond: **Dock with drag** - Quickly dock the Menubar by dragging and dropping to the edges of the screen.
+:large_blue_diamond: **Draggable** - Dock the Menubar by dragging and dropping to the edges of the screen.
 
 :large_blue_diamond: **Nested Menus** - Support for nested menus up to any levels.
 
@@ -31,23 +31,38 @@ yarn install vue-dock-menu
 
 vue-dock-menu has some great defaults. Please check the [Props](##props) list for all the available options.
 
-The following snippet creates a simple Menubar and docks it to the top.
+The following snippet creates a simple Menubar and docks it to the top of the page.
 
 ```sh
-const items = [
-  {
-    name: "File",
-    menu: [{ name: "Open"}, {name: "New Window"}, {name: "Exit"}]
-  },
-  {
-    name: "Edit",
-    menu: [{ name: "Cut"}, {name: "Copy"}, {name: "Paste"}]
-  }
-]
+<template>
+  <vue-dock-menu :items="items">
+  </vue-dock-menu>
+</template>
 
-<vue-dock-menu>
-  :items="items"
-</vue-dock-menu>
+<script>
+import { DockMenu } from "vue-dock-menu";
+import "vue-dock-menu/dist/vue-dock-menu.css";
+
+export default {
+  name: "example",
+  components: {
+    DockMenu
+  },
+  data() {
+    return {
+      items = [
+        {
+          name: "File",
+          menu: [{ name: "Open"}, {name: "New Window"}, {name: "Exit"}]
+        },
+        {
+          name: "Edit",
+          menu: [{ name: "Cut"}, {name: "Copy"}, {name: "Paste"}]
+        }
+      ]
+    }
+  }
+}
 ```
 
 ![sample1](./readme-assets/sample1.png)
@@ -88,11 +103,14 @@ The `on-selected` prop is used to retrieve the selected menu item. The callback 
 - **name** - Name of the selected menu item.
 - **path** - Full path of the selected menu item.
 
-``sh
+if you select the `Copy` menu item under the `Edit` menu, below would be the payload received on the `on-selected` callback.
+
+```sh
 {
-  name: "Edit",
-  path: "edit>recent-items"
-}``
+  name: "Copy",
+  path: "edit>copy"
+}
+```
 
 ### Populating Menu
 
