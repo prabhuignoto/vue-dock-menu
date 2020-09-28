@@ -33,12 +33,16 @@ export default defineComponent({
             { name: "New Window" },
             { name: "Open File" },
             {
-              name: "Open Folder",
+              name: "Preferences",
               menu: [
-                { name: "prabhu" },
+                { name: "Settings" },
                 {
-                  name: "RAMYA",
-                  menu: [{ name: "prabhu" }, { name: "prabhu" }],
+                  name: "Themes",
+                  menu: [{
+                    name: "White"
+                  }, {
+                    name: "Black"
+                  }]
                 },
               ],
             },
@@ -51,32 +55,23 @@ export default defineComponent({
         },
         {
           name: "edit",
-          menu: [{ name: "red" }, { name: "blue" }, { name: "orange" }],
+          menu: [{ name: "Cut" }, { name: "Copy" }, { name: "Paste" }],
         },
         {
-          name: "selection name",
-          menu: [{ name: "red" }, { name: "blue" }, { name: "orange" }],
-        },
-        {
-          name: "view",
+          name: "View",
           menu: [
-            { name: "red" },
-            { name: "blue" },
-            { name: "orange" },
-            { name: "red" },
-            { name: "blue" },
-            { name: "orange" },
+            { name: "Explorer" },
+            { name: "Search" },
+            { name: "Run" },
             {
-              name: "Open Folder",
-              menu: [
-                { name: "prabhu" },
-                {
-                  name: "RAMYA",
-                  menu: [{ name: "prabhu" }, { name: "prabhu" }],
-                },
-              ],
+              name: "Apperance",
+              menu: [{ name: "Full Screen" }, { name: "Zen Mode" }],
             },
           ],
+        },
+        {
+          name: "Help",
+          menu: [{ name: "About" }, { name: "Check for Updates" }],
         },
       ] as MenuBarItemModel[],
     };
