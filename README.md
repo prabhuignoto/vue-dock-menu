@@ -163,6 +163,30 @@ use the `theme` prop to customize the colors of the menu bar.
 
 ![theme](./readme-assets/theme.png)
 
+## Build Setup
+
+``` bash
+# install dependencies
+yarn install
+
+# start dev
+yarn run dev
+
+# package lib
+npm run rollup
+
+# run css linting
+yarn run lint:css
+```
+
+## Contributing
+
+1. Fork it ( [https://github.com/prabhuignoto/vue-dock-menu/fork](https://github.com/prabhuignoto/vue-dock-menu/fork) )
+2. Create your feature branch (`git checkout -b new-feature`)
+3. Commit your changes (`git commit -am 'Add feature'`)
+4. Push to the branch (`git push origin new-feature`)
+5. Create a new Pull Request
+
 ## 🔨 Built with
 
 - [Vue.JS](vue) - The Component is written in Vue + [Typescript](typescript).
