@@ -29,9 +29,9 @@ yarn install vue-dock-menu
 
 ## 🚀 Getting Started
 
-vue-dock-menu has some great defaults. Please check the [Props](##props) list for all the available options.
+`vue-dock-menu` has some great defaults. Please check the [Props](##Props) section for all available options.
 
-The following snippet creates a simple Menubar and docks it to the top of the page.
+The following snippet creates a simple Menubar and docks it to the `top` of the page.
 
 ```sh
 <template>
@@ -63,6 +63,7 @@ export default {
     }
   }
 }
+</script>
 ```
 
 ![sample1](./readme-assets/sample1.png)
@@ -77,7 +78,7 @@ Here is a demo of a much complex menu bar setup with docking done via drag and d
 
 | Name        | Description                                                                                       | Default |
 |-------------|---------------------------------------------------------------------------------------------------|---------|
-| dock        | Position where you want the Menu to be docked. Can be any one of `TOP`, `LEFT`, `RIGHT`, `BOTTOM` | `TOP`   |
+| dock        | default docking position. Can be any one of `TOP`, `LEFT`, `RIGHT`, `BOTTOM` | `TOP`              |         |
 | on-selected | Callback that will be called on a menu item selection                                             |         |
 | items       | Data for the Menu bar                                                                             | []      |
 | theme       | prop to customize the color theme                                                                 |         |
@@ -85,7 +86,7 @@ Here is a demo of a much complex menu bar setup with docking done via drag and d
 
 ### Dock
 
-use the `dock` prop to dock the menubar to your preferred position. The dock prop can accept the following values `TOP`, `BOTTOM`, `LEFT`, `RIGHT`.
+use the `dock` prop to dock the menubar to your preferred position. The prop can accept the following values `TOP`, `BOTTOM`, `LEFT`, `RIGHT`.
 
 Here we dock the Menu bar to the right side of the screen.
 
