@@ -1,24 +1,31 @@
 <svg width="1280" height="640" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
  <g>
   <title>background</title>
-  <rect fill="#fff" id="canvas_background" height="642" width="1282" y="-1" x="-1"/>
-  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
-   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  <rect x="-1" y="-1" width="1282" height="642" id="canvas_background" fill="#fff"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_6" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
   </g>
  </g>
  <g>
   <title>Layer 1</title>
-  <rect stroke="#000" fill-opacity="0.7" id="svg_11" height="640.99999" width="1282.00002" y="-0.54689" x="-0.50004" stroke-opacity="null" stroke-width="0" fill="#005fbf"/>
-  <ellipse ry="145.5" rx="147.5" id="svg_1" cy="290.95313" cx="299" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.6" ry="68.5" rx="69" id="svg_2" cy="126.95313" cx="495.5" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.9" ry="139.5" rx="141" id="svg_3" cy="423.95313" cx="659.5" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.7" ry="156.5" rx="155" id="svg_4" cy="309.95313" cx="508.5" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.5" ry="109" rx="110" id="svg_5" cy="193.45313" cx="810.5" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.65" ry="81" rx="80" id="svg_7" cy="433.45313" cx="959.5" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <ellipse fill-opacity="0.3" ry="50" rx="51.5" id="svg_8" cy="348.45313" cx="898" stroke-width="0" stroke="#000" fill="#e5e5e5"/>
-  <rect rx="58" fill-opacity="0.9" id="svg_13" height="102" width="484" y="242.45313" x="400.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#005fbf"/>
-  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="60" id="svg_9" y="311.45313" x="440.5" stroke-width="0" stroke="#000" fill="#ffffff">vue-dock-menu</text>
-  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="40" id="svg_17" y="604.45313" x="28.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#ffffff">Dockable Menubar for Vue</text>
+  <rect fill="#ffffff" stroke-width="0" stroke-opacity="null" x="-0.50004" y="-0.54689" width="1282.00002" height="640.99999" id="svg_11" stroke="#000"/>
+  <rect stroke="#000" id="svg_12" height="49.99997" width="1289" y="-0.5" x="-9.5" fill-opacity="0.9" stroke-opacity="null" stroke-width="0" fill="#e5e5e5"/>
+  <ellipse stroke="#000" fill="#005fbf" stroke-width="0" cx="912.5" cy="374.72292" id="svg_10" rx="200" ry="197.87234" fill-opacity="0.1"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="495.5" cy="141.09527" id="svg_2" rx="69" ry="68.5" fill-opacity="0.65"/>
+  <ellipse fill-opacity="0.5" fill="#005fbf" stroke="#000" stroke-width="0" cx="270" cy="270.09527" id="svg_1" rx="147.5" ry="145.5"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="659.5" cy="438.09527" id="svg_3" rx="141" ry="139.5" fill-opacity="0.3"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="810.5" cy="207.59527" id="svg_5" rx="110" ry="109" fill-opacity="0.7"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="959.5" cy="447.59527" id="svg_7" rx="80" ry="81" fill-opacity="0.45"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="898" cy="362.59527" id="svg_8" rx="51.5" ry="50" fill-opacity="0.15"/>
+  <ellipse fill="#005fbf" stroke="#000" stroke-width="0" cx="508.5" cy="324.09527" id="svg_4" rx="155" ry="156.5" fill-opacity="0.2"/>
+  <rect stroke="#000" fill="#ffffff" stroke-width="0" stroke-opacity="null" x="378.5" y="251.59527" width="518.99999" height="109.37603" id="svg_13" rx="13"/>
+  <text fill="#005fbf" stroke="#000" stroke-width="0" x="435.5" y="327.59527" id="svg_9" font-size="60" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">vue-dock-menu</text>
+  <text fill-opacity="0.8" fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" x="28.5" y="604.45313" id="svg_17" font-size="40" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">Dockable Menubar for Vue</text>
+  <rect stroke="#000" id="svg_14" height="49" width="96" y="-0.5" x="-0.5" fill-opacity="0.3" stroke-opacity="null" stroke-width="0" fill="#005fbf"/>
+  <rect stroke="#000" id="svg_15" height="49" width="96" y="-0.5" x="95.5" fill-opacity="0.5" stroke-opacity="null" stroke-width="0" fill="#005fbf"/>
+  <rect stroke="#000" id="svg_16" height="49" width="96" y="-0.5" x="191.5" fill-opacity="0.7" stroke-opacity="null" stroke-width="0" fill="#005fbf"/>
+  <rect stroke="#000" id="svg_18" height="49" width="96" y="-0.5" x="287.5" fill-opacity="0.25" stroke-opacity="null" stroke-width="0" fill="#005fbf"/>
  </g>
 </svg>
