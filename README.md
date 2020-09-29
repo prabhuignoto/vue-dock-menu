@@ -5,11 +5,11 @@
 [![Depfu](https://badges.depfu.com/badges/f3a16c4fe1fcbd36df15d6949d9846bc/overview.svg)](https://depfu.com/github/prabhuignoto/vue-dock-menu?project_id=16495)
 [![Known Vulnerabilities](https://snyk.io/test/github/prabhuignoto/vue-dock-menu/badge.svg?targetFile=package.json)](https://snyk.io/test/github/prabhuignoto/vue-dock-menu?targetFile=package.json)
 
-![logo](./readme-assets/logo.png)
-
-> Dockable Menu bar for Vue 3
+![logo](./readme-assets/social-logo-small.png)
 
 [![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
+
+![main-sample](./readme-assets/main-sample.png)
 
 ## Features
 
@@ -29,7 +29,7 @@ yarn install vue-dock-menu
 
 ## 🚀 Getting Started
 
-`vue-dock-menu` has some great defaults. Please check the [Props](##Props) section for all available options.
+`vue-dock-menu` has some great defaults. Please check the [Props](#Props) section for all available options.
 
 The following snippet creates a simple Menubar and docks it to the `top` of the page.
 
