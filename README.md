@@ -9,8 +9,6 @@
 
 [![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
 
-![main-sample](./readme-assets/main-sample.png)
-
 ## Features
 
 :large_blue_diamond: **Dockable Menu Bar** - Dock your menu with ease.
