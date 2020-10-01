@@ -1,0 +1,26 @@
+<svg width="1280" height="640" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="642" width="1282" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_6"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect fill="#e5e5e5" stroke-width="0" stroke-opacity="null" fill-opacity="0.9" x="-9.5" y="-0.5" width="1289" height="49.99997" id="svg_12" stroke="#000"/>
+  <rect fill="#005fbf" stroke-width="0" stroke-opacity="null" fill-opacity="0.3" x="-0.5" y="-0.5" width="96" height="49" id="svg_14" stroke="#000"/>
+  <rect fill="#005fbf" stroke-width="0" stroke-opacity="null" fill-opacity="0.5" x="95.5" y="-0.5" width="96" height="49" id="svg_15" stroke="#000"/>
+  <rect fill="#005fbf" stroke-width="0" stroke-opacity="null" fill-opacity="0.7" x="191.5" y="-0.5" width="96" height="49" id="svg_16" stroke="#000"/>
+  <rect fill="#005fbf" stroke-width="0" stroke-opacity="null" fill-opacity="0.25" x="287.5" y="-0.5" width="96" height="49" id="svg_18" stroke="#000"/>
+  <g fill-opacity="0.25" stroke="null" id="svg_21">
+   <path fill="#005fbf" stroke="null" id="svg_20" d="m405.26041,323.23323l6.15196,6.15196c0.6152,0.6152 1.23039,1.84559 0.6152,2.46078c0,0.6152 -0.6152,1.84559 -1.23039,2.46078l-19.07107,12.91911c-1.23039,0.6152 -2.46078,0.6152 -3.07598,0c-1.23039,-0.6152 -1.84559,-1.84559 -1.84559,-2.46078l0,-60.2892c0,-1.23039 0.6152,-2.46078 1.84559,-3.07598c8.61274,-3.07598 14.14951,-11.07353 14.14951,-19.68627c0,-11.68872 -9.22794,-20.91666 -20.91666,-20.91666s-20.30146,9.84313 -20.30146,20.91666c0,9.22794 5.53676,16.61029 14.14951,19.68627c1.23039,0.6152 1.84559,1.84559 1.84559,3.07598l0,59.674c0,1.23039 -0.6152,2.46078 -1.84559,2.46078c-1.23039,0.6152 -2.46078,0.6152 -3.07598,0l-19.07107,-12.91911c-0.6152,-0.6152 -1.23039,-1.23039 -1.23039,-2.46078c0,-0.6152 0,-1.84559 0.6152,-2.46078l6.15196,-6.15196l-22.14705,0l0,22.14705l6.15196,-6.15196c1.23039,-1.23039 3.07598,-1.23039 4.30637,0l31.99019,31.99019c0,0 0,0 0,0l3.07598,3.07598l3.07598,-3.07598c0,0 0,0 0,0l31.99019,-31.99019c1.23039,-1.23039 3.07598,-1.23039 4.30637,0l6.15196,6.15196l0,-22.14705l-22.76225,0l0,0.6152zm-22.76225,-49.21567c-6.76715,0 -12.30392,-5.53676 -12.30392,-12.30392s5.53676,-12.30392 12.30392,-12.30392c6.76715,0 12.30392,5.53676 12.30392,12.30392s-5.53676,12.30392 -12.30392,12.30392z"/>
+  </g>
+  <g id="svg_22">
+   <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="60" id="svg_9" y="295.63806" x="462.17169" stroke-width="0" stroke="#000" fill="#005fbf">vue-dock-menu</text>
+   <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="40" id="svg_17" y="365.49592" x="462.16632" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000" fill-opacity="0.8">Dockable Menubar for Vue</text>
+  </g>
+ </g>
+</svg>
