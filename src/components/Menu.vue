@@ -9,8 +9,8 @@
         :key="item.id"
         :class="[dockClass, 'menu-item', { 'is-parent': !!item.menu }]"
         :style="menuItemStyle"
-        @mouseenter="item.menu && toggleSubMenu(!!item.menu)"
-        @mouseleave="item.menu && toggleSubMenu(!!item.menu)"
+        @mouseenter="item.menu && !isMobile && toggleSubMenu(!!item.menu)"
+        @mouseleave="item.menu && !isMobile && toggleSubMenu(!!item.menu)"
         @click="
           handleSelection({
             event: $event,
@@ -36,6 +36,7 @@
             :dock="dock"
             :parent="item.name"
             :theme="theme"
+            :is-touch="isMobile"
             @selected="handleSelection"
           />
         </div>
@@ -93,6 +94,10 @@ export default defineComponent({
         textColor: "#fff",
       },
     },
+    isMobile: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["selected"],
   setup(props, { emit }) {
@@ -111,6 +116,11 @@ export default defineComponent({
     const handleSelection = (selectedItem: SelectedItemModel) => {
       selectedItem.event.stopPropagation();
       selectedItem.event.preventDefault();
+
+      if (selectedItem.isParent) {
+        showSubMenu.value = !showSubMenu.value;
+        return;
+      }
 
       const { path, name } = selectedItem;
 
@@ -139,97 +149,5 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.menu-wrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  min-width: 200px;
-  padding: 0.5rem 0;
-}
-
-.menu-items {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.icon-wrap {
-  align-items: center;
-  display: flex;
-  height: 1rem;
-  justify-content: center;
-  margin-left: auto;
-  width: 1.25rem;
-}
-
-.menu-item {
-  align-items: center;
-  color: var(--fore-color);
-  display: flex;
-  font-size: 0.9rem;
-  justify-content: flex-start;
-  padding: 0.4rem 0;
-  position: relative;
-  text-transform: capitalize;
-  width: 100%;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--background-color-hover);
-    cursor: pointer;
-  }
-
-  span.name {
-    flex-basis: 85%;
-    text-align: left;
-    padding-left: 5%;
-  }
-
-  span.icon-wrap {
-    width: 10%;
-    visibility: hidden;
-
-    &.visible {
-      visibility: visible;
-    }
-  }
-
-  &.right {
-    .name {
-      order: 2;
-      text-align: right;
-      padding-right: 5%;
-    }
-
-    .icon-wrap {
-      order: 1;
-      margin-right: auto;
-      transform: rotate(180deg);
-    }
-  }
-}
-
-.sub-menu-wrapper {
-  position: absolute;
-  top: 0;
-
-  &:not(.right) {
-    left: 100%;
-  }
-
-  &.right {
-    right: 100%;
-  }
-
-  &.bottom {
-    transform: translateY(-65%);
-  }
-}
+<style lang="scss" scoped src="./menu.scss">
 </style>

@@ -8,14 +8,11 @@
   >
     <span
       :class="[...menuBarStyle, 'name-container']"
-      :style="{color: theme.textColor}"
+      :style="{ color: theme.textColor }"
     >
       {{ getName }}
     </span>
-    <span
-      class="menu-container"
-      :style="menuStyle"
-    >
+    <span class="menu-container" :style="menuStyle">
       <transition name="fade">
         <Menu
           v-if="menuActive && showMenu"
@@ -23,6 +20,7 @@
           :dock="dock"
           :parent="name"
           :theme="theme"
+          :is-touch="isMobileDevice"
           @selected="handleMenuSelection"
         />
       </transition>
@@ -100,8 +98,12 @@ export default defineComponent({
         primary: "#21252b",
         secondary: "#32323e",
         tertiary: "#4c4c57",
-        textColor: "#fff"
+        textColor: "#fff",
       },
+    },
+    isMobileDevice: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["show", "activate", "deactivate", "selected"],

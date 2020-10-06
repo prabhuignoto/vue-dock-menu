@@ -8,6 +8,7 @@
     @blur="handleBlur"
     @dragstart="handleDragStart"
     @dragend="handleDragEnd"
+    @touchEnd="handleDragEnd"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
@@ -31,6 +32,7 @@
           :menu-bar-active="menuBarActive"
           :show-menu="item.showMenu"
           :theme="theme"
+          :is-touch-device="isMobileDevice"
           @activate="handleActivateMenu"
           @show="handleOnShowMenu"
           @selected="handleSelected"
@@ -47,6 +49,7 @@ import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
 import { nanoid } from "nanoid";
 import { SelectedItemModel } from "@/models/SelectedItemModel";
+import isMobile from "./isMobileDevice";
 
 export default defineComponent({
   name: "MenuBar",
@@ -73,7 +76,7 @@ export default defineComponent({
     draggable: {
       required: false,
       type: Boolean,
-      default: true
+      default: true,
     },
     theme: {
       required: false,
@@ -87,7 +90,7 @@ export default defineComponent({
         primary: "#21252b",
         secondary: "#32323e",
         tertiary: "#4c4c57",
-        textColor: "#fff"
+        textColor: "#fff",
       },
     },
   },
@@ -110,6 +113,8 @@ export default defineComponent({
     const barHeight = ref<number>(0);
     const barWidth = ref<number>(0);
 
+    const isMobileDevice = ref<boolean>();
+
     const menuItems = ref<MenuBarItemModel[]>(
       props.items.map((item) =>
         Object.assign({}, item, {
@@ -124,28 +129,44 @@ export default defineComponent({
       // save the bar's height and width on render
       barHeight.value = menu?.clientHeight as number;
       barWidth.value = menu?.clientWidth as number;
+
+      isMobileDevice.value = isMobile();
     });
 
-    const handleDragStart = (event: DragEvent) => {
+    const handleDragStart = (event: DragEvent | TouchEvent) => {
       dragActive.value = true;
+
+      event.stopPropagation();
 
       // close the menu during drag operation
       menuActive.value = false;
-
       // set a custom ghost image while dragging
-      const img = new Image();
-      img.src =
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-      event.dataTransfer?.setDragImage(img, 0, 0);
+      if (event instanceof DragEvent) {
+        const img = new Image();
+        img.src =
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+        event.dataTransfer?.setDragImage(img, 0, 0);
+      }
     };
 
-    const handleDragEnd = (event: DragEvent) => {
+    const handleDragEnd = (event: DragEvent | TouchEvent) => {
       dragActive.value = false;
       const winHeight = window.innerHeight;
       const winWidth = window.innerWidth;
+      let xThreshold = 0;
+      let yThreshold = 0;
 
-      const xThreshold = Math.round((event.clientX / winWidth) * 100);
-      const yThreshold = Math.round((event.clientY / winHeight) * 100);
+      if (event instanceof DragEvent) {
+        xThreshold = Math.round((event.clientX / winWidth) * 100);
+        yThreshold = Math.round((event.clientY / winHeight) * 100);
+      } else if (event instanceof TouchEvent) {
+        xThreshold = Math.round(
+          (event.changedTouches[0].clientX / winWidth) * 100
+        );
+        yThreshold = Math.round(
+          (event.changedTouches[0].clientY / winHeight) * 100
+        );
+      }
 
       if (xThreshold < 10) {
         dockInternal.value = DockPosition.LEFT;
@@ -172,7 +193,9 @@ export default defineComponent({
       );
     };
 
-    const handleOnShowMenu = (state: boolean) => (menuActive.value = state);
+    const handleOnShowMenu = (state: boolean) => {
+      menuActive.value = state;
+    };
 
     const handleBlur = () => {
       menuActive.value = false;
@@ -213,12 +236,14 @@ export default defineComponent({
 
     // activate the menu bar
     const handleMouseEnter = () => {
-      menuBarActive.value = true;
+      if (!isMobileDevice.value) {
+        menuBarActive.value = true;
+      }
     };
 
     // deactivate the menubar if active
     const handleMouseLeave = () => {
-      if (!menuActive.value) {
+      if (!isMobileDevice.value && !menuActive.value) {
         menuBarActive.value = false;
       }
     };
@@ -242,111 +267,11 @@ export default defineComponent({
       handleDragCancel,
       expandClass,
       menuBarActive,
+      isMobileDevice,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-.menu-bar-container {
-  position: fixed;
-  display: flex;
-  user-select: none;
-  outline: 0;
-
-  &.left,
-  &.right {
-    height: 100%;
-    align-items: flex-start;
-
-    &.expanded {
-      width: 150px;
-      animation: expand 0.1s linear;
-    }
-
-    &.not-expanded {
-      width: 50px;
-      animation: collapse 0.1s linear;
-    }
-  }
-
-  &.top,
-  &.bottom {
-    height: 2.5rem;
-    width: 100%;
-    align-items: center;
-    left: 0;
-  }
-
-  &.left {
-    left: 0;
-    top: 0;
-  }
-
-  &.right {
-    right: 0;
-    top: 0;
-  }
-
-  &.top {
-    top: 0;
-  }
-
-  &.bottom {
-    bottom: 0;
-  }
-}
-
-.menu-bar-items {
-  display: flex;
-  list-style: none;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0;
-  margin: 0;
-
-  &.top,
-  &.bottom {
-    height: 100%;
-  }
-
-  &.left,
-  &.right {
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-  }
-}
-
-.menu-bar-item-wrapper {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &.left,
-  &.right {
-    width: 100%;
-  }
-}
-
-@keyframes expand {
-  0% {
-    width: 50px;
-  }
-
-  100% {
-    width: 150px;
-  }
-}
-
-@keyframes collapse {
-  0% {
-    width: 150px;
-  }
-
-  100% {
-    width: 50px;
-  }
-}
+<style lang="scss" src="./menu-bar.scss" scoped>
 </style>
