@@ -6,7 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/prabhuignoto/vue-dock-menu/badge.svg?targetFile=package.json)](https://snyk.io/test/github/prabhuignoto/vue-dock-menu?targetFile=package.json)
 ![https://badgen.net/bundlephobia/min/vue-dock-menu](https://badgen.net/bundlephobia/min/vue-dock-menu)
 
-![logo](./readme-assets/social-logo-small.png)
+![demo](./readme-assets/demo-small.gif)
 
 [![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
 
@@ -24,7 +24,6 @@
 
 - [⚡ Installation](#-installation)
 - [🚀 Getting Started](#-getting-started)
-- [📽️ Demo](#️-demo)
 - [Props](#props)
   - [⚓ Dock](#-dock)
   - [📡 on-selected](#-on-selected)
@@ -82,12 +81,6 @@ export default {
 ```
 
 ![sample1](./readme-assets/sample1.png)
-
-## 📽️ Demo
-
-Here is a demo of a much complex menu bar setup with docking done via drag and drop.
-
-![demo](./readme-assets/demo.gif)
 
 ## Props
 
