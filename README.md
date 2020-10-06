@@ -10,17 +10,33 @@
 
 [![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
 
-## Features
+<h2>Features</h2>
 
-:large_blue_diamond: **Dockable Menu Bar** - Dock your menu with ease.
+- ⚓ &nbsp;Dock your menu with ease.
+- 🤏 &nbsp;Dock the Menubar by dragging and dropping to the edges of the screen.
+- 👍 &nbsp;Support for nested menus up to any levels.
+- 👓&nbsp; The Menus adjust to any docked position and enables an intuitive menu navigation.
+- 💪&nbsp; Built with [Typescript](https://www.typescriptlang.org/).
+- 🧰&nbsp; Intuitive [API](#props) with data driven behavior.
+- 🌠&nbsp; Built with the all new [Vue 3](https://v3.vuejs.org/).
+  
+<h2>Table of Contents</h2>
 
-:large_blue_diamond: **Draggable** - Dock the Menubar by dragging and dropping to the edges of the screen.
+- [⚡ Installation](#-installation)
+- [🚀 Getting Started](#-getting-started)
+- [📽️ Demo](#️-demo)
+- [Props](#props)
+  - [⚓ Dock](#-dock)
+  - [📡 on-selected](#-on-selected)
+  - [⚡ Populating Menu](#-populating-menu)
+  - [🎨 Custom color scheme](#-custom-color-scheme)
+- [📦 Build Setup](#-build-setup)
+- [🔨 Contributing](#-contributing)
+- [🧱 Built with](#-built-with)
+- [📄 Notes](#-notes)
+- [Meta](#meta)
 
-:large_blue_diamond: **Nested Menus** - Support for nested menus up to any levels.
-
-:large_blue_diamond: **Smart Menus** - The Menus adjust to any docked position and enables an intuitive menu navigation.
-
-## ⚙ Installation
+## ⚡ Installation
 
 ```sh
 yarn install vue-dock-menu
@@ -28,7 +44,7 @@ yarn install vue-dock-menu
 
 ## 🚀 Getting Started
 
-`vue-dock-menu` has some great defaults. Please check the [Props](#Props) section for all available options.
+`vue-dock-menu` has some great defaults. Please check the [prop](#Props) section for all available options.
 
 The following snippet creates a simple Menubar and docks it to the `top` of the page.
 
@@ -67,7 +83,7 @@ export default {
 
 ![sample1](./readme-assets/sample1.png)
 
-## 📺 Demo
+## 📽️ Demo
 
 Here is a demo of a much complex menu bar setup with docking done via drag and drop.
 
@@ -83,7 +99,7 @@ Here is a demo of a much complex menu bar setup with docking done via drag and d
 | theme       | prop to customize the color theme                                                                 |         |
 | draggable   | enables/disbales dragging on the menubar.                                                         | True    |
 
-### Dock
+### ⚓ Dock
 
 use the `dock` prop to dock the menubar to your preferred position. The prop can accept the following values `TOP`, `BOTTOM`, `LEFT`, `RIGHT`.
 
@@ -96,7 +112,7 @@ Here we dock the Menu bar to the right side of the screen.
 </vue-dock-menu>
 ```
 
-### on-selected
+### 📡 on-selected
 
 The `on-selected` prop is used to retrieve the selected menu item. The callback receives an object with `name` and a `path` property.
 
@@ -112,7 +128,7 @@ if you select the `Copy` menu item under the `Edit` menu, below would be the pay
 }
 ```
 
-### Populating Menu
+### ⚡ Populating Menu
 
 Use the `items` prop to create Simple or Nested menus of your liking.
 
@@ -162,7 +178,7 @@ use the `theme` prop to customize the colors of the menu bar.
 
 ![theme](./readme-assets/theme.png)
 
-## Build Setup
+## 📦 Build Setup
 
 ``` bash
 # install dependencies
@@ -178,7 +194,7 @@ npm run rollup
 yarn run lint:css
 ```
 
-## Contributing
+## 🔨 Contributing
 
 1. Fork it ( [https://github.com/prabhuignoto/vue-dock-menu/fork](https://github.com/prabhuignoto/vue-dock-menu/fork) )
 2. Create your feature branch (`git checkout -b new-feature`)
@@ -186,7 +202,7 @@ yarn run lint:css
 4. Push to the branch (`git push origin new-feature`)
 5. Create a new Pull Request
 
-## 🔨 Built with
+## 🧱 Built with
 
 - [Vue.JS](vue) - The Component is written in Vue + [Typescript](typescript).
 
