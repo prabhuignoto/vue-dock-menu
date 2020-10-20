@@ -4,6 +4,7 @@
   display: flex;
   user-select: none;
   outline: 0;
+  touch-action: none;
 
   &.left,
   &.right {
