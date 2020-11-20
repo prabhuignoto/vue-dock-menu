@@ -35,6 +35,7 @@
   - [📡 on-selected](#-on-selected)
   - [⚡ Populating Menu](#-populating-menu)
   - [🎨 Custom color scheme](#-custom-color-scheme)
+- [What's coming next](#whats-coming-next)
 - [📦 Build Setup](#-build-setup)
 - [🔨 Contributing](#-contributing)
 - [🧱 Built with](#-built-with)
@@ -175,11 +176,13 @@ use the `theme` prop to customize the colors of the menu bar.
   />
 ```
 
-###  What's coming next
-
-- support for react
-
 ![theme](./readme-assets/theme.png)
+
+## What's coming next
+
+- support for react.
+- support for icons in the menu.
+- accordion style rendering on sidebar mode.
 
 ## 📦 Build Setup
 
