@@ -175,6 +175,10 @@ use the `theme` prop to customize the colors of the menu bar.
   />
 ```
 
+###  What's coming next
+
+- support for react
+
 ![theme](./readme-assets/theme.png)
 
 ## 📦 Build Setup
