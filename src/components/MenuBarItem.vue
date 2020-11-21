@@ -12,7 +12,10 @@
     >
       {{ getName }}
     </span>
-    <span class="menu-container" :style="menuStyle">
+    <span
+      class="menu-container"
+      :style="menuStyle"
+    >
       <transition name="fade">
         <Menu
           v-if="menuActive && showMenu"

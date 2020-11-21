@@ -180,6 +180,7 @@ use the `theme` prop to customize the colors of the menu bar.
 
 ## What's coming next
 
+- keyboard accessibility.
 - support for react.
 - support for icons in the menu.
 - accordion style rendering on sidebar mode.
