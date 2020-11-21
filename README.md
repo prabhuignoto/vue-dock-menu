@@ -22,6 +22,7 @@
 - 🤏 &nbsp;Dock the Menubar by dragging and dropping to the edges of the screen.
 - 👍 &nbsp;Support for nested menus up to any levels.
 - 👓&nbsp; The Menus adjust to any docked position and enables an intuitive menu navigation.
+- ⚡&nbsp; Zero dependencies.
 - 💪&nbsp; Built with [Typescript](https://www.typescriptlang.org/).
 - 🧰&nbsp; Intuitive [API](#props) with data driven behavior.
 - 🌠&nbsp; Built with the all new [Vue 3](https://v3.vuejs.org/).
@@ -225,7 +226,7 @@ Prabhu Murthy – [@prabhumurthy2](https://twitter.com/prabhumurthy2) – prabhu
 
 Distributed under the MIT license. See `LICENSE` for more information.
 
-[https://github.com/prabhuingoto/](https://github.com/prabhuingoto/)
+[https://github.com/prabhuingoto/](https://github.com/prabhuignoto/)
 
 [vue]: https://vuejs.org
 [typescript]: https://typescriptlang.org

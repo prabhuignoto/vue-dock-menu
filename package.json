@@ -36,10 +36,7 @@
       "git add"
     ]
   },
-  "dependencies": {
-    "nanoid": "^3.1.18",
-    "vue": "^3.0.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@interactjs/types": "^1.10.0",
     "@rollup/plugin-beep": "^0.2.0",
@@ -61,12 +58,10 @@
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
     "typescript": "^4.1.2",
-    "vite": "^1.0.0-rc.9"
+    "vite": "^1.0.0-rc.9",
+    "vue": "^3.0.2"
   },
-  "peerDependencies": {
-    "nanoid": "^3.1.12",
-    "vue": "^3.0.0"
-  },
+  "peerDependencies": {},
   "main": "dist/vue-dock-menu.js",
   "module": "dist/vue-dock-menu.es.js",
   "umd": "dist/vue-dock-menu.umd.js",

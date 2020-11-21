@@ -56,7 +56,6 @@ import {
 import MenuBarItem from "./MenuBarItem.vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
-import { nanoid } from "nanoid";
 import { SelectedItemModel } from "@/models/SelectedItemModel";
 import isMobile from "./isMobileDevice";
 
@@ -127,7 +126,7 @@ export default defineComponent({
     const menuItems = ref<MenuBarItemModel[]>(
       props.items.map((item) =>
         Object.assign({}, item, {
-          id: nanoid(),
+          id: Math.random().toString(16).slice(2),
         })
       )
     );
@@ -149,7 +148,7 @@ export default defineComponent({
       document.addEventListener("dragover", updateDragCoordinates);
     });
 
-    onMounted(() => {
+    onUnmounted(() => {
       document.removeEventListener("dragover", updateDragCoordinates);
     });
 
