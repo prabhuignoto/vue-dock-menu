@@ -7,6 +7,7 @@
     :style="{ background: theme.primary }"
     @blur="handleBlur"
     @dragstart="handleDragStart"
+    @dragover="handleDrag"
     @dragend="handleDragEnd"
     @touchEnd="handleDragEnd"
     @mouseenter="handleMouseEnter"
@@ -43,7 +44,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, onMounted } from "vue";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  onMounted,
+  unref,
+  onUnmounted,
+} from "vue";
 import MenuBarItem from "./MenuBarItem.vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
@@ -123,6 +132,11 @@ export default defineComponent({
       )
     );
 
+    const clientCoordinates = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
+    const updateDragCoordinates = (event: DragEvent) =>
+      (clientCoordinates.value = { x: event.clientX, y: event.clientY });
+
     onMounted(() => {
       const menu = menuBarRef.value;
 
@@ -131,12 +145,27 @@ export default defineComponent({
       barWidth.value = menu?.clientWidth as number;
 
       isMobileDevice.value = isMobile();
+
+      document.addEventListener("dragover", updateDragCoordinates);
+    });
+
+    onMounted(() => {
+      document.removeEventListener("dragover", updateDragCoordinates);
     });
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
       dragActive.value = true;
 
       event.stopPropagation();
+
+      document.ondragover = function (event: DragEvent) {
+        const event2 = event || window.event;
+
+        clientCoordinates.value = {
+          x: event2.clientX,
+          y: event2.clientY,
+        };
+      };
 
       // close the menu during drag operation
       menuActive.value = false;
@@ -155,10 +184,11 @@ export default defineComponent({
       const winWidth = window.innerWidth;
       let xThreshold = 0;
       let yThreshold = 0;
+      const { x, y } = unref(clientCoordinates);
 
       if (event instanceof DragEvent) {
-        xThreshold = Math.round((event.clientX / winWidth) * 100);
-        yThreshold = Math.round((event.clientY / winHeight) * 100);
+        xThreshold = Math.round((x / winWidth) * 100);
+        yThreshold = Math.round((y / winHeight) * 100);
       } else if (event instanceof TouchEvent) {
         xThreshold = Math.round(
           (event.changedTouches[0].clientX / winWidth) * 100
@@ -183,6 +213,15 @@ export default defineComponent({
       if (yThreshold < 10) {
         dockInternal.value = DockPosition.TOP;
       }
+    };
+
+    const handleDrag = (event: DragEvent) => {
+      console.log(event.clientX);
+      console.log(event.clientY);
+      clientCoordinates.value = {
+        x: event.clientX,
+        y: event.clientY,
+      };
     };
 
     const handleActivateMenu = (id: string) => {
@@ -268,6 +307,7 @@ export default defineComponent({
       expandClass,
       menuBarActive,
       isMobileDevice,
+      handleDrag,
     };
   },
 });
