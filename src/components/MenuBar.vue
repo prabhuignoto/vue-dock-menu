@@ -216,8 +216,6 @@ export default defineComponent({
     };
 
     const handleDrag = (event: DragEvent) => {
-      console.log(event.clientX);
-      console.log(event.clientY);
       clientCoordinates.value = {
         x: event.clientX,
         y: event.clientY,
