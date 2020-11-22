@@ -25,7 +25,7 @@
       >
         <menu-bar-item
           :id="item.id"
-          :dock="dockInternal"
+          :dock="dockPosition"
           :menu-active="menuActive"
           :menu-bar-dimensions="{ height: barHeight, width: barWidth }"
           :menu="item.menu"
@@ -35,6 +35,8 @@
           :theme="theme"
           :is-touch-device="isMobileDevice"
           @activate="handleActivateMenu"
+          @activate-next="handleActivateDir"
+          @activate-previous="handleActivateDir"
           @show="handleOnShowMenu"
           @selected="handleSelected"
         />
@@ -106,7 +108,7 @@ export default defineComponent({
     // reference to the main menubar itself
     const menuBarRef = ref<HTMLElement>();
 
-    // tracks the menubar drag
+    // tracks the drag status of the menubar
     const dragActive = ref(false);
 
     const menuActive = ref(false);
@@ -114,9 +116,9 @@ export default defineComponent({
     const menuBarActive = ref(false);
 
     // reference to the dock position
-    const dockInternal = ref<string>(props.dock);
+    const dockPosition = ref<string>(props.dock);
 
-    const dockClass = computed(() => [dockInternal.value.toLowerCase()]);
+    const dockClass = computed(() => [dockPosition.value.toLowerCase()]);
 
     const barHeight = ref<number>(0);
     const barWidth = ref<number>(0);
@@ -137,37 +139,30 @@ export default defineComponent({
       (clientCoordinates.value = { x: event.clientX, y: event.clientY });
 
     onMounted(() => {
+      // get reference to the menubar
       const menu = menuBarRef.value;
 
       // save the bar's height and width on render
       barHeight.value = menu?.clientHeight as number;
       barWidth.value = menu?.clientWidth as number;
 
+      // check if its a mobile device
       isMobileDevice.value = isMobile();
 
       document.addEventListener("dragover", updateDragCoordinates);
     });
 
-    onUnmounted(() => {
-      document.removeEventListener("dragover", updateDragCoordinates);
-    });
+    // cleanup
+    onUnmounted(() =>
+      document.removeEventListener("dragover", updateDragCoordinates)
+    );
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
       dragActive.value = true;
 
-      event.stopPropagation();
-
-      document.ondragover = function (event: DragEvent) {
-        const event2 = event || window.event;
-
-        clientCoordinates.value = {
-          x: event2.clientX,
-          y: event2.clientY,
-        };
-      };
-
       // close the menu during drag operation
       menuActive.value = false;
+
       // set a custom ghost image while dragging
       if (event instanceof DragEvent) {
         const img = new Image();
@@ -178,39 +173,37 @@ export default defineComponent({
     };
 
     const handleDragEnd = (event: DragEvent | TouchEvent) => {
-      dragActive.value = false;
       const winHeight = window.innerHeight;
       const winWidth = window.innerWidth;
       let xThreshold = 0;
       let yThreshold = 0;
       const { x, y } = unref(clientCoordinates);
 
+      dragActive.value = false;
+
       if (event instanceof DragEvent) {
         xThreshold = Math.round((x / winWidth) * 100);
         yThreshold = Math.round((y / winHeight) * 100);
       } else if (event instanceof TouchEvent) {
-        xThreshold = Math.round(
-          (event.changedTouches[0].clientX / winWidth) * 100
-        );
-        yThreshold = Math.round(
-          (event.changedTouches[0].clientY / winHeight) * 100
-        );
+        const { clientX, clientY } = event.touches[0];
+        xThreshold = Math.round((clientX / winWidth) * 100);
+        yThreshold = Math.round((clientY / winHeight) * 100);
       }
 
       if (xThreshold < 10) {
-        dockInternal.value = DockPosition.LEFT;
+        dockPosition.value = DockPosition.LEFT;
       }
 
       if (xThreshold > 90) {
-        dockInternal.value = DockPosition.RIGHT;
+        dockPosition.value = DockPosition.RIGHT;
       }
 
       if (yThreshold > 90) {
-        dockInternal.value = DockPosition.BOTTOM;
+        dockPosition.value = DockPosition.BOTTOM;
       }
 
       if (yThreshold < 10) {
-        dockInternal.value = DockPosition.TOP;
+        dockPosition.value = DockPosition.TOP;
       }
     };
 
@@ -221,12 +214,26 @@ export default defineComponent({
       };
     };
 
-    const handleActivateMenu = (id: string) => {
+    const handleActivateMenu = (id?: string) => {
       menuItems.value = menuItems.value.map((item) =>
         Object.assign({}, item, {
           showMenu: item.id === id,
         })
       );
+    };
+
+    const handleActivateDir = (id: string, dir: "prev" | "next") => {
+      const elementIndex = menuItems.value.findIndex((item) => item.id === id);
+      const newIndex = dir === "next" ? elementIndex + 1 : elementIndex - 1;
+
+      if (newIndex > -1 && newIndex < menuItems.value.length) {
+        const id = menuItems.value[newIndex].id;
+        id && handleActivateMenu(id);
+      } else if (newIndex > menuItems.value.length - 1) {
+        handleActivateMenu(menuItems.value[0].id);
+      } else if (newIndex < 0) {
+        handleActivateMenu(menuItems.value[menuItems.value.length - 1].id);
+      }
     };
 
     const handleOnShowMenu = (state: boolean) => {
@@ -246,8 +253,8 @@ export default defineComponent({
 
     const expandClass = computed(() => {
       if (
-        dockInternal.value === DockPosition.LEFT ||
-        dockInternal.value === DockPosition.RIGHT
+        dockPosition.value === DockPosition.LEFT ||
+        dockPosition.value === DockPosition.RIGHT
       ) {
         return menuBarActive.value ? "expanded" : "not-expanded";
       }
@@ -288,7 +295,7 @@ export default defineComponent({
       barHeight,
       barWidth,
       dockClass,
-      dockInternal,
+      dockPosition,
       handleDragEnd,
       handleDragStart,
       handleOnShowMenu,
@@ -305,6 +312,7 @@ export default defineComponent({
       menuBarActive,
       isMobileDevice,
       handleDrag,
+      handleActivateDir,
     };
   },
 });

@@ -1,0 +1,59 @@
+.menu-bar-item-container {
+  align-items: center;
+  color: #ccc;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  &.left,
+  &.right {
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+
+  &.top,
+  &.bottom {
+    height: 100%;
+    padding: 0 0.75rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.menu-container {
+  position: absolute;
+  z-index: 9999;
+}
+
+.name-container {
+  text-transform: capitalize;
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.left,
+  &.right {
+    align-items: center;
+    display: flex;
+    font-size: 1rem;
+    background: none;
+    width: 100%;
+    justify-content: flex-start;
+    height: 1.5rem;
+
+    &.expanded {
+      padding-left: 1rem;
+    }
+
+    &:not(.expanded) {
+      width: 2rem;
+      font-size: 1.1rem;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+  }
+}
