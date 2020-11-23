@@ -36,7 +36,9 @@
       "git add"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "focus-visible": "^5.2.0"
+  },
   "devDependencies": {
     "@interactjs/types": "^1.10.0",
     "@rollup/plugin-beep": "^0.2.0",

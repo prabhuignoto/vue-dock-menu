@@ -21,7 +21,7 @@
       <li
         v-for="item of menuItems"
         :key="item.id"
-        :class="[dockClass, 'menu-bar-item-wrapper']"
+        :class="[dockClass, 'v-dock-menu-bar-item-wrapper']"
       >
         <menu-bar-item
           :id="item.id"
@@ -59,6 +59,7 @@ import MenuBarItem from "./MenuBarItem.vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
 import { SelectedItemModel } from "@/models/SelectedItemModel";
+import "focus-visible";
 import isMobile from "./isMobileDevice";
 
 export default defineComponent({
@@ -150,6 +151,11 @@ export default defineComponent({
       isMobileDevice.value = isMobile();
 
       document.addEventListener("dragover", updateDragCoordinates);
+
+      document.addEventListener("click", () => {
+        menuActive.value = false;
+        menuBarActive.value = false;
+      });
     });
 
     // cleanup

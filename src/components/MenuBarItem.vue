@@ -1,12 +1,12 @@
 <template>
   <div
     ref="menuBarItemRef"
-    :class="[...menuBarStyle, 'menu-bar-item-container']"
+    :class="[...menuBarStyle, 'v-dock-menu-bar-item-container']"
     :style="{ background: bgColor }"
     tabindex="0"
     @mouseenter="setMenuViewable()"
-    @click="toggleMenu()"
     @keyup="handleKeyUp"
+    @click="toggleMenu($event)"
   >
     <span
       :class="[...menuBarStyle, 'name-container']"
@@ -133,7 +133,8 @@ export default defineComponent({
     const setMenuViewable = () => emit("activate", props.id);
 
     // toggle menu
-    const toggleMenu = () => {
+    const toggleMenu = (event: MouseEvent) => {
+      event.stopPropagation();
       emit("show", !props.menuActive);
     };
 

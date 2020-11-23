@@ -1,4 +1,4 @@
-.menu-bar-item-container {
+.v-dock-menu-bar-item-container {
   align-items: center;
   color: #ccc;
   display: flex;
@@ -56,4 +56,8 @@
       text-transform: uppercase;
     }
   }
+}
+
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
 }
