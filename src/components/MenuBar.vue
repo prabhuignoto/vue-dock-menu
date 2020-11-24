@@ -241,10 +241,10 @@ export default defineComponent({
         menuItems.value = menuItems.value.map((item) => {
           if (item.id === activeMenuBarId.value) {
             return Object.assign({}, item, {
-              menu: item?.menu?.map((it) =>
+              menu: item.menu?.map((it) =>
                 Object.assign({}, it, {
                   showSubMenu:
-                    it.name.toLowerCase() === menuItem.name.toLowerCase(),
+                    it.name?.toLowerCase() === menuItem.name?.toLowerCase(),
                 })
               ),
             });
@@ -252,7 +252,6 @@ export default defineComponent({
             return item;
           }
         });
-        console.log(menuItems.value);
       } else {
         // move to the next menu bar item
         activeMenuBarId.value = nextId;

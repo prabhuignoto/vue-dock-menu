@@ -6,7 +6,7 @@
     tabindex="0"
     @mouseenter="setMenuViewable()"
     @keyup="handleKeyUp"
-    @click="toggleMenu($event)"
+    @click="toggleMenu"
   >
     <span
       :class="[...menuBarStyle, 'name-container']"

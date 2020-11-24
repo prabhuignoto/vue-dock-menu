@@ -221,7 +221,7 @@ export default defineComponent({
 
       if (menuItem && menuItem.menu) {
         event.stopPropagation();
-        menuItem.menu && toggleSubMenu(!!menuItem.menu);
+        toggleSubMenu(!!menuItem.menu);
       } else {
         const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
           ".menu-bar-item-container"
