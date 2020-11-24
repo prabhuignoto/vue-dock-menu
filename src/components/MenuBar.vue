@@ -94,12 +94,12 @@ export default defineComponent({
     theme: {
       required: false,
       type: Object as PropType<MenuTheme>,
-      default: {
+      default: () => ({
         primary: "#21252b",
         secondary: "#32323e",
         tertiary: "#4c4c57",
         textColor: "#fff",
-      },
+      }),
     },
   },
   setup(props, {}) {
