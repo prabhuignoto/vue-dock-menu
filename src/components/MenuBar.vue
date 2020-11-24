@@ -237,7 +237,7 @@ export default defineComponent({
           ? menuBarItem.menu[activeMenuSelection.value]
           : null;
 
-      if (menuItem && menuItem?.menu && dir === "next") {
+      if (menuItem?.menu && dir === "next") {
         menuItems.value = menuItems.value.map((item) => {
           if (item.id === activeMenuBarId.value) {
             return Object.assign({}, item, {
