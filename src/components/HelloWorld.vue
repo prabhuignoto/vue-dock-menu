@@ -5,8 +5,9 @@
     :theme="{
       primary: '#b2b2b2',
       secondary: '#e5e5e5',
-      tertiary: '#ccc',
+      tertiary: '#008ecc',
       textColor: '#000',
+      textHoverColor: '#fff',
     }"
   />
 </template>
@@ -41,24 +42,30 @@ export default defineComponent({
             { name: "New File" },
             { name: "New Window" },
             { name: "Open File" },
+            { isDivider: true },
             {
               name: "Preferences",
               menu: [
                 { name: "Settings" },
                 {
                   name: "Themes",
-                  menu: [{
-                    name: "White",
-                    menu: [{name: "white 1"}, {name: "white 2"}]
-                  }, {
-                    name: "Black"
-                  }]
+                  menu: [
+                    {
+                      name: "White",
+                      menu: [{ name: "white 1" }, { name: "white 2" }],
+                    },
+                    {
+                      name: "Black",
+                    },
+                  ],
                 },
               ],
             },
             { name: "Open Workspace" },
+            { isDivider: true },
             { name: "Save" },
             { name: "Save As..." },
+            { isDivider: true },
             { name: "Close" },
             { name: "Exit" },
           ],

@@ -61,6 +61,8 @@ import { MenuBarItemModel } from "@/models/MenuBarItemModel";
 import { SelectedItemModel } from "@/models/SelectedItemModel";
 import "focus-visible";
 import isMobile from "./isMobileDevice";
+import utils from "../utils/DragUtil";
+import { MenuTheme } from "@/models/Theme";
 
 export default defineComponent({
   name: "MenuBar",
@@ -91,12 +93,7 @@ export default defineComponent({
     },
     theme: {
       required: false,
-      type: Object as PropType<{
-        primary: string;
-        secondary: string;
-        tertiary: string;
-        textColor: string;
-      }>,
+      type: Object as PropType<MenuTheme>,
       default: {
         primary: "#21252b",
         secondary: "#32323e",
@@ -112,20 +109,25 @@ export default defineComponent({
     // tracks the drag status of the menubar
     const dragActive = ref(false);
 
+    // tracks if the menu is active
     const menuActive = ref(false);
 
+    // tracks if the menubar is active
     const menuBarActive = ref(false);
 
     // reference to the dock position
     const dockPosition = ref<string>(props.dock);
 
+    // compute the dock class
     const dockClass = computed(() => [dockPosition.value.toLowerCase()]);
 
+    // height and width of the menubar
     const barHeight = ref<number>(0);
     const barWidth = ref<number>(0);
 
     const isMobileDevice = ref<boolean>();
 
+    // initialize the menu items.add a unique id to all items.
     const menuItems = ref<MenuBarItemModel[]>(
       props.items.map((item) =>
         Object.assign({}, item, {
@@ -134,10 +136,24 @@ export default defineComponent({
       )
     );
 
-    const clientCoordinates = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+    const activeMenuSelection = ref(-1);
 
-    const updateDragCoordinates = (event: DragEvent) =>
-      (clientCoordinates.value = { x: event.clientX, y: event.clientY });
+    const expandMenuItem = ref("");
+
+    // tracks the active menubar item
+    const activeMenuBarId = ref("");
+
+    const clientCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
+    const updateDragCoords = (event: DragEvent) =>
+      (clientCoords.value = { x: event.clientX, y: event.clientY });
+
+    const handleMenuClosure = () => {
+      menuActive.value = false;
+      menuBarActive.value = false;
+      activeMenuSelection.value = -1;
+      activeMenuBarId.value = "";
+    };
 
     onMounted(() => {
       // get reference to the menubar
@@ -150,18 +166,15 @@ export default defineComponent({
       // check if its a mobile device
       isMobileDevice.value = isMobile();
 
-      document.addEventListener("dragover", updateDragCoordinates);
-
-      document.addEventListener("click", () => {
-        menuActive.value = false;
-        menuBarActive.value = false;
-      });
+      document.addEventListener("dragover", updateDragCoords);
+      document.addEventListener("click", handleMenuClosure);
     });
 
     // cleanup
-    onUnmounted(() =>
-      document.removeEventListener("dragover", updateDragCoordinates)
-    );
+    onUnmounted(() => {
+      document.removeEventListener("dragover", updateDragCoords);
+      document.removeEventListener("click", handleMenuClosure);
+    });
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
       dragActive.value = true;
@@ -170,51 +183,21 @@ export default defineComponent({
       menuActive.value = false;
 
       // set a custom ghost image while dragging
-      if (event instanceof DragEvent) {
-        const img = new Image();
-        img.src =
-          "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-        event.dataTransfer?.setDragImage(img, 0, 0);
-      }
+      utils.handleDragStart(event);
     };
 
     const handleDragEnd = (event: DragEvent | TouchEvent) => {
-      const winHeight = window.innerHeight;
-      const winWidth = window.innerWidth;
-      let xThreshold = 0;
-      let yThreshold = 0;
-      const { x, y } = unref(clientCoordinates);
+      const {
+        dragActive: dragActiveNew,
+        dockPosition: positionNew,
+      } = utils.handleDragEnd(event, unref(clientCoords));
 
-      dragActive.value = false;
-
-      if (event instanceof DragEvent) {
-        xThreshold = Math.round((x / winWidth) * 100);
-        yThreshold = Math.round((y / winHeight) * 100);
-      } else if (event instanceof TouchEvent) {
-        const { clientX, clientY } = event.touches[0];
-        xThreshold = Math.round((clientX / winWidth) * 100);
-        yThreshold = Math.round((clientY / winHeight) * 100);
-      }
-
-      if (xThreshold < 10) {
-        dockPosition.value = DockPosition.LEFT;
-      }
-
-      if (xThreshold > 90) {
-        dockPosition.value = DockPosition.RIGHT;
-      }
-
-      if (yThreshold > 90) {
-        dockPosition.value = DockPosition.BOTTOM;
-      }
-
-      if (yThreshold < 10) {
-        dockPosition.value = DockPosition.TOP;
-      }
+      dragActive.value = dragActiveNew;
+      dockPosition.value = positionNew;
     };
 
     const handleDrag = (event: DragEvent) => {
-      clientCoordinates.value = {
+      clientCoords.value = {
         x: event.clientX,
         y: event.clientY,
       };
@@ -229,21 +212,64 @@ export default defineComponent({
     };
 
     const handleActivateDir = (id: string, dir: "prev" | "next") => {
-      const elementIndex = menuItems.value.findIndex((item) => item.id === id);
-      const newIndex = dir === "next" ? elementIndex + 1 : elementIndex - 1;
+      const eleIndex = menuItems.value.findIndex((item) => item.id === id);
+      const newIdx = dir === "next" ? eleIndex + 1 : eleIndex - 1;
+      const menuItemsLen = menuItems.value.length;
 
-      if (newIndex > -1 && newIndex < menuItems.value.length) {
-        const id = menuItems.value[newIndex].id;
-        id && handleActivateMenu(id);
-      } else if (newIndex > menuItems.value.length - 1) {
-        handleActivateMenu(menuItems.value[0].id);
-      } else if (newIndex < 0) {
-        handleActivateMenu(menuItems.value[menuItems.value.length - 1].id);
+      let nextId = "";
+
+      if (newIdx > -1 && newIdx < menuItemsLen) {
+        nextId = menuItems.value[newIdx].id as string;
+      } else if (newIdx > menuItemsLen - 1) {
+        nextId = menuItems.value[0].id as string;
+      } else if (newIdx < 0) {
+        nextId = menuItems.value[menuItemsLen - 1].id as string;
       }
+
+      // check if the nested menu can be expanded
+
+      // get the menubar item
+      const menuBarItem = menuItems.value.find((item) => item.id === id);
+      debugger;
+
+      const menuItem =
+        menuBarItem && menuBarItem.menu
+          ? menuBarItem.menu[activeMenuSelection.value]
+          : null;
+
+      if (menuItem && menuItem?.menu && dir === "next") {
+        menuItems.value = menuItems.value.map((item) => {
+          if (item.id === activeMenuBarId.value) {
+            return Object.assign({}, item, {
+              menu: item?.menu?.map((it) =>
+                Object.assign({}, it, {
+                  showSubMenu:
+                    it.name.toLowerCase() === menuItem.name.toLowerCase(),
+                })
+              ),
+            });
+          } else {
+            return item;
+          }
+        });
+        console.log(menuItems.value);
+      } else {
+        // move to the next menu bar item
+        activeMenuBarId.value = nextId;
+        nextId && handleActivateMenu(nextId);
+      }
+
+      // reset active menu selection
+      activeMenuSelection.value = -1;
     };
 
-    const handleOnShowMenu = (state: boolean) => {
+    const handleOnShowMenu = (state: boolean, id: string) => {
       menuActive.value = state;
+      if (state) {
+        activeMenuBarId.value = id;
+      } else {
+        activeMenuBarId.value = "";
+      }
     };
 
     const handleBlur = () => {
@@ -257,6 +283,7 @@ export default defineComponent({
       );
     };
 
+    // convert to a sidebar when docked to either left or right
     const expandClass = computed(() => {
       if (
         dockPosition.value === DockPosition.LEFT ||
@@ -319,6 +346,9 @@ export default defineComponent({
       isMobileDevice,
       handleDrag,
       handleActivateDir,
+      activeMenuSelection,
+      activeMenuBarId,
+      expandMenuItem,
     };
   },
 });

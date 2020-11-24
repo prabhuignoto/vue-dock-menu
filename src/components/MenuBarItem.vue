@@ -1,7 +1,7 @@
 <template>
   <div
     ref="menuBarItemRef"
-    :class="[...menuBarStyle, 'v-dock-menu-bar-item-container']"
+    :class="[...menuBarStyle, 'menu-bar-item-container']"
     :style="{ background: bgColor }"
     tabindex="0"
     @mouseenter="setMenuViewable()"
@@ -47,6 +47,7 @@ import {
   unref,
 } from "vue";
 import Menu from "./Menu.vue";
+import  {MenuTheme} from "@/models/Theme";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -93,26 +94,27 @@ export default defineComponent({
       type: String,
     },
     theme: {
-      required: false,
-      type: Object as PropType<{
-        primary: string;
-        secondary: string;
-        tertiary: string;
-        textColor: string;
-      }>,
-      default: {
-        primary: "#21252b",
-        secondary: "#32323e",
-        tertiary: "#4c4c57",
-        textColor: "#fff",
-      },
+      required: true,
+      type: Object as PropType<MenuTheme>,
     },
     isMobileDevice: {
       type: Boolean,
       default: false,
     },
+    activeMenuSelectionIndex: {
+      type: Number,
+      default: -1,
+    },
   },
-  emits: ["show", "activate", "selected", "activate-next", "activate-previous"],
+  emits: [
+    "show",
+    "activate",
+    "selected",
+    "activate-next",
+    "activate-previous",
+    "highlight-menu-item",
+    "select-highlighted-menu-item",
+  ],
   setup(props, { emit }) {
     const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref();
@@ -135,7 +137,7 @@ export default defineComponent({
     // toggle menu
     const toggleMenu = (event: MouseEvent) => {
       event.stopPropagation();
-      emit("show", !props.menuActive);
+      emit("show", !props.menuActive, props.id);
     };
 
     const handleMenuSelection = ($event: any) => emit("selected", $event);
@@ -222,7 +224,11 @@ export default defineComponent({
       if (key === "Tab") {
         emit("activate", props.id);
       } else if (key === "Enter") {
-        emit("show", !props.menuActive);
+        if (props.activeMenuSelectionIndex < 0) {
+          emit("show", !props.menuActive, props.id);
+        } else {
+          emit("select-highlighted-menu-item");
+        }
       } else if (key === "Escape") {
         emit("show", false);
       } else if (
@@ -235,6 +241,10 @@ export default defineComponent({
         (key === "ArrowUp" && navType === "vertical")
       ) {
         emit("activate-previous", props.id, "prev");
+      } else if (key === "ArrowDown" && navType === "horizontal") {
+        emit("highlight-menu-item", "down", props.id);
+      } else if (key === "ArrowUp" && navType === "horizontal") {
+        emit("highlight-menu-item", "up", props.id);
       }
     };
 

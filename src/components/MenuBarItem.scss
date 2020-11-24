@@ -1,9 +1,17 @@
-.v-dock-menu-bar-item-container {
+.menu-bar-item-container {
   align-items: center;
-  color: #ccc;
   display: flex;
   justify-content: center;
   position: relative;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:focus-visible {
+    outline: 1px solid #0080ff;
+  }
 
   &.left,
   &.right {
@@ -15,10 +23,6 @@
   &.bottom {
     height: 100%;
     padding: 0 0.75rem;
-  }
-
-  &:hover {
-    cursor: pointer;
   }
 }
 
