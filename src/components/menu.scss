@@ -1,4 +1,3 @@
-
 .menu-wrapper {
   display: flex;
   align-items: flex-start;
@@ -17,6 +16,7 @@
   margin: 0;
   width: 100%;
   height: 100%;
+  outline: 0;
 }
 
 .icon-wrap {
@@ -34,15 +34,23 @@
   display: flex;
   font-size: 0.9rem;
   justify-content: flex-start;
-  padding: 0.4rem 0;
   position: relative;
   text-transform: capitalize;
   width: 100%;
-  cursor: pointer;
 
-  &:hover {
-    background: var(--background-color-hover);
+  &:not(.divider) {
+    padding: 0.4rem 0;
+  }
+
+  &:hover:not(.divider) {
     cursor: pointer;
+    background: var(--background-color-hover);
+    color: var(--text-hover-color);
+  }
+
+  &.highlight:not(.divider) {
+    background: var(--background-color-hover);
+    color: var(--text-hover-color);
   }
 
   span.name {
@@ -90,4 +98,14 @@
   &.bottom {
     transform: translateY(-65%);
   }
+}
+
+.menu-item-divider {
+  width: 90%;
+  margin: 0 auto;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }

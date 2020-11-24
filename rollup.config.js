@@ -6,6 +6,7 @@ import common from "@rollup/plugin-commonjs";
 import buble from "@rollup/plugin-buble";
 import beep from "@rollup/plugin-beep";
 import resolve from "@rollup/plugin-node-resolve";
+import { terser } from "rollup-plugin-terser";
 
 const banner = `/*
  * ${pkg.name}
@@ -24,7 +25,6 @@ export default {
       exports: "named",
       strict: true,
       banner,
-      sourcemap: true,
     },
     {
       file: pkg.module,
@@ -32,7 +32,6 @@ export default {
       exports: "named",
       strict: true,
       banner,
-      sourcemap: true,
     },
     {
       file: pkg.umd,
@@ -41,7 +40,6 @@ export default {
       strict: true,
       banner,
       name: "FloatMenu",
-      sourcemap: true,
       globals: {
         vue: "vue",
         nanoid: "nanoid",
@@ -59,6 +57,7 @@ export default {
     common(),
     buble(),
     resolve(),
+    terser()
   ],
   external: ["vue", "nanoid"],
 };

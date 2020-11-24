@@ -3,8 +3,10 @@
     ref="menuBarItemRef"
     :class="[...menuBarStyle, 'menu-bar-item-container']"
     :style="{ background: bgColor }"
+    tabindex="0"
     @mouseenter="setMenuViewable()"
-    @click="toggleMenu()"
+    @keyup="handleKeyUp"
+    @click="toggleMenu"
   >
     <span
       :class="[...menuBarStyle, 'name-container']"
@@ -42,8 +44,10 @@ import {
   watch,
   onMounted,
   nextTick,
+  unref,
 } from "vue";
 import Menu from "./Menu.vue";
+import  {MenuTheme} from "@/models/Theme";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -90,28 +94,29 @@ export default defineComponent({
       type: String,
     },
     theme: {
-      required: false,
-      type: Object as PropType<{
-        primary: string;
-        secondary: string;
-        tertiary: string;
-        textColor: string;
-      }>,
-      default: {
-        primary: "#21252b",
-        secondary: "#32323e",
-        tertiary: "#4c4c57",
-        textColor: "#fff",
-      },
+      required: true,
+      type: Object as PropType<MenuTheme>,
     },
     isMobileDevice: {
       type: Boolean,
       default: false,
     },
+    activeMenuSelectionIndex: {
+      type: Number,
+      default: -1,
+    },
   },
-  emits: ["show", "activate", "deactivate", "selected"],
+  emits: [
+    "show",
+    "activate",
+    "selected",
+    "activate-next",
+    "activate-previous",
+    "highlight-menu-item",
+    "select-highlighted-menu-item",
+  ],
   setup(props, { emit }) {
-    const menuBarItemRef = ref<HTMLElement>();
+    const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref();
     const menuStyle = ref();
 
@@ -126,17 +131,16 @@ export default defineComponent({
       }
     });
 
-    const setMenuViewable = () => {
-      emit("activate", props.id);
+    // activate menu
+    const setMenuViewable = () => emit("activate", props.id);
+
+    // toggle menu
+    const toggleMenu = (event: MouseEvent) => {
+      event.stopPropagation();
+      emit("show", !props.menuActive, props.id);
     };
 
-    const toggleMenu = () => {
-      emit("show", !props.menuActive);
-    };
-
-    const handleMenuSelection = ($event: any) => {
-      emit("selected", $event);
-    };
+    const handleMenuSelection = ($event: any) => emit("selected", $event);
 
     const computeMenuStyle = () => {
       let newStyle: {
@@ -146,17 +150,22 @@ export default defineComponent({
         bottom?: string;
       } = {};
 
+      const {
+        clientHeight,
+        clientWidth,
+      } = menuBarItemRef.value as HTMLDivElement;
+
       if (props.dock === DockPosition.LEFT) {
         newStyle.top = "0px";
-        newStyle.left = `${menuBarItemRef.value?.clientWidth}px`;
+        newStyle.left = `${clientWidth}px`;
       } else if (props.dock === DockPosition.RIGHT) {
         newStyle.top = "0px";
-        newStyle.right = `${menuBarItemRef.value?.clientWidth}px`;
+        newStyle.right = `${clientWidth}px`;
       } else if (props.dock === DockPosition.TOP) {
-        newStyle.top = `${menuBarItemRef.value?.clientHeight}px`;
+        newStyle.top = `${clientHeight}px`;
         newStyle.left = "0px";
       } else if (props.dock === DockPosition.BOTTOM) {
-        newStyle.bottom = `${menuBarItemRef.value?.clientHeight}px`;
+        newStyle.bottom = `${clientHeight}px`;
         newStyle.left = "0px";
       }
 
@@ -175,6 +184,9 @@ export default defineComponent({
       () => props.showMenu,
       (newValue) => {
         menuBarItemActive.value = newValue;
+        if (newValue) {
+          nextTick(() => menuBarItemRef.value?.focus());
+        }
       }
     );
 
@@ -197,6 +209,45 @@ export default defineComponent({
       }
     });
 
+    const keyNavType = computed(() => {
+      if (props.dock === "TOP" || props.dock === "BOTTOM") {
+        return "horizontal";
+      } else {
+        return "vertical";
+      }
+    });
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const { key } = event;
+      const navType = unref(keyNavType);
+
+      if (key === "Tab") {
+        emit("activate", props.id);
+      } else if (key === "Enter") {
+        if (props.activeMenuSelectionIndex < 0) {
+          emit("show", !props.menuActive, props.id);
+        } else {
+          emit("select-highlighted-menu-item");
+        }
+      } else if (key === "Escape") {
+        emit("show", false);
+      } else if (
+        (key === "ArrowRight" && navType === "horizontal") ||
+        (key === "ArrowDown" && navType === "vertical")
+      ) {
+        emit("activate-next", props.id, "next");
+      } else if (
+        (key === "ArrowLeft" && navType === "horizontal") ||
+        (key === "ArrowUp" && navType === "vertical")
+      ) {
+        emit("activate-previous", props.id, "prev");
+      } else if (key === "ArrowDown" && navType === "horizontal") {
+        emit("highlight-menu-item", "down", props.id);
+      } else if (key === "ArrowUp" && navType === "horizontal") {
+        emit("highlight-menu-item", "up", props.id);
+      }
+    };
+
     return {
       getName,
       menuBarItemRef,
@@ -207,74 +258,11 @@ export default defineComponent({
       handleMenuSelection,
       computeMenuStyle,
       bgColor,
+      handleKeyUp,
     };
   },
 });
 </script>
 
 
-<style lang="scss" scoped>
-.menu-bar-item-container {
-  align-items: center;
-  color: #ccc;
-  display: flex;
-  justify-content: center;
-  position: relative;
-
-  &.left,
-  &.right {
-    padding: 0.5rem 0;
-    width: 100%;
-  }
-
-  &.top,
-  &.bottom {
-    height: 100%;
-    padding: 0 0.75rem;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &.active {
-    /* background: #32323e; */
-  }
-}
-
-.menu-container {
-  position: absolute;
-  z-index: 9999;
-}
-
-.name-container {
-  text-transform: capitalize;
-  font-size: 0.95rem;
-  margin: 0.25rem 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &.left,
-  &.right {
-    align-items: center;
-    display: flex;
-    font-size: 1rem;
-    background: none;
-    width: 100%;
-    justify-content: flex-start;
-    height: 1.5rem;
-
-    &.expanded {
-      padding-left: 1rem;
-    }
-
-    &:not(.expanded) {
-      width: 2rem;
-      font-size: 1.1rem;
-      justify-content: center;
-      text-transform: uppercase;
-    }
-  }
-}
-</style>
+<style lang="scss" src="./MenuBarItem.scss" scoped></style>
