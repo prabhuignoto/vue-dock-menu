@@ -72,7 +72,17 @@ export default defineComponent({
         },
         {
           name: "edit",
-          menu: [{ name: "Cut" }, { name: "Copy" }, { name: "Paste" }],
+          menu: [
+            { name: "Undo" },
+            { name: "Redo" },
+            { isDivider: true },
+            { name: "Cut" },
+            { name: "Copy" },
+            { name: "Paste" },
+            { isDivider: true },
+            { name: "Find" },
+            { name: "Replace" },
+          ],
         },
         {
           name: "View",
@@ -80,6 +90,7 @@ export default defineComponent({
             { name: "Explorer" },
             { name: "Search" },
             { name: "Run" },
+            { isDivider: true },
             {
               name: "Apperance",
               menu: [{ name: "Full Screen" }, { name: "Zen Mode" }],

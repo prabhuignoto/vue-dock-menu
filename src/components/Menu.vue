@@ -17,6 +17,7 @@
       "
       @focus="onFocus"
       @blur="onBlur"
+      @keyup.enter="handleKeySelection"
     >
       <li
         v-for="(item, index) of menuItems"
@@ -56,11 +57,12 @@
               :is="MenuComponent"
               :items="item.menu"
               :dock="dock"
-              :parent="item.name"
+              :parent="`${parent}>${item.name}`"
               :theme="theme"
               :is-touch="isMobile"
               :nested="true"
-              @selected="handleSelection"
+              :on-selected="onSelected"
+              :initial-highlight-index="subMenuHighlightIndex"
               @closeMenu="handleCloseMenu"
             />
           </div>
@@ -123,6 +125,17 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    onSelected: {
+      required: true,
+      type: Function as PropType<
+        ({ name, path }: { name: string; path: string }) => void
+      >,
+    },
+    initialHighlightIndex: {
+      required: false,
+      type: Number,
+      default: -1,
+    },
   },
   emits: ["selected", "close-menu"],
   setup(props, { emit }) {
@@ -141,7 +154,8 @@ export default defineComponent({
     const hasFocus = ref<boolean>();
 
     const menuItemsRef = ref();
-    const highlightedIndex = ref<number>(-1);
+    const highlightedIndex = ref<number>(props.initialHighlightIndex);
+    const subMenuHighlightIndex = ref(-1);
 
     const handleSelection = (selectedItem: SelectedItemModel) => {
       selectedItem.event.stopPropagation();
@@ -154,12 +168,10 @@ export default defineComponent({
 
       const { path, name } = selectedItem;
 
-      emit(
-        "selected",
-        Object.assign({}, selectedItem, {
-          path: `${props.parent}>${path ? path : name}`.toLowerCase(),
-        })
-      );
+      props.onSelected({
+        name,
+        path: `${props.parent}>${path ? path : name}`.toLowerCase(),
+      });
     };
 
     const menuItemStyle = computed(() => ({
@@ -185,12 +197,24 @@ export default defineComponent({
       });
     });
 
+    const focusMenuBar = () => {
+      const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
+        ".menu-bar-item-container"
+      );
+      if (menuBarItems) {
+        (menuBarItems as HTMLElement).focus();
+      }
+    };
+
     const handleKeyUp = (event: KeyboardEvent) => {
       if (!hasFocus.value) {
         return;
       }
       event.stopPropagation();
-      const nextIndex = highlightedIndex.value - 1;
+      let nextIndex = highlightedIndex.value - 1;
+      nextIndex = menuItems.value[nextIndex]?.isDivider
+        ? nextIndex - 1
+        : nextIndex;
 
       if (nextIndex >= 0) {
         highlightedIndex.value = nextIndex;
@@ -204,7 +228,10 @@ export default defineComponent({
         return;
       }
       event.stopPropagation();
-      const nextIndex = highlightedIndex.value + 1;
+      let nextIndex = highlightedIndex.value + 1;
+      nextIndex = menuItems.value[nextIndex]?.isDivider
+        ? nextIndex + 1
+        : nextIndex;
 
       if (nextIndex >= 0 && nextIndex < menuItemsLen.value) {
         highlightedIndex.value = nextIndex;
@@ -221,14 +248,10 @@ export default defineComponent({
 
       if (menuItem && menuItem.menu) {
         event.stopPropagation();
+        subMenuHighlightIndex.value = 0;
         toggleSubMenu(!!menuItem.menu);
       } else {
-        const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
-          ".menu-bar-item-container"
-        );
-        if (menuBarItems) {
-          (menuBarItems as HTMLElement).focus();
-        }
+        focusMenuBar();
       }
     };
 
@@ -240,11 +263,27 @@ export default defineComponent({
         event.stopPropagation();
         emit("close-menu");
       } else {
-        const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
-          ".menu-bar-item-container"
-        );
-        if (menuBarItems) {
-          (menuBarItems as HTMLElement).focus();
+        focusMenuBar();
+      }
+    };
+
+    const handleKeySelection = (event: KeyboardEvent) => {
+      if (highlightedIndex.value >= 0) {
+        const menuItem = menuItems.value[highlightedIndex.value];
+        event.stopPropagation();
+
+        if (menuItem?.menu) {
+          subMenuHighlightIndex.value = 0;
+          toggleSubMenu(!!menuItem.menu);
+
+          nextTick(() => {
+            (menuItemsRef.value as HTMLElement).focus();
+          });
+        } else if (menuItem) {
+          props.onSelected({
+            name: menuItem.name as string,
+            path: `${props.parent}>${menuItem.name}`.toLowerCase(),
+          });
         }
       }
     };
@@ -276,6 +315,8 @@ export default defineComponent({
       onFocus,
       onBlur,
       handleCloseMenu,
+      handleKeySelection,
+      subMenuHighlightIndex,
     };
   },
 });

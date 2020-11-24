@@ -26,7 +26,8 @@
           :parent="name"
           :theme="theme"
           :is-touch="isMobileDevice"
-          @selected="handleMenuSelection"
+          :on-selected="onSelected"
+          :initial-highlight-index="highlightIndex"
         />
       </transition>
     </span>
@@ -47,7 +48,7 @@ import {
   unref,
 } from "vue";
 import Menu from "./Menu.vue";
-import  {MenuTheme} from "@/models/Theme";
+import { MenuTheme } from "@/models/Theme";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -105,6 +106,17 @@ export default defineComponent({
       type: Number,
       default: -1,
     },
+    onSelected: {
+      required: true,
+      type: Function as PropType<
+        ({ name, path }: { name: string; path: string }) => void
+      >,
+    },
+    highlightFirstElement: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: [
     "show",
@@ -140,7 +152,9 @@ export default defineComponent({
       emit("show", !props.menuActive, props.id);
     };
 
-    const handleMenuSelection = ($event: any) => emit("selected", $event);
+    const handleMenuSelection = ($event: any) => props.onSelected($event);
+
+    const highlightIndex = ref(-1);
 
     const computeMenuStyle = () => {
       let newStyle: {
@@ -198,6 +212,17 @@ export default defineComponent({
             computeMenuStyle();
           }, 150);
         });
+      }
+    );
+
+    watch(
+      () => props.highlightFirstElement,
+      (value) => {
+        if (value) {
+          highlightIndex.value = 0;
+        } else {
+          highlightIndex.value = -1;
+        }
       }
     );
 
@@ -259,6 +284,7 @@ export default defineComponent({
       computeMenuStyle,
       bgColor,
       handleKeyUp,
+      highlightIndex,
     };
   },
 });

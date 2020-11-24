@@ -34,11 +34,12 @@
           :show-menu="item.showMenu"
           :theme="theme"
           :is-touch-device="isMobileDevice"
+          :on-selected="handleSelected"
+          :highlight-first-element="highlightFirstElement"
           @activate="handleActivateMenu"
           @activate-next="handleActivateDir"
           @activate-previous="handleActivateDir"
           @show="handleOnShowMenu"
-          @selected="handleSelected"
         />
       </li>
     </ul>
@@ -58,7 +59,6 @@ import {
 import MenuBarItem from "./MenuBarItem.vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "@/models/MenuBarItemModel";
-import { SelectedItemModel } from "@/models/SelectedItemModel";
 import "focus-visible";
 import isMobile from "./isMobileDevice";
 import utils from "../utils/DragUtil";
@@ -127,6 +127,9 @@ export default defineComponent({
 
     const isMobileDevice = ref<boolean>();
 
+    // highlights the first element in the menu (on keyboard interaction)
+    const highlightFirstElement = ref<boolean>();
+
     // initialize the menu items.add a unique id to all items.
     const menuItems = ref<MenuBarItemModel[]>(
       props.items.map((item) =>
@@ -138,22 +141,23 @@ export default defineComponent({
 
     const activeMenuSelection = ref(-1);
 
-    const expandMenuItem = ref("");
-
     // tracks the active menubar item
     const activeMenuBarId = ref("");
 
     const clientCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
-
-    const updateDragCoords = (event: DragEvent) =>
-      (clientCoords.value = { x: event.clientX, y: event.clientY });
 
     const handleMenuClosure = () => {
       menuActive.value = false;
       menuBarActive.value = false;
       activeMenuSelection.value = -1;
       activeMenuBarId.value = "";
+      highlightFirstElement.value = false;
     };
+
+    //** Lifecylce  Methods **
+
+    const updateDragCoords = (event: DragEvent) =>
+      (clientCoords.value = { x: event.clientX, y: event.clientY });
 
     onMounted(() => {
       // get reference to the menubar
@@ -186,6 +190,8 @@ export default defineComponent({
       utils.handleDragStart(event);
     };
 
+    //** Drag handlers **
+
     const handleDragEnd = (event: DragEvent | TouchEvent) => {
       const {
         dragActive: dragActiveNew,
@@ -203,6 +209,14 @@ export default defineComponent({
       };
     };
 
+    // cancels the drag event on the child elements of the menubar
+    const handleDragCancel = (event: DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    //** Other handlers */
+
     const handleActivateMenu = (id?: string) => {
       menuItems.value = menuItems.value.map((item) =>
         Object.assign({}, item, {
@@ -211,6 +225,63 @@ export default defineComponent({
       );
     };
 
+    const handleOnShowMenu = (state: boolean, id: string) => {
+      menuActive.value = state;
+      if (state) {
+        activeMenuBarId.value = id;
+      } else {
+        activeMenuBarId.value = "";
+        highlightFirstElement.value = false;
+      }
+    };
+
+    const handleBlur = () => {
+      menuActive.value = false;
+      menuBarActive.value = false;
+      highlightFirstElement.value = false;
+
+      menuItems.value = menuItems.value.map((item) =>
+        Object.assign({}, item, {
+          showMenu: false,
+        })
+      );
+    };
+
+    //** computed methods */
+
+    // convert to a sidebar when docked to either left or right
+    const expandClass = computed(() => {
+      if (
+        dockPosition.value === DockPosition.LEFT ||
+        dockPosition.value === DockPosition.RIGHT
+      ) {
+        return menuBarActive.value ? "expanded" : "not-expanded";
+      }
+    });
+
+    //** final selection handler */
+    const handleSelected = (data: any) => {
+      menuActive.value = false;
+      props.onSelected(data);
+    };
+
+    //** keyboard handlers  **
+
+    // activate the menu bar
+    const handleMouseEnter = () => {
+      if (!isMobileDevice.value) {
+        menuBarActive.value = true;
+      }
+    };
+
+    // deactivate the menubar if active
+    const handleMouseLeave = () => {
+      if (!isMobileDevice.value && !menuActive.value) {
+        menuBarActive.value = false;
+      }
+    };
+
+    // activates the menu via keyboard
     const handleActivateDir = (id: string, dir: "prev" | "next") => {
       const eleIndex = menuItems.value.findIndex((item) => item.id === id);
       const newIdx = dir === "next" ? eleIndex + 1 : eleIndex - 1;
@@ -226,11 +297,8 @@ export default defineComponent({
         nextId = menuItems.value[menuItemsLen - 1].id as string;
       }
 
-      // check if the nested menu can be expanded
-
       // get the menubar item
       const menuBarItem = menuItems.value.find((item) => item.id === id);
-      debugger;
 
       const menuItem =
         menuBarItem && menuBarItem.menu
@@ -254,73 +322,13 @@ export default defineComponent({
         });
       } else {
         // move to the next menu bar item
+        highlightFirstElement.value = true;
         activeMenuBarId.value = nextId;
         nextId && handleActivateMenu(nextId);
       }
 
       // reset active menu selection
       activeMenuSelection.value = -1;
-    };
-
-    const handleOnShowMenu = (state: boolean, id: string) => {
-      menuActive.value = state;
-      if (state) {
-        activeMenuBarId.value = id;
-      } else {
-        activeMenuBarId.value = "";
-      }
-    };
-
-    const handleBlur = () => {
-      menuActive.value = false;
-      menuBarActive.value = false;
-
-      menuItems.value = menuItems.value.map((item) =>
-        Object.assign({}, item, {
-          showMenu: false,
-        })
-      );
-    };
-
-    // convert to a sidebar when docked to either left or right
-    const expandClass = computed(() => {
-      if (
-        dockPosition.value === DockPosition.LEFT ||
-        dockPosition.value === DockPosition.RIGHT
-      ) {
-        return menuBarActive.value ? "expanded" : "not-expanded";
-      }
-    });
-
-    const handleSelected = ({ name, path }: SelectedItemModel) => {
-      // close the menu
-      menuActive.value = false;
-
-      // propagate the selection
-      props.onSelected({
-        name: name,
-        path: path,
-      });
-    };
-
-    // cancels the drag event on the child elements of the menubar
-    const handleDragCancel = (event: DragEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-
-    // activate the menu bar
-    const handleMouseEnter = () => {
-      if (!isMobileDevice.value) {
-        menuBarActive.value = true;
-      }
-    };
-
-    // deactivate the menubar if active
-    const handleMouseLeave = () => {
-      if (!isMobileDevice.value && !menuActive.value) {
-        menuBarActive.value = false;
-      }
     };
 
     return {
@@ -334,7 +342,6 @@ export default defineComponent({
       handleActivateMenu,
       handleMouseEnter,
       handleMouseLeave,
-      handleSelected,
       handleBlur,
       menuActive,
       menuBarRef,
@@ -347,7 +354,8 @@ export default defineComponent({
       handleActivateDir,
       activeMenuSelection,
       activeMenuBarId,
-      expandMenuItem,
+      handleSelected,
+      highlightFirstElement,
     };
   },
 });
