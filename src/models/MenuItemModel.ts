@@ -1,7 +1,9 @@
 export interface MenuItemModel {
-  name: string;
+  name?: string;
   id?: string;
   onSelected?: (id: string) => void;
-  items?: MenuItemModel[];
+  menu?: MenuItemModel[];
   disable?: boolean;
+  highlight?: boolean;
+  isDivider?: boolean;
 }
