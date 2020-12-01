@@ -42,7 +42,6 @@ export default {
       name: "FloatMenu",
       globals: {
         vue: "vue",
-        nanoid: "nanoid",
       },
     },
   ],
@@ -59,5 +58,5 @@ export default {
     resolve(),
     terser()
   ],
-  external: ["vue", "nanoid"],
+  external: ["vue"],
 };

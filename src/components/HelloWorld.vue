@@ -63,7 +63,7 @@ export default defineComponent({
             },
             { name: "Open Workspace" },
             { isDivider: true },
-            { name: "Save" },
+            { name: "Save", disable: true },
             { name: "Save As..." },
             { isDivider: true },
             { name: "Close" },

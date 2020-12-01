@@ -135,21 +135,33 @@ Use the `items` prop to create Simple or Nested menus of your liking.
 
 Here we create a simple Menu structure with 3 Menu items with `Edit` and `Open Recent` having sub menus.
 
+- To include a divider, set an empty item object with just a `isDivider` property set to `true`.
+- To disable an item, set `disable` to `true`.
+
 ```sh
 const items = [
   { name: "New" },
+  { isDivider: true },
   {
     name: "Edit",
     menu: {
       name: "edit-items",
+      disable:  true
     },
   },
+  { isDivider: true },
   {
     name: "Open Recent",
     menu: {
       name: "recent-items",
     },
   },
+  { isDivider: true },
+  { name: "Save", disable: true },
+  { name: "Save As..." },
+  { isDivider: true },
+  { name: "Close" },
+  { name: "Exit" },
 ]
 ```
 
@@ -181,7 +193,6 @@ use the `theme` prop to customize the colors of the menu bar.
 
 ## What's coming next
 
-- keyboard accessibility.
 - support for react.
 - support for icons in the menu.
 - accordion style rendering on sidebar mode.

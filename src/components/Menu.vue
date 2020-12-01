@@ -29,6 +29,7 @@
             'is-parent': !!item.menu,
             highlight: index === highlightedIndex,
             divider: item.isDivider,
+            disable: item.disable,
           },
         ]"
         :style="menuItemStyle"
@@ -38,6 +39,7 @@
             event: $event,
             name: item.name,
             isParent: !!item.menu,
+            disable: item.disable,
           })
         "
       >
@@ -160,6 +162,10 @@ export default defineComponent({
     const handleSelection = (selectedItem: SelectedItemModel) => {
       selectedItem.event.stopPropagation();
       selectedItem.event.preventDefault();
+
+      if (selectedItem.disable) {
+        return;
+      }
 
       if (selectedItem.isParent) {
         showSubMenu.value = !showSubMenu.value;
