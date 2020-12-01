@@ -4,6 +4,7 @@
 
   [![Build Status](https://dev.azure.com/prabhummurthy/vue-dock-menu/_apis/build/status/prabhuignoto.vue-dock-menu?branchName=master)](https://dev.azure.com/prabhummurthy/vue-dock-menu/_build/latest?definitionId=8&branchName=master)
   [![DeepScan grade](https://deepscan.io/api/teams/10074/projects/13372/branches/223016/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10074&pid=13372&bid=223016)
+  [![DeepSource](https://deepsource.io/gh/prabhuignoto/vue-dock-menu.svg/?label=active+issues)](https://deepsource.io/gh/prabhuignoto/vue-dock-menu/?ref=repository-badge)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/65c2863c31644d5a98ae5bb83c1bd104)](https://www.codacy.com/manual/prabhuignoto/vue-dock-menu/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prabhuignoto/vue-dock-menu&amp;utm_campaign=Badge_Grade)
   [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/prabhuignoto/vue-dock-menu.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prabhuignoto/vue-dock-menu/context:javascript)
   [![Depfu](https://badges.depfu.com/badges/f3a16c4fe1fcbd36df15d6949d9846bc/overview.svg)](https://depfu.com/github/prabhuignoto/vue-dock-menu?project_id=16495)
