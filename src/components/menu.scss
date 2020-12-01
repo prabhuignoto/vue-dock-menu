@@ -81,6 +81,10 @@
       transform: rotate(180deg);
     }
   }
+
+  &.disable {
+    filter: opacity(0.5);
+  }
 }
 
 .sub-menu-wrapper {
