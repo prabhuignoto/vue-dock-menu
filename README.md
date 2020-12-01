@@ -23,6 +23,7 @@
 - 🤏 &nbsp;Dock the Menubar by dragging and dropping to the edges of the screen.
 - 👍 &nbsp;Support for nested menus up to any levels.
 - 👓&nbsp; The Menus adjust to any docked position and enables an intuitive menu navigation.
+- ⌨&nbsp; Keyboard Accessible.
 - ⚡&nbsp; Zero dependencies.
 - 💪&nbsp; Built with [Typescript](https://www.typescriptlang.org/).
 - 🧰&nbsp; Intuitive [API](#props) with data driven behavior.
