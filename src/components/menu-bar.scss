@@ -12,7 +12,7 @@
     align-items: flex-start;
 
     &.expanded {
-      width: 150px;
+      width: 200px;
       animation: expand 0.1s linear;
     }
 
@@ -88,13 +88,13 @@
   }
 
   100% {
-    width: 150px;
+    width: 200px;
   }
 }
 
 @keyframes collapse {
   0% {
-    width: 150px;
+    width: 200px;
   }
 
   100% {
