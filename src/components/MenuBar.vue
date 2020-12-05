@@ -5,7 +5,6 @@
     :draggable="draggable"
     tabindex="0"
     :style="{ background: theme.primary }"
-    @blur="handleBlur"
     @dragstart="handleDragStart"
     @dragover="handleDrag"
     @dragend="handleDragEnd"
