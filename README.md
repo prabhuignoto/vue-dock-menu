@@ -11,7 +11,7 @@
   [![Known Vulnerabilities](https://snyk.io/test/github/prabhuignoto/vue-dock-menu/badge.svg?targetFile=package.json)](https://snyk.io/test/github/prabhuignoto/vue-dock-menu?targetFile=package.json)
   ![https://badgen.net/bundlephobia/minzip/vue-dock-menu](https://badgen.net/bundlephobia/minzip/vue-dock-menu)
 
-  ![demo](./readme-assets/demo-small.gif)
+  ![demo](./readme-assets/demo.gif)
 
 </div>
 
