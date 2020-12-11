@@ -39,7 +39,17 @@
           @activate-next="handleActivateDir"
           @activate-previous="handleActivateDir"
           @show="handleOnShowMenu"
-        />
+        >
+          <template
+            v-for="slot in Object.keys($slots)"
+            #[slot]="scope"
+          >
+            <slot
+              :name="slot"
+              v-bind="scope"
+            />
+          </template>
+        </menu-bar-item>
       </li>
     </ul>
   </div>
@@ -101,7 +111,7 @@ export default defineComponent({
       }),
     },
   },
-  setup(props, {}) {
+  setup(props) {
     // reference to the main menubar itself
     const menuBarRef = ref<HTMLElement>();
 

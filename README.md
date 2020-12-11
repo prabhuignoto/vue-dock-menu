@@ -24,6 +24,7 @@
 - 👍 &nbsp;Support for nested menus up to any levels.
 - 👓&nbsp; The Menus adjust to any docked position and enables an intuitive menu navigation.
 - ⌨&nbsp; Keyboard Accessible.
+- 🎨&nbsp; Icon support.
 - ⚡&nbsp; Zero dependencies.
 - 💪&nbsp; Built with [Typescript](https://www.typescriptlang.org/).
 - 🧰&nbsp; Intuitive [API](#props) with data driven behavior.
@@ -38,6 +39,7 @@
   - [📡 on-selected](#-on-selected)
   - [⚡ Populating Menu](#-populating-menu)
   - [🎨 Custom color scheme](#-custom-color-scheme)
+  - [🎭 Icon support](#-icon-support)
 - [What's coming next](#whats-coming-next)
 - [📦 Build Setup](#-build-setup)
 - [🔨 Contributing](#-contributing)
@@ -193,10 +195,80 @@ use the `theme` prop to customize the colors of the menu bar.
 
 ![theme](./readme-assets/theme.png)
 
+### 🎭 Icon support
+
+Each menu item can be iconified and the component uses slots to inject the icons.
+
+Pass individual icons (or images) as templates marked with a unique `slot id`. please make sure the `ids` match the  `iconSlot` property in the items array.
+
+```sh
+<menu-bar
+  :items="items"
+  :on-selected="selected"
+>
+  <template #file>
+    <img
+      src="../assets/file.svg"
+      alt="file"
+      :style="style"
+    >
+  </template>
+  <template #window>
+    <img
+      src="../assets/window-maximize.svg"
+      alt="file"
+      :style="style"
+    >
+  </template>
+</menu-bar>
+
+export default defineComponent({
+  name: "MenuExample",
+  data()  {
+    return {
+      items: [
+        { name: "New File", iconSlot: "file" },
+        { name: "New Window", iconSlot: "window" },
+      ]
+    }
+  }
+})
+```
+
+![menu-icon](./readme-assets/menu-icon.png)
+
+This works seamlessly even for `nested` menu structure. Make sure the `slot ids` match and the component will render the icons appropriately.
+
+```sh
+<menu-bar
+  :items="items"
+  :on-selected="selected"
+>
+  <template #window>
+    <img
+      src="../assets/window-maximize.svg"
+      alt="file"
+      :style="style"
+    >
+  </template>
+</menu-bar>
+
+export default defineComponent({
+  name: "MenuExample",
+  data()  {
+    return {
+      items: [
+        { name: "New File",
+        subMenu: [{ name: "New Window", iconSlot: "window" }]},
+      ]
+    }
+  }
+});
+```
+
 ## What's coming next
 
 - support for react.
-- support for icons in the menu.
 - accordion style rendering on sidebar mode.
 
 ## 📦 Build Setup

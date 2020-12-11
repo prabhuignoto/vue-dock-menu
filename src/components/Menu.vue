@@ -44,6 +44,12 @@
         "
       >
         <template v-if="!item.isDivider">
+          <span
+            v-if="item.iconSlot"
+            class="menu-item-icon"
+          >
+            <slot :name="item.iconSlot" />
+          </span>
           <span class="name">{{ item.name }}</span>
           <span
             :class="{ visible: !!item.menu }"
@@ -66,7 +72,17 @@
               :on-selected="onSelected"
               :initial-highlight-index="subMenuHighlightIndex"
               @closeMenu="handleCloseMenu"
-            />
+            >
+              <template
+                v-for="slot in Object.keys($slots)"
+                #[slot]="scope"
+              >
+                <slot
+                  :name="slot"
+                  v-bind="scope"
+                />
+              </template>
+            </component>
           </div>
         </template>
         <span
