@@ -28,7 +28,17 @@
           :is-touch="isMobileDevice"
           :on-selected="onSelected"
           :initial-highlight-index="highlightIndex"
-        />
+        >
+          <template
+            v-for="slot in Object.keys($slots)"
+            #[slot]="scope"
+          >
+            <slot
+              :name="slot"
+              v-bind="scope"
+            />
+          </template>
+        </Menu>
       </transition>
     </span>
   </div>
@@ -127,7 +137,8 @@ export default defineComponent({
     "highlight-menu-item",
     "select-highlighted-menu-item",
   ],
-  setup(props, { emit }) {
+  setup(props, { emit,  slots }) {
+    console.log(slots);
     const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref();
     const menuStyle = ref();

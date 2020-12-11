@@ -6,4 +6,5 @@ export interface MenuItemModel {
   disable?: boolean;
   highlight?: boolean;
   isDivider?: boolean;
+  iconSlot?: string;
 }
