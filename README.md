@@ -15,8 +15,6 @@
 
 </div>
 
-[![Edit vue-dock-menu](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-bhaskara-nxbum?fontsize=14&hidenavigation=1&theme=dark)<!-- slide -->
-
 <h2>Features</h2>
 
 - ⚓ &nbsp;Dock your menu with ease.
