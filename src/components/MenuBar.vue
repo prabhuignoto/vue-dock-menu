@@ -8,6 +8,9 @@
     @dragover="handleDragMove"
     @dragstart="handleDragStart"
     @dragend="handleDragEnd"
+    @touchstart="handleDragStart"
+    @touchmove="handleDragMove"
+    @touchend="handleDragEnd"
   >
     <ul
       :class="[dockClass, 'menu-bar-items']"
@@ -168,18 +171,12 @@ export default defineComponent({
     };
 
     const handleMenuClosure = () => {
-      if (unref(menuActive) || unref(menuBarActive)) {    
-        menuActive.value = false;
+      if (unref(menuActive) || unref(menuBarActive)) {
         menuBarActive.value = false;
+        menuActive.value = false;
         activeMenuSelection.value = -1;
         activeMenuBarId.value = "";
         highlightFirstElement.value = false;
-
-        menuItems.value = menuItems.value.map((item) =>
-          Object.assign({}, item, {
-            showMenu: false,
-          })
-        );
       }
     };
 
@@ -200,60 +197,49 @@ export default defineComponent({
       isMobileDevice.value = isMobile();
       const menuBar = unref(menuBarRef);
 
-      const dragEvents = ["mousemove", "mouseenter", "mouseleave"];
-      const touchEvents = ["touchmove", "touchend", "touchstart"];
-
-      let eventSelection = [];
-
       if (isMobileDevice.value) {
-        eventSelection = touchEvents;
+        if (menuBar) {
+          // menuBar.addEventListener('touchmove', handleDragMove);
+        }
+        document.addEventListener("touchend", handleMenuClosure);
       } else {
-        eventSelection = dragEvents;
+        document.addEventListener("click", handleMenuClosure);
+
+        if(menuBar)  {
+          menuBar.addEventListener('mouseenter', handleMouseEnter);
+          menuBar.addEventListener('mouseleave', handleMouseLeave);
+        }
       }
 
-      if (menuBar && eventSelection.length) {
-        menuBar.addEventListener(eventSelection[0], handleDragMove);
-        menuBar.addEventListener(eventSelection[1], handleMouseEnter);
-        menuBar.addEventListener(eventSelection[2], handleMouseLeave);
-      }
-
-      document.addEventListener("click", handleMenuClosure);
       document.addEventListener("dragover", updateDragCoords);
     });
 
     // cleanup
     onUnmounted(() => {
       document.removeEventListener("dragover", updateDragCoords);
+
       const menuBar = unref(menuBarRef);
 
-      const dragEvents = ["mousemove", "mouseenter", "mouseleave"];
-      const touchEvents = ["touchmove", "touchend", "touchstart"];
-
-      let eventSelection = [];
-
       if (isMobileDevice.value) {
-        eventSelection = touchEvents;
+        document.removeEventListener("touchend", handleMenuClosure);
       } else {
-        eventSelection = dragEvents;
+        document.removeEventListener("click", handleMenuClosure);
+
+        if(menuBar)  {
+          menuBar.removeEventListener('mouseenter', handleMouseEnter);
+          menuBar.removeEventListener('mouseleave', handleMouseLeave);
+        }
       }
 
-      if (menuBar && eventSelection.length) {
-        menuBar.removeEventListener(eventSelection[0], handleDragMove);
-        menuBar.removeEventListener(eventSelection[1], handleMouseEnter);
-        menuBar.removeEventListener(eventSelection[2], handleMouseLeave);
-      }
-
-      document.removeEventListener("click", handleMenuClosure);
+      document.removeEventListener("dragover", updateDragCoords);
     });
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
-      if (event instanceof DragEvent) {
-        dragStart.value = true;
-        dragActive.value = false;
+      dragStart.value = true;
+      dragActive.value = false;
 
-        // set a custom ghost image while dragging
-        utils.handleDragStart(event);
-      }
+      // set a custom ghost image while dragging
+      utils.handleDragStart(event);
     };
 
     //** Drag handlers **
@@ -279,7 +265,7 @@ export default defineComponent({
       dragActive.value = false;
     };
 
-    const handleDragMove = (event: any) => {
+    const handleDragMove = () => {
       if (dragStart.value) {
         dragActive.value = true;
 
@@ -336,7 +322,6 @@ export default defineComponent({
     //** final selection handler */
     const handleSelected = (data: any) => {
       handleMenuClosure();
-      menuActive.value = false;
       props.onSelected(data);
     };
 

@@ -42,7 +42,7 @@
             disable: item.disable,
           })
         "
-        @touchstart="
+        @touchend="
           handleSelection({
             event: $event,
             name: item.name,
