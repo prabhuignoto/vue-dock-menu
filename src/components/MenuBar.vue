@@ -5,12 +5,9 @@
     :draggable="draggable"
     tabindex="0"
     :style="{ background: theme.primary }"
+    @dragover="handleDragMove"
     @dragstart="handleDragStart"
-    @dragover="handleDrag"
     @dragend="handleDragEnd"
-    @touchEnd="handleDragEnd"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
   >
     <ul
       :class="[dockClass, 'menu-bar-items']"
@@ -115,6 +112,9 @@ export default defineComponent({
     // reference to the main menubar itself
     const menuBarRef = ref<HTMLElement>();
 
+    // tracks if the drag has been started
+    const dragStart = ref(false);
+
     // tracks the drag status of the menubar
     const dragActive = ref(false);
 
@@ -155,12 +155,32 @@ export default defineComponent({
 
     const clientCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
+    // activate the menu bar
+    const handleMouseEnter = () => {
+      menuBarActive.value = true;
+    };
+
+    // deactivate the menubar if active
+    const handleMouseLeave = () => {
+      if (!isMobileDevice.value && !menuActive.value) {
+        menuBarActive.value = false;
+      }
+    };
+
     const handleMenuClosure = () => {
-      menuActive.value = false;
-      menuBarActive.value = false;
-      activeMenuSelection.value = -1;
-      activeMenuBarId.value = "";
-      highlightFirstElement.value = false;
+      if (unref(menuActive) || unref(menuBarActive)) {    
+        menuActive.value = false;
+        menuBarActive.value = false;
+        activeMenuSelection.value = -1;
+        activeMenuBarId.value = "";
+        highlightFirstElement.value = false;
+
+        menuItems.value = menuItems.value.map((item) =>
+          Object.assign({}, item, {
+            showMenu: false,
+          })
+        );
+      }
     };
 
     //** Lifecylce  Methods **
@@ -178,37 +198,94 @@ export default defineComponent({
 
       // check if its a mobile device
       isMobileDevice.value = isMobile();
+      const menuBar = unref(menuBarRef);
 
-      document.addEventListener("dragover", updateDragCoords);
+      const dragEvents = ["mousemove", "mouseenter", "mouseleave"];
+      const touchEvents = ["touchmove", "touchend", "touchstart"];
+
+      let eventSelection = [];
+
+      if (isMobileDevice.value) {
+        eventSelection = touchEvents;
+      } else {
+        eventSelection = dragEvents;
+      }
+
+      if (menuBar && eventSelection.length) {
+        menuBar.addEventListener(eventSelection[0], handleDragMove);
+        menuBar.addEventListener(eventSelection[1], handleMouseEnter);
+        menuBar.addEventListener(eventSelection[2], handleMouseLeave);
+      }
+
       document.addEventListener("click", handleMenuClosure);
+      document.addEventListener("dragover", updateDragCoords);
     });
 
     // cleanup
     onUnmounted(() => {
       document.removeEventListener("dragover", updateDragCoords);
+      const menuBar = unref(menuBarRef);
+
+      const dragEvents = ["mousemove", "mouseenter", "mouseleave"];
+      const touchEvents = ["touchmove", "touchend", "touchstart"];
+
+      let eventSelection = [];
+
+      if (isMobileDevice.value) {
+        eventSelection = touchEvents;
+      } else {
+        eventSelection = dragEvents;
+      }
+
+      if (menuBar && eventSelection.length) {
+        menuBar.removeEventListener(eventSelection[0], handleDragMove);
+        menuBar.removeEventListener(eventSelection[1], handleMouseEnter);
+        menuBar.removeEventListener(eventSelection[2], handleMouseLeave);
+      }
+
       document.removeEventListener("click", handleMenuClosure);
     });
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
-      dragActive.value = true;
+      if (event instanceof DragEvent) {
+        dragStart.value = true;
+        dragActive.value = false;
 
-      // close the menu during drag operation
-      menuActive.value = false;
-
-      // set a custom ghost image while dragging
-      utils.handleDragStart(event);
+        // set a custom ghost image while dragging
+        utils.handleDragStart(event);
+      }
     };
 
     //** Drag handlers **
 
     const handleDragEnd = (event: DragEvent | TouchEvent) => {
-      const {
-        dragActive: dragActiveNew,
-        dockPosition: positionNew,
-      } = utils.handleDragEnd(event, unref(clientCoords));
+      if (!unref(dragActive)) {
+        return;
+      }
 
-      dragActive.value = dragActiveNew;
-      dockPosition.value = positionNew;
+      const dragEndResult = utils.handleDragEnd(event, unref(clientCoords));
+
+      if (dragEndResult) {
+        const {
+          dragActive: dragActiveNew,
+          dockPosition: positionNew,
+        } = dragEndResult;
+
+        dragActive.value = dragActiveNew;
+        dockPosition.value = positionNew;
+      }
+
+      dragStart.value = false;
+      dragActive.value = false;
+    };
+
+    const handleDragMove = (event: any) => {
+      if (dragStart.value) {
+        dragActive.value = true;
+
+        // close the menu during drag operation
+        menuActive.value = false;
+      }
     };
 
     const handleDrag = (event: DragEvent) => {
@@ -244,18 +321,6 @@ export default defineComponent({
       }
     };
 
-    const handleBlur = () => {
-      menuActive.value = false;
-      menuBarActive.value = false;
-      highlightFirstElement.value = false;
-
-      menuItems.value = menuItems.value.map((item) =>
-        Object.assign({}, item, {
-          showMenu: false,
-        })
-      );
-    };
-
     //** computed methods */
 
     // convert to a sidebar when docked to either left or right
@@ -270,25 +335,12 @@ export default defineComponent({
 
     //** final selection handler */
     const handleSelected = (data: any) => {
+      handleMenuClosure();
       menuActive.value = false;
       props.onSelected(data);
     };
 
     //** keyboard handlers  **
-
-    // activate the menu bar
-    const handleMouseEnter = () => {
-      if (!isMobileDevice.value) {
-        menuBarActive.value = true;
-      }
-    };
-
-    // deactivate the menubar if active
-    const handleMouseLeave = () => {
-      if (!isMobileDevice.value && !menuActive.value) {
-        menuBarActive.value = false;
-      }
-    };
 
     // activates the menu via keyboard
     const handleActivateDir = (id: string, dir: "prev" | "next") => {
@@ -341,30 +393,30 @@ export default defineComponent({
     };
 
     return {
+      activeMenuBarId,
+      activeMenuSelection,
       barHeight,
       barWidth,
       dockClass,
       dockPosition,
-      handleDragEnd,
-      handleDragStart,
-      handleOnShowMenu,
+      expandClass,
+      handleActivateDir,
       handleActivateMenu,
+      handleDrag,
+      handleDragCancel,
+      handleDragEnd,
+      handleDragMove,
+      handleDragStart,
       handleMouseEnter,
       handleMouseLeave,
-      handleBlur,
-      menuActive,
-      menuBarRef,
-      menuItems,
-      handleDragCancel,
-      expandClass,
-      menuBarActive,
-      isMobileDevice,
-      handleDrag,
-      handleActivateDir,
-      activeMenuSelection,
-      activeMenuBarId,
+      handleOnShowMenu,
       handleSelected,
       highlightFirstElement,
+      isMobileDevice,
+      menuActive,
+      menuBarActive,
+      menuBarRef,
+      menuItems,
     };
   },
 });

@@ -1,22 +1,22 @@
 .menu-wrapper {
-  display: flex;
   align-items: flex-start;
+  display: flex;
   justify-content: center;
   min-width: 200px;
   padding: 0.5rem 0;
 }
 
 .menu-items {
-  list-style: none;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0;
-  margin: 0;
-  width: 100%;
   height: 100%;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
   outline: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .icon-wrap {
@@ -29,12 +29,12 @@
 }
 
 .menu-item-icon {
-  height: 20px;
-  width: 20px;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 20px;
   justify-content: center;
   margin: 0 2px 0 6px;
+  width: 20px;
 }
 
 .menu-item {
@@ -80,19 +80,19 @@
   &.right {
     .name {
       order: 2;
-      text-align: right;
       padding-right: 5%;
+      text-align: right;
     }
 
     .icon-wrap {
-      order: 1;
       margin-right: auto;
+      order: 1;
       transform: rotate(180deg);
     }
 
     .menu-item-icon {
-      order: 3;
       margin: 0 6px 0 2px;
+      order: 3;
     }
   }
 
@@ -119,11 +119,11 @@
 }
 
 .menu-item-divider {
-  width: 90%;
-  margin: 0 auto;
-  height: 1px;
   background: rgba(0, 0, 0, 0.1);
   display: block;
-  margin-top: 6px;
+  height: 1px;
+  margin: 0 auto;
   margin-bottom: 6px;
+  margin-top: 6px;
+  width: 90%;
 }

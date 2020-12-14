@@ -137,8 +137,7 @@ export default defineComponent({
     "highlight-menu-item",
     "select-highlighted-menu-item",
   ],
-  setup(props, { emit,  slots }) {
-    console.log(slots);
+  setup(props, { emit }) {
     const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref();
     const menuStyle = ref();
@@ -242,6 +241,8 @@ export default defineComponent({
     const bgColor = computed(() => {
       if (menuBarItemActive.value) {
         return props.theme.secondary;
+      } else {
+        return "transparent";
       }
     });
 
