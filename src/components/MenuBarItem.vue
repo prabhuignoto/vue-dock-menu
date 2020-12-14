@@ -6,7 +6,6 @@
     tabindex="0"
     @mouseenter="setMenuViewable()"
     @keyup="handleKeyUp"
-    @click="toggleMenu"
   >
     <span
       :class="[...menuBarStyle, 'name-container']"
@@ -56,9 +55,11 @@ import {
   onMounted,
   nextTick,
   unref,
+  onUnmounted,
 } from "vue";
 import Menu from "./Menu.vue";
 import { MenuTheme } from "@/models/Theme";
+import isMobileDevice from "./isMobileDevice";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -137,11 +138,12 @@ export default defineComponent({
     "highlight-menu-item",
     "select-highlighted-menu-item",
   ],
-  setup(props, { emit,  slots }) {
-    console.log(slots);
+  setup(props, { emit }) {
     const menuBarItemRef = ref<HTMLDivElement>();
-    const menuBarItemActive = ref();
+    const menuBarItemActive = ref(false);
     const menuStyle = ref();
+    const isMobile = ref(isMobileDevice());
+    const menuOpen = ref(false);
 
     const getName = computed(() => {
       if (
@@ -158,9 +160,10 @@ export default defineComponent({
     const setMenuViewable = () => emit("activate", props.id);
 
     // toggle menu
-    const toggleMenu = (event: MouseEvent) => {
+    const toggleMenu = (event: MouseEvent | TouchEvent) => {
       event.stopPropagation();
-      emit("show", !props.menuActive, props.id);
+      menuOpen.value = !menuOpen.value;
+      emit("show", menuOpen.value, props.id);
     };
 
     const handleMenuSelection = ($event: any) => props.onSelected($event);
@@ -210,6 +213,7 @@ export default defineComponent({
       (newValue) => {
         menuBarItemActive.value = newValue;
         if (newValue) {
+          menuOpen.value = false;
           nextTick(() => menuBarItemRef.value?.focus());
         }
       }
@@ -237,11 +241,47 @@ export default defineComponent({
       }
     );
 
-    onMounted(() => computeMenuStyle());
+    onMounted(() => {
+      computeMenuStyle();
+      const menuBarItem = unref(menuBarItemRef);
+      const mobile = unref(isMobile);
+
+      if (!menuBarItem) {
+        return;
+      }
+
+      if (mobile) {
+        menuBarItem.addEventListener("touchend", (ev) => {
+          setMenuViewable();
+          nextTick(() => {
+            toggleMenu(ev);
+          });
+        });
+      } else {
+        menuBarItem.addEventListener("click", toggleMenu);
+      }
+    });
+
+    onUnmounted(() => {
+      const menuBarItem = unref(menuBarItemRef);
+      const mobile = unref(isMobile);
+
+      if (!menuBarItem) {
+        return;
+      }
+
+      if (mobile) {
+        menuBarItem.removeEventListener("touchstart", toggleMenu);
+      } else {
+        menuBarItem.removeEventListener("mousedown", toggleMenu);
+      }
+    });
 
     const bgColor = computed(() => {
       if (menuBarItemActive.value) {
         return props.theme.secondary;
+      } else {
+        return "transparent";
       }
     });
 

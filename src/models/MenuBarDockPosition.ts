@@ -2,7 +2,8 @@
   TOP = "TOP",
   LEFT = "LEFT",
   BOTTOM = "BOTTOM",
-  RIGHT = "RIGHT"
+  RIGHT = "RIGHT",
+  NOT_AVAILABLE = "NOT_AVAILABLE"
 }
 
 export default MenuBarDockPosition;

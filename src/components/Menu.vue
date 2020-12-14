@@ -42,6 +42,14 @@
             disable: item.disable,
           })
         "
+        @touchend="
+          handleSelection({
+            event: $event,
+            name: item.name,
+            isParent: !!item.menu,
+            disable: item.disable,
+          })
+        "
       >
         <template v-if="!item.isDivider">
           <span
@@ -194,6 +202,7 @@ export default defineComponent({
         name,
         path: `${props.parent}>${path ? path : name}`.toLowerCase(),
       });
+
     };
 
     const menuItemStyle = computed(() => ({

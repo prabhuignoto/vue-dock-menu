@@ -5,4 +5,5 @@ export interface MenuBarItemModel {
   id?: string;
   onSelect?: (id: string) => void;
   menu?: MenuItemModel[];
+  showMenu?:  boolean;
 }

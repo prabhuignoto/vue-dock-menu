@@ -1,9 +1,9 @@
 .menu-bar-item-container {
   align-items: center;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   position: relative;
-  cursor: pointer;
 
   &:focus {
     outline: 0;
@@ -32,32 +32,32 @@
 }
 
 .name-container {
-  text-transform: capitalize;
   font-size: 0.95rem;
   margin: 0.25rem 0;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
 
   &.left,
   &.right {
     align-items: center;
+    background: none;
     display: flex;
     font-size: 1rem;
-    background: none;
-    width: 100%;
-    justify-content: flex-start;
     height: 1.5rem;
+    justify-content: flex-start;
+    width: 100%;
 
     &.expanded {
       padding-left: 1rem;
     }
 
     &:not(.expanded) {
-      width: 2rem;
       font-size: 1.1rem;
       justify-content: center;
       text-transform: uppercase;
+      width: 2rem;
     }
   }
 }
