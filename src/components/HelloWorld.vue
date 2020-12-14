@@ -3,9 +3,9 @@
     :items="items"
     :on-selected="selected"
     :theme="{
-      primary: '#b2b2b2',
-      secondary: '#e5e5e5',
-      tertiary: '#008ecc',
+      primary: '#51A2D9',
+      secondary: '#B9E5F3',
+      tertiary: '#53C0F0',
       textColor: '#000',
       textHoverColor: '#fff',
     }"

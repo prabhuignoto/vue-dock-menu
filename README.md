@@ -19,6 +19,7 @@
 
 - ⚓ &nbsp;Dock your menu with ease.
 - 🤏 &nbsp;Dock the Menubar by dragging and dropping to the edges of the screen.
+- 👆 &nbsp;Touch support.
 - 👍 &nbsp;Support for nested menus up to any levels.
 - 👓&nbsp; The Menus adjust to any docked position and enables an intuitive menu navigation.
 - ⌨&nbsp; Keyboard Accessible.
