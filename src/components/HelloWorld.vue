@@ -3,9 +3,9 @@
     :items="items"
     :on-selected="selected"
     :theme="{
-      primary: '#51A2D9',
-      secondary: '#B9E5F3',
-      tertiary: '#53C0F0',
+      primary: '#b7b7b7',
+      secondary: '#e5e5e5',
+      tertiary: '#b7b7b7',
       textColor: '#000',
       textHoverColor: '#fff',
     }"
@@ -23,7 +23,7 @@
         alt="file"
         :style="style"
       >
-    </template>
+    </template> 
     <template #cog>
       <img
         src="../assets/cog.svg"

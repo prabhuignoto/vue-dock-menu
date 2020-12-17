@@ -1,10 +1,11 @@
-
 .menu-bar-container {
   position: fixed;
   display: flex;
   user-select: none;
   outline: 0;
   touch-action: none;
+  z-index: 9999;
+  background-color: var(--menubar-bg-color);
 
   &.left,
   &.right {
@@ -12,12 +13,12 @@
     align-items: flex-start;
 
     &.expanded {
-      width: 200px;
+      width: var(--menubar-expanded-width);
       animation: expand 0.1s linear;
     }
 
     &.not-expanded {
-      width: 50px;
+      width: var(--menubar-not-expanded-width);
       animation: collapse 0.1s linear;
     }
   }

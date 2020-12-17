@@ -4,7 +4,7 @@
     :class="[dockClass, 'menu-bar-container', expandClass]"
     :draggable="draggable"
     tabindex="0"
-    :style="{ background: theme.primary }"
+    :style="menuBarStyle"
     @dragover="handleDragMove"
     @dragstart="handleDragStart"
     @dragend="handleDragEnd"
@@ -72,6 +72,7 @@ import "focus-visible";
 import isMobile from "./isMobileDevice";
 import utils from "../utils/DragUtil";
 import { MenuTheme } from "@/models/Theme";
+import { handleNav } from "../utils/keyboardNavigator";
 
 export default defineComponent({
   name: "MenuBar",
@@ -99,6 +100,11 @@ export default defineComponent({
       required: false,
       type: Boolean,
       default: true,
+    },
+    sidebarWidth: {
+      required: false,
+      type: String,
+      default: '200px',
     },
     theme: {
       required: false,
@@ -198,16 +204,13 @@ export default defineComponent({
       const menuBar = unref(menuBarRef);
 
       if (isMobileDevice.value) {
-        if (menuBar) {
-          // menuBar.addEventListener('touchmove', handleDragMove);
-        }
         document.addEventListener("touchend", handleMenuClosure);
       } else {
         document.addEventListener("click", handleMenuClosure);
 
-        if(menuBar)  {
-          menuBar.addEventListener('mouseenter', handleMouseEnter);
-          menuBar.addEventListener('mouseleave', handleMouseLeave);
+        if (menuBar) {
+          menuBar.addEventListener("mouseenter", handleMouseEnter);
+          menuBar.addEventListener("mouseleave", handleMouseLeave);
         }
       }
 
@@ -225,9 +228,9 @@ export default defineComponent({
       } else {
         document.removeEventListener("click", handleMenuClosure);
 
-        if(menuBar)  {
-          menuBar.removeEventListener('mouseenter', handleMouseEnter);
-          menuBar.removeEventListener('mouseleave', handleMouseLeave);
+        if (menuBar) {
+          menuBar.removeEventListener("mouseenter", handleMouseEnter);
+          menuBar.removeEventListener("mouseleave", handleMouseLeave);
         }
       }
 
@@ -245,7 +248,7 @@ export default defineComponent({
     //** Drag handlers **
 
     const handleDragEnd = (event: DragEvent | TouchEvent) => {
-      if (!unref(dragActive)) {
+      if (!unref(dragStart)) {
         return;
       }
 
@@ -329,46 +332,21 @@ export default defineComponent({
 
     // activates the menu via keyboard
     const handleActivateDir = (id: string, dir: "prev" | "next") => {
-      const eleIndex = menuItems.value.findIndex((item) => item.id === id);
-      const newIdx = dir === "next" ? eleIndex + 1 : eleIndex - 1;
-      const menuItemsLen = menuItems.value.length;
+      const result = handleNav(
+        id,
+        dir,
+        unref(menuItems),
+        unref(activeMenuSelection),
+        unref(activeMenuBarId)
+      );
 
-      let nextId = "";
-
-      if (newIdx > -1 && newIdx < menuItemsLen) {
-        nextId = menuItems.value[newIdx].id as string;
-      } else if (newIdx > menuItemsLen - 1) {
-        nextId = menuItems.value[0].id as string;
-      } else if (newIdx < 0) {
-        nextId = menuItems.value[menuItemsLen - 1].id as string;
-      }
-
-      // get the menubar item
-      const menuBarItem = menuItems.value.find((item) => item.id === id);
-
-      const menuItem =
-        menuBarItem && menuBarItem.menu
-          ? menuBarItem.menu[activeMenuSelection.value]
-          : null;
-
-      if (menuItem?.menu && dir === "next") {
-        menuItems.value = menuItems.value.map((item) => {
-          if (item.id === activeMenuBarId.value) {
-            return Object.assign({}, item, {
-              menu: item.menu?.map((it) =>
-                Object.assign({}, it, {
-                  showSubMenu:
-                    it.name?.toLowerCase() === menuItem.name?.toLowerCase(),
-                })
-              ),
-            });
-          } else {
-            return item;
-          }
-        });
-      } else {
-        // move to the next menu bar item
+      if ("navigateMenu" in result) {
+        menuItems.value = result.navigateMenu.items;
+      } else if ("navigateMenubar" in result) {
         highlightFirstElement.value = true;
+        let {
+          navigateMenubar: { nextId },
+        } = result;
         activeMenuBarId.value = nextId;
         nextId && handleActivateMenu(nextId);
       }
@@ -376,6 +354,12 @@ export default defineComponent({
       // reset active menu selection
       activeMenuSelection.value = -1;
     };
+
+    const menuBarStyle = computed(() => ({
+      "--menubar-expanded-width": props.sidebarWidth,
+      "--menubar-not-expanded-width": '50px',
+      "--menubar-bg-color": props.theme.primary,
+    }));
 
     return {
       activeMenuBarId,
@@ -401,6 +385,7 @@ export default defineComponent({
       menuActive,
       menuBarActive,
       menuBarRef,
+      menuBarStyle,
       menuItems,
     };
   },
