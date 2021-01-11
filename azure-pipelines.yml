@@ -17,8 +17,7 @@ steps:
 
 - script: |
     yarn install
-    yarn run build
-  displayName: 'yarn install and build'
+  displayName: 'yarn install'
 
 - script: |
     yarn run lint:css
