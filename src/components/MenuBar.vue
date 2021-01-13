@@ -75,6 +75,7 @@ import { MenuTheme } from "@/models/Theme";
 import { handleNav } from "../utils/keyboardNavigator";
 
 const remListener = document.removeEventListener;
+const addListener = document.addEventListener;
 
 export default defineComponent({
   name: "MenuBar",
@@ -206,9 +207,9 @@ export default defineComponent({
       const menuBar = unref(menuBarRef);
 
       if (isMobileDevice.value) {
-        document.addEventListener("touchend", handleMenuClosure);
+        addListener("touchend", handleMenuClosure);
       } else {
-        document.addEventListener("click", handleMenuClosure);
+        addListener("click", handleMenuClosure);
 
         if (menuBar) {
           menuBar.addEventListener("mouseenter", handleMouseEnter);
@@ -216,7 +217,7 @@ export default defineComponent({
         }
       }
 
-      document.addEventListener("dragover", updateDragCoords);
+      addListener("dragover", updateDragCoords);
     });
 
     // cleanup
