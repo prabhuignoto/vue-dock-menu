@@ -33,7 +33,8 @@
           },
         ]"
         :style="menuItemStyle"
-        @mouseenter="item.menu && !isMobile && toggleSubMenu(!!item.menu)"
+        @mouseenter="item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)"
+        @mouseleave="item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)"
         @click="
           handleSelection({
             event: $event,
@@ -66,7 +67,7 @@
             <ChevRight />
           </span>
           <div
-            v-if="item.menu && showSubMenu"
+            v-if="item.menu && showSubMenu && item.id === activeMenuId"
             :class="[dockClass, 'sub-menu-wrapper']"
           >
             <component
@@ -169,10 +170,17 @@ export default defineComponent({
 
     const showSubMenu = ref();
 
+    const activeMenuId = ref();
+
     const dockClass = computed(() => props.dock.toLowerCase());
 
-    const toggleSubMenu = (hasData: boolean) => {
+    const toggleSubMenu = (hasData: boolean, id: string) => {
       if (hasData) {
+        if(!showSubMenu.value) {
+          activeMenuId.value = id;
+        } else {
+          activeMenuId.value = null;
+        }
         showSubMenu.value = !showSubMenu.value;
       }
     };
@@ -280,7 +288,7 @@ export default defineComponent({
       if (menuItem && menuItem.menu) {
         event.stopPropagation();
         subMenuHighlightIndex.value = 0;
-        toggleSubMenu(!!menuItem.menu);
+        toggleSubMenu(!!menuItem.menu, menuItem.id);
       } else {
         focusMenuBar();
       }
@@ -305,7 +313,7 @@ export default defineComponent({
 
         if (menuItem?.menu) {
           subMenuHighlightIndex.value = 0;
-          toggleSubMenu(!!menuItem.menu);
+          toggleSubMenu(!!menuItem.menu, menuItem.id);
 
           nextTick(() => {
             (menuItemsRef.value as HTMLElement).focus();
@@ -331,23 +339,24 @@ export default defineComponent({
 
     return {
       MenuComponent,
-      toggleSubMenu,
-      showSubMenu,
+      activeMenuId,
       dockClass,
+      handleCloseMenu,
+      handleKeyDown,
+      handleKeyLeft,
+      handleKeyRight,
+      handleKeySelection,
+      handleKeyUp,
       handleSelection,
+      highlightedIndex,
       menuItemStyle,
       menuItems,
       menuItemsRef,
-      handleKeyUp,
-      handleKeyDown,
-      highlightedIndex,
-      handleKeyRight,
-      handleKeyLeft,
-      onFocus,
       onBlur,
-      handleCloseMenu,
-      handleKeySelection,
+      onFocus,
+      showSubMenu,
       subMenuHighlightIndex,
+      toggleSubMenu,
     };
   },
 });

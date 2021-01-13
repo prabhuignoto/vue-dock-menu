@@ -74,6 +74,8 @@ import utils from "../utils/DragUtil";
 import { MenuTheme } from "@/models/Theme";
 import { handleNav } from "../utils/keyboardNavigator";
 
+const remListener = document.removeEventListener;
+
 export default defineComponent({
   name: "MenuBar",
   components: {
@@ -104,7 +106,7 @@ export default defineComponent({
     sidebarWidth: {
       required: false,
       type: String,
-      default: '200px',
+      default: "200px",
     },
     theme: {
       required: false,
@@ -219,14 +221,14 @@ export default defineComponent({
 
     // cleanup
     onUnmounted(() => {
-      document.removeEventListener("dragover", updateDragCoords);
+      remListener("dragover", updateDragCoords);
 
       const menuBar = unref(menuBarRef);
 
       if (isMobileDevice.value) {
-        document.removeEventListener("touchend", handleMenuClosure);
+        remListener("touchend", handleMenuClosure);
       } else {
-        document.removeEventListener("click", handleMenuClosure);
+        remListener("click", handleMenuClosure);
 
         if (menuBar) {
           menuBar.removeEventListener("mouseenter", handleMouseEnter);
@@ -234,7 +236,7 @@ export default defineComponent({
         }
       }
 
-      document.removeEventListener("dragover", updateDragCoords);
+      remListener("dragover", updateDragCoords);
     });
 
     const handleDragStart = (event: DragEvent | TouchEvent) => {
@@ -357,7 +359,7 @@ export default defineComponent({
 
     const menuBarStyle = computed(() => ({
       "--menubar-expanded-width": props.sidebarWidth,
-      "--menubar-not-expanded-width": '50px',
+      "--menubar-not-expanded-width": "50px",
       "--menubar-bg-color": props.theme.primary,
     }));
 
