@@ -1,6 +1,6 @@
 {
   "name": "vue-dock-menu",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "author": "Prabhu Murthy",
   "description": "Dockable menu bar for Vue 3",
