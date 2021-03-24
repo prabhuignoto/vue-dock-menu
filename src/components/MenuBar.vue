@@ -335,6 +335,8 @@ export default defineComponent({
         dockPosition.value === DockPosition.RIGHT
       ) {
         return menuBarActive.value ? "expanded" : "not-expanded";
+      } else {
+        return "";
       }
     });
 

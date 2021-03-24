@@ -179,7 +179,7 @@ export default defineComponent({
     const highlightIndex = ref(-1);
 
     const computeMenuStyle = () => {
-      let newStyle: {
+      const newStyle: {
         top?: string;
         left?: string;
         right?: string;
