@@ -362,7 +362,7 @@ export default defineComponent({
         menuItems.value = result.navigateMenu.items;
       } else if ("navigateMenubar" in result) {
         highlightFirstElement.value = true;
-        let {
+        const {
           navigateMenubar: { nextId },
         } = result;
         activeMenuBarId.value = nextId;
