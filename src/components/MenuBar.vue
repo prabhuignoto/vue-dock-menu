@@ -305,7 +305,7 @@ export default defineComponent({
       );
     };
 
-    const handleDeactivateMenu = (id?: string) => {
+    const handleDeactivateMenu = () => {
       // keep the menubar when the sub menu is being displayed
       if (!menuActive.value) {
         menuItems.value = menuItems.value.map((item) =>
