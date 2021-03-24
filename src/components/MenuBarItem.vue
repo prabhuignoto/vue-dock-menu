@@ -4,7 +4,8 @@
     :class="[...menuBarStyle, 'menu-bar-item-container']"
     :style="{ background: bgColor }"
     tabindex="0"
-    @mouseenter="setMenuViewable()"
+    @mouseenter="setMenuViewable(true)"
+    @mouseleave="setMenuViewable(false)"
     @keyup="handleKeyUp"
   >
     <span
@@ -131,6 +132,7 @@ export default defineComponent({
   },
   emits: [
     "show",
+    "deactivate",
     "activate",
     "selected",
     "activate-next",
@@ -157,7 +159,13 @@ export default defineComponent({
     });
 
     // activate menu
-    const setMenuViewable = () => emit("activate", props.id);
+    const setMenuViewable = (viewable: boolean) => {
+      if (viewable) {
+        emit("activate", props.id);
+      } else {
+        emit("deactivate", props.id);
+      }
+    }
 
     // toggle menu
     const toggleMenu = (event: MouseEvent | TouchEvent) => {
@@ -171,7 +179,7 @@ export default defineComponent({
     const highlightIndex = ref(-1);
 
     const computeMenuStyle = () => {
-      let newStyle: {
+      const newStyle: {
         top?: string;
         left?: string;
         right?: string;

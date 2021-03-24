@@ -35,6 +35,7 @@
           :is-touch-device="isMobileDevice"
           :on-selected="handleSelected"
           :highlight-first-element="highlightFirstElement"
+          @deactivate="handleDeactivateMenu"
           @activate="handleActivateMenu"
           @activate-next="handleActivateDir"
           @activate-previous="handleActivateDir"
@@ -186,6 +187,7 @@ export default defineComponent({
         activeMenuSelection.value = -1;
         activeMenuBarId.value = "";
         highlightFirstElement.value = false;
+        handleDeactivateMenu();
       }
     };
 
@@ -303,6 +305,17 @@ export default defineComponent({
       );
     };
 
+    const handleDeactivateMenu = () => {
+      // keep the menubar when the sub menu is being displayed
+      if (!menuActive.value) {
+        menuItems.value = menuItems.value.map((item) =>
+          Object.assign({}, item, {
+            showMenu: false,
+          })
+        );
+      }
+    };
+
     const handleOnShowMenu = (state: boolean, id: string) => {
       menuActive.value = state;
       if (state) {
@@ -322,6 +335,8 @@ export default defineComponent({
         dockPosition.value === DockPosition.RIGHT
       ) {
         return menuBarActive.value ? "expanded" : "not-expanded";
+      } else {
+        return "";
       }
     });
 
@@ -347,7 +362,7 @@ export default defineComponent({
         menuItems.value = result.navigateMenu.items;
       } else if ("navigateMenubar" in result) {
         highlightFirstElement.value = true;
-        let {
+        const {
           navigateMenubar: { nextId },
         } = result;
         activeMenuBarId.value = nextId;
@@ -374,6 +389,7 @@ export default defineComponent({
       expandClass,
       handleActivateDir,
       handleActivateMenu,
+      handleDeactivateMenu,
       handleDrag,
       handleDragCancel,
       handleDragEnd,
