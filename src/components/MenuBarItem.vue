@@ -94,7 +94,7 @@ export default defineComponent({
     },
     menuBarDimensions: {
       type: Object as PropType<{ height: number; width: number }>,
-      default: {},
+      default: () => {},
       required: true,
     },
     dock: {
