@@ -171,7 +171,7 @@ export default defineComponent({
     const toggleMenu = (event: MouseEvent | TouchEvent) => {
       event.stopPropagation();
       menuOpen.value = !menuOpen.value;
-      emit("show", menuOpen.value, props.id);
+      emit("show", !props.menuActive, props.id);
     };
 
     const handleMenuSelection = ($event: any) => props.onSelected($event);
@@ -221,6 +221,7 @@ export default defineComponent({
       (newValue) => {
         menuBarItemActive.value = newValue;
         if (newValue) {
+          debugger;
           menuOpen.value = false;
           nextTick(() => menuBarItemRef.value?.focus());
         }
