@@ -236,15 +236,6 @@ export default defineComponent({
       });
     });
 
-    const focusMenuBar = () => {
-      const menuBarItems = (menuItemsRef.value as HTMLElement).closest(
-        ".menu-bar-item-container"
-      );
-      if (menuBarItems) {
-        (menuBarItems as HTMLElement).focus();
-      }
-    };
-
     const handleKeyUp = (event: KeyboardEvent) => {
       if (!hasFocus.value) {
         return;
@@ -289,8 +280,6 @@ export default defineComponent({
         event.stopPropagation();
         subMenuHighlightIndex.value = 0;
         toggleSubMenu(!!menuItem.menu, menuItem.id);
-      } else {
-        focusMenuBar();
       }
     };
 
@@ -301,8 +290,6 @@ export default defineComponent({
       if (props.nested) {
         event.stopPropagation();
         emit("close-menu");
-      } else {
-        focusMenuBar();
       }
     };
 
