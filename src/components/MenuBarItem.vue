@@ -221,7 +221,6 @@ export default defineComponent({
       (newValue) => {
         menuBarItemActive.value = newValue;
         if (newValue) {
-          debugger;
           menuOpen.value = false;
           nextTick(() => menuBarItemRef.value?.focus());
         }

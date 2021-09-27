@@ -316,6 +316,15 @@ export default defineComponent({
       }
     };
 
+    const focusMenuBar = () => {
+      const menuBarItems = (menuBarRef.value as HTMLElement).querySelector(
+        ".menu-bar-item-container"
+      );
+      if (menuBarItems) {
+        (menuBarItems as HTMLElement).focus();
+      }
+    };
+
     const handleOnShowMenu = (state: boolean, id: string) => {
       menuActive.value = state;
       if (state) {
@@ -323,6 +332,7 @@ export default defineComponent({
       } else {
         activeMenuBarId.value = "";
         highlightFirstElement.value = false;
+        focusMenuBar()
       }
     };
 
