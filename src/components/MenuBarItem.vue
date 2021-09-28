@@ -9,6 +9,12 @@
     @keyup="handleKeyUp"
   >
     <span
+      v-if="iconSlot"
+      class="icon-container"
+    >
+      <slot :name="iconSlot" />
+    </span>
+    <span
       :class="[...menuBarStyle, 'name-container']"
       :style="{ color: theme.textColor }"
     >
@@ -77,6 +83,10 @@ export default defineComponent({
       type: String,
       default: "",
       required: true,
+    },
+    iconSlot: {
+      type: String,
+      default: "",
     },
     menu: {
       type: Array as PropType<MenuItemModel[]>,

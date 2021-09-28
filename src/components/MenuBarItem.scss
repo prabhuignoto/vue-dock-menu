@@ -31,6 +31,16 @@
   z-index: 9999;
 }
 
+.icon-container {
+  align-items: center;
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+  padding-right: 6px;
+  margin: 0 2px;
+}
+
 .name-container {
   font-size: 0.95rem;
   margin: 0.25rem 0;

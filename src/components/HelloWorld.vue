@@ -186,6 +186,7 @@ export default defineComponent({
       items: [
         {
           name: "file",
+          iconSlot: "brief",
           title: "File",
           menu: [
             { name: "new-file", title: 'New File', iconSlot: "file" },
