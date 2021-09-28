@@ -29,6 +29,7 @@
           :menu-bar-dimensions="{ height: barHeight, width: barWidth }"
           :menu="item.menu"
           :name="item.name"
+          :title="item.title"
           :menu-bar-active="menuBarActive"
           :show-menu="item.showMenu"
           :theme="theme"

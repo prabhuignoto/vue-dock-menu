@@ -73,6 +73,11 @@ export default defineComponent({
       default: "",
       required: true,
     },
+    title: {
+      type: String,
+      default: "",
+      required: true,
+    },
     menu: {
       type: Array as PropType<MenuItemModel[]>,
       required: true,
@@ -152,9 +157,9 @@ export default defineComponent({
         props.dock === DockPosition.LEFT ||
         props.dock === DockPosition.RIGHT
       ) {
-        return !props.menuBarActive ? props.name[0] : props.name;
+        return !props.menuBarActive ? props.title[0] : props.title;
       } else {
-        return props.name;
+        return props.title;
       }
     });
 
