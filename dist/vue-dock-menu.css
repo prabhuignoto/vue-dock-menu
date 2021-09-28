@@ -110,6 +110,16 @@
   z-index: 9999;
 }
 
+.icon-container[data-v-d6123432] {
+  align-items: center;
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+  padding-right: 6px;
+  margin: 0 2px;
+}
+
 .name-container[data-v-d6123432] {
   font-size: 0.95rem;
   margin: 0.25rem 0;
