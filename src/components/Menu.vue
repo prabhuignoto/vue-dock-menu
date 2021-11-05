@@ -80,7 +80,7 @@
               :nested="true"
               :on-selected="onSelected"
               :initial-highlight-index="subMenuHighlightIndex"
-              @closeMenu="handleCloseMenu"
+              @close-menu="handleCloseMenu"
             >
               <template
                 v-for="slot in Object.keys($slots)"
@@ -120,7 +120,7 @@ import { SelectedItemModel } from "@/models/SelectedItemModel";
 import { MenuTheme } from "@/models/Theme";
 
 export default defineComponent({
-  name: "Menu",
+  name: "DockMenu",
   components: {
     ChevRight,
   },
