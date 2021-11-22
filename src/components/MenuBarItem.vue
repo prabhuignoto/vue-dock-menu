@@ -19,7 +19,7 @@
       :style="menuStyle"
     >
       <transition name="fade">
-        <Menu
+        <DockMenu
           v-if="menuActive && showMenu"
           :items="menu"
           :dock="dock"
@@ -38,7 +38,7 @@
               v-bind="scope"
             />
           </template>
-        </Menu>
+        </DockMenu>
       </transition>
     </span>
   </div>
@@ -58,14 +58,14 @@ import {
   unref,
   onUnmounted,
 } from "vue";
-import Menu from "./Menu.vue";
+import DockMenu from "./Menu.vue";
 import { MenuTheme } from "@/models/Theme";
 import isMobileDevice from "./isMobileDevice";
 
 export default defineComponent({
   name: "MenuBarItem",
   components: {
-    Menu,
+    DockMenu,
   },
   props: {
     name: {
@@ -260,7 +260,7 @@ export default defineComponent({
 
       if (mobile) {
         menuBarItem.addEventListener("touchend", (ev) => {
-          setMenuViewable();
+          setMenuViewable(false);
           nextTick(() => {
             toggleMenu(ev);
           });

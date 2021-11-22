@@ -166,7 +166,7 @@ export default defineComponent({
   },
   emits: ["selected", "close-menu"],
   setup(props, { emit }) {
-    const MenuComponent = resolveComponent("Menu");
+    const MenuComponent = resolveComponent("DockMenu");
 
     const showSubMenu = ref();
 
