@@ -116,8 +116,8 @@ import {
   nextTick,
 } from "vue";
 import ChevRight from "./ChevRight.vue";
-import { SelectedItemModel } from "@/models/SelectedItemModel";
-import { MenuTheme } from "@/models/Theme";
+import { SelectedItemModel } from "../models/SelectedItemModel";
+import { MenuTheme } from "../models/Theme";
 
 export default defineComponent({
   name: "DockMenu",

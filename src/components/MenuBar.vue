@@ -57,23 +57,19 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  ref,
-  onMounted,
-  unref,
-  onUnmounted,
-} from "vue";
-import MenuBarItem from "./MenuBarItem.vue";
-import DockPosition from "../models/MenuBarDockPosition";
-import { MenuBarItemModel } from "@/models/MenuBarItemModel";
 import "focus-visible";
-import isMobile from "./isMobileDevice";
+import {
+computed,
+defineComponent, onMounted, onUnmounted, PropType,
+ref, unref
+} from "vue";
+import DockPosition from "../models/MenuBarDockPosition";
+import { MenuBarItemModel } from "../models/MenuBarItemModel";
+import { MenuTheme } from "../models/Theme";
 import utils from "../utils/DragUtil";
-import { MenuTheme } from "@/models/Theme";
 import { handleNav } from "../utils/keyboardNavigator";
+import isMobile from "./isMobileDevice";
+import MenuBarItem from "./MenuBarItem.vue";
 
 const remListener = document.removeEventListener;
 const addListener = document.addEventListener;

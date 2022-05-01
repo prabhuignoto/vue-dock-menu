@@ -154,8 +154,8 @@
 </template>
 
 <script lang="ts">
-import { MenuBarItemModel } from "@/models/MenuBarItemModel";
-import { SelectedItemModel } from "@/models/SelectedItemModel";
+import { MenuBarItemModel } from "../models/MenuBarItemModel";
+import { SelectedItemModel } from "../models/SelectedItemModel";
 import { computed, defineComponent } from "vue";
 import MenuBar from "./MenuBar.vue";
 
