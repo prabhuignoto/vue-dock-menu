@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import DockPosition from "../models/MenuBarDockPosition";
-import { MenuItemModel } from "@/models/MenuItemModel";
+import { MenuItemModel } from "../models/MenuItemModel";
 import {
   defineComponent,
   PropType,
@@ -59,7 +59,7 @@ import {
   onUnmounted,
 } from "vue";
 import DockMenu from "./Menu.vue";
-import { MenuTheme } from "@/models/Theme";
+import { MenuTheme } from "../models/Theme";
 import isMobileDevice from "./isMobileDevice";
 
 export default defineComponent({
