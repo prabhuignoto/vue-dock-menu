@@ -18,8 +18,9 @@
     "rollup": "rimraf ./dist && rollup -c",
     "eslint": "eslint src/**/*.vue",
     "lint:css": "stylelint src/**/*.vue --custom-syntax postcss-html",
-    "lint:all": "yarn eslint && yarn lint:css",
-    "prepare": "husky install"
+    "lint:all": "pnpm eslint && pnpm lint:css",
+    "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm"
   },
   "husky": {
     "hooks": {
