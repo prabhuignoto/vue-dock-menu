@@ -1,0 +1,12 @@
+# .kodiak.toml
+
+version = 1
+
+[update]
+always = true
+require_automerge_label = true
+
+[merge]
+block_on_reviews_requested = true
+notify_on_conflict = true
+blocking_labels = ["wip"]
