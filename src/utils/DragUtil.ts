@@ -33,9 +33,6 @@ handleDragEnd = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) 
     }
   }
 
-  console.log(yThreshold)
-  console.log(xThreshold)
-
   if (xThreshold < 10) {
     value.dockPosition = MenuBarDockPosition.LEFT;
   }
@@ -51,8 +48,6 @@ handleDragEnd = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) 
   if (yThreshold < 10) {
     value.dockPosition = MenuBarDockPosition.TOP;
   }
-
-  console.log(value);
 
   if (value.dockPosition !== MenuBarDockPosition.NOT_AVAILABLE) {
     return value;
