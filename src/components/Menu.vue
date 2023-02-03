@@ -33,8 +33,12 @@
           },
         ]"
         :style="menuItemStyle"
-        @mouseenter="item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)"
-        @mouseleave="item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)"
+        @mouseenter="
+          item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)
+        "
+        @mouseleave="
+          item.menu && !isMobile && toggleSubMenu(!!item.menu, item.id)
+        "
         @click="
           handleSelection({
             event: $event,
@@ -53,17 +57,11 @@
         "
       >
         <template v-if="!item.isDivider">
-          <span
-            v-if="item.iconSlot"
-            class="menu-item-icon"
-          >
+          <span v-if="item.iconSlot" class="menu-item-icon">
             <slot :name="item.iconSlot" />
           </span>
           <span class="name">{{ item.name }}</span>
-          <span
-            :class="{ visible: !!item.menu }"
-            class="icon-wrap"
-          >
+          <span :class="{ visible: !!item.menu }" class="icon-wrap">
             <ChevRight />
           </span>
           <div
@@ -82,22 +80,13 @@
               :initial-highlight-index="subMenuHighlightIndex"
               @close-menu="handleCloseMenu"
             >
-              <template
-                v-for="slot in Object.keys($slots)"
-                #[slot]="scope"
-              >
-                <slot
-                  :name="slot"
-                  v-bind="scope"
-                />
+              <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+                <slot :name="slot" v-bind="scope" />
               </template>
             </component>
           </div>
         </template>
-        <span
-          v-else
-          class="menu-item-divider"
-        />
+        <span v-else class="menu-item-divider" />
       </li>
     </ul>
   </div>
@@ -176,7 +165,7 @@ export default defineComponent({
 
     const toggleSubMenu = (hasData: boolean, id: string) => {
       if (hasData) {
-        if(!showSubMenu.value) {
+        if (!showSubMenu.value) {
           activeMenuId.value = id;
         } else {
           activeMenuId.value = null;
@@ -210,7 +199,6 @@ export default defineComponent({
         name,
         path: `${props.parent}>${path ? path : name}`.toLowerCase(),
       });
-
     };
 
     const menuItemStyle = computed(() => ({
@@ -362,5 +350,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped src="./menu.scss">
-</style>
+<style lang="scss" scoped src="./menu.scss"></style>

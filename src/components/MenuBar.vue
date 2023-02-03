@@ -41,14 +41,8 @@
           @activate-previous="handleActivateDir"
           @show="handleOnShowMenu"
         >
-          <template
-            v-for="slot in Object.keys($slots)"
-            #[slot]="scope"
-          >
-            <slot
-              :name="slot"
-              v-bind="scope"
-            />
+          <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+            <slot :name="slot" v-bind="scope" />
           </template>
         </menu-bar-item>
       </li>
@@ -59,9 +53,13 @@
 <script lang="ts">
 import "focus-visible";
 import {
-computed,
-defineComponent, onMounted, onUnmounted, PropType,
-ref, unref
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  PropType,
+  ref,
+  unref,
 } from "vue";
 import DockPosition from "../models/MenuBarDockPosition";
 import { MenuBarItemModel } from "../models/MenuBarItemModel";
@@ -407,5 +405,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" src="./menu-bar.scss" scoped>
-</style>
+<style lang="scss" src="./menu-bar.scss" scoped></style>

@@ -14,10 +14,7 @@
     >
       {{ getName }}
     </span>
-    <span
-      class="menu-container"
-      :style="menuStyle"
-    >
+    <span class="menu-container" :style="menuStyle">
       <transition name="fade">
         <DockMenu
           v-if="menuActive && showMenu"
@@ -29,14 +26,8 @@
           :on-selected="onSelected"
           :initial-highlight-index="highlightIndex"
         >
-          <template
-            v-for="slot in Object.keys($slots)"
-            #[slot]="scope"
-          >
-            <slot
-              :name="slot"
-              v-bind="scope"
-            />
+          <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+            <slot :name="slot" v-bind="scope" />
           </template>
         </DockMenu>
       </transition>
@@ -165,7 +156,7 @@ export default defineComponent({
       } else {
         emit("deactivate", props.id);
       }
-    }
+    };
 
     // toggle menu
     const toggleMenu = (event: MouseEvent | TouchEvent) => {
@@ -348,6 +339,5 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style lang="scss" src="./MenuBarItem.scss" scoped></style>
