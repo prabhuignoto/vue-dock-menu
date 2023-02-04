@@ -37,13 +37,13 @@ handleNav = (id, dir, items, activeSelection, activeMenuBarId) => {
   const menuBarItem = items.find((item) => item.id === id);
 
   const menuItem =
-    menuBarItem && menuBarItem.menu
+    (menuBarItem && menuBarItem !== null && menuBarItem.menu)
       ? menuBarItem.menu[activeSelection]
       : null;
 
   let result: tResult;
 
-  if (menuItem?.menu && dir === "next") {
+  if (menuItem !== null && menuItem?.menu && dir === "next") {
     result = {
       navigateMenu: {
         items: items.map((item) => {

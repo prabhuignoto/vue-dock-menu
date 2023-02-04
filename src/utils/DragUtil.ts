@@ -26,7 +26,7 @@ handleDragEnd = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) 
     yThreshold = Math.round((y / winHeight) * 100);
   } else if (event instanceof TouchEvent) {
     const touches = event.changedTouches[0];
-    if (touches) {
+    if (!!touches) {
       const { clientX, clientY } = touches;
       xThreshold = Math.round((clientX / winWidth) * 100);
       yThreshold = Math.round((clientY / winHeight) * 100);

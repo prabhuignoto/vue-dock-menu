@@ -1,5 +1,5 @@
 export default function() {
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/iu.test(navigator.userAgent)) {
     return true;
   }
 }
