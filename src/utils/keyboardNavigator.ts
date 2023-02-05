@@ -12,15 +12,13 @@ type tResult =
       };
     };
 
-let handleNav: (
+const handleNav: (
   id: string,
   dir: "prev" | "next",
   items: MenuBarItemModel[],
   activeSelection: number,
   activeMenuBarId: string
-) => tResult;
-
-handleNav = (id, dir, items, activeSelection, activeMenuBarId) => {
+) => tResult = (id, dir, items, activeSelection, activeMenuBarId) => {
   const eleIndex = items.findIndex((item) => item.id === id);
   const newIdx = dir === "next" ? eleIndex + 1 : eleIndex - 1;
   const menuItemsLen = items.length;
@@ -38,10 +36,7 @@ handleNav = (id, dir, items, activeSelection, activeMenuBarId) => {
   // get the menubar item
   const menuBarItem = items.find((item) => item.id === id);
 
-  const menuItem =
-    menuBarItem !== null && menuBarItem?.menu
-      ? menuBarItem.menu[activeSelection]
-      : null;
+  const menuItem = menuBarItem?.menu ? menuBarItem.menu[activeSelection] : null;
 
   let result: tResult;
 
