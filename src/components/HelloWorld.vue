@@ -11,144 +11,64 @@
     }"
   >
     <template #file>
-      <img
-        src="../assets/file.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/file.svg" alt="file" :style="style" />
     </template>
     <template #window>
-      <img
-        src="../assets/window-maximize.svg"
-        alt="file"
-        :style="style"
-      >
-    </template> 
+      <img src="../assets/window-maximize.svg" alt="file" :style="style" />
+    </template>
     <template #cog>
-      <img
-        src="../assets/cog.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/cog.svg" alt="file" :style="style" />
     </template>
     <template #save>
-      <img
-        src="../assets/save.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/save.svg" alt="file" :style="style" />
     </template>
     <template #times>
-      <img
-        src="../assets/window-close.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/window-close.svg" alt="file" :style="style" />
     </template>
     <template #signout>
-      <img
-        src="../assets/sign-out-alt.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/sign-out-alt.svg" alt="file" :style="style" />
     </template>
     <template #brush>
-      <img
-        src="../assets/paint-brush.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/paint-brush.svg" alt="file" :style="style" />
     </template>
     <template #hammer>
-      <img
-        src="../assets/hammer.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/hammer.svg" alt="file" :style="style" />
     </template>
     <template #brief>
-      <img
-        src="../assets/briefcase.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/briefcase.svg" alt="file" :style="style" />
     </template>
     <template #cut>
-      <img
-        src="../assets/cut.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/cut.svg" alt="file" :style="style" />
     </template>
     <template #copy>
-      <img
-        src="../assets/copy.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/copy.svg" alt="file" :style="style" />
     </template>
     <template #paste>
-      <img
-        src="../assets/paste.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/paste.svg" alt="file" :style="style" />
     </template>
     <template #search>
-      <img
-        src="../assets/paste.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/paste.svg" alt="file" :style="style" />
     </template>
     <template #undo>
-      <img
-        src="../assets/undo.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/undo.svg" alt="file" :style="style" />
     </template>
     <template #redo>
-      <img
-        src="../assets/redo.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/redo.svg" alt="file" :style="style" />
     </template>
     <template #bolt>
-      <img
-        src="../assets/bolt.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/bolt.svg" alt="file" :style="style" />
     </template>
     <template #mask>
-      <img
-        src="../assets/mask.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/mask.svg" alt="file" :style="style" />
     </template>
     <template #circle>
-      <img
-        src="../assets/info-circle.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/info-circle.svg" alt="file" :style="style" />
     </template>
     <template #download>
-      <img
-        src="../assets/download.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/download.svg" alt="file" :style="style" />
     </template>
     <template #folderopen>
-      <img
-        src="../assets/folder-open.svg"
-        alt="file"
-        :style="style"
-      >
+      <img src="../assets/folder-open.svg" alt="file" :style="style" />
     </template>
   </menu-bar>
 </template>

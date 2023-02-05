@@ -14,10 +14,7 @@
     >
       {{ getName }}
     </span>
-    <span
-      class="menu-container"
-      :style="menuStyle"
-    >
+    <span class="menu-container" :style="menuStyle">
       <transition name="fade">
         <DockMenu
           v-if="menuActive && showMenu"
@@ -29,14 +26,8 @@
           :on-selected="onSelected"
           :initial-highlight-index="highlightIndex"
         >
-          <template
-            v-for="slot in Object.keys($slots)"
-            #[slot]="scope"
-          >
-            <slot
-              :name="slot"
-              v-bind="scope"
-            />
+          <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+            <slot :name="slot" v-bind="scope" />
           </template>
         </DockMenu>
       </transition>
@@ -60,7 +51,7 @@ import {
 } from "vue";
 import DockMenu from "./Menu.vue";
 import { MenuTheme } from "../models/Theme";
-import isMobileDevice from "./isMobileDevice";
+import { isMobile } from "./isMobileDevice";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -144,7 +135,7 @@ export default defineComponent({
     const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref(false);
     const menuStyle = ref();
-    const isMobile = ref(isMobileDevice());
+    const isMobileRef = ref(isMobile());
     const menuOpen = ref(false);
 
     const getName = computed(() => {
@@ -165,7 +156,7 @@ export default defineComponent({
       } else {
         emit("deactivate", props.id);
       }
-    }
+    };
 
     // toggle menu
     const toggleMenu = (event: MouseEvent | TouchEvent) => {
@@ -252,7 +243,7 @@ export default defineComponent({
     onMounted(() => {
       computeMenuStyle();
       const menuBarItem = unref(menuBarItemRef);
-      const mobile = unref(isMobile);
+      const mobile = unref(isMobileRef);
 
       if (!menuBarItem) {
         return;
@@ -272,7 +263,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       const menuBarItem = unref(menuBarItemRef);
-      const mobile = unref(isMobile);
+      const mobile = unref(isMobileRef);
 
       if (!menuBarItem) {
         return;
@@ -348,6 +339,5 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style lang="scss" src="./MenuBarItem.scss" scoped></style>

@@ -1,40 +1,39 @@
-import MenuBarDockPosition from '../models/MenuBarDockPosition';
+import MenuBarDockPosition from "../models/MenuBarDockPosition";
 
 interface Coordinates {
-  x: number; y: number;
+  x: number;
+  y: number;
 }
 
-let handleDragEnd: (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) => ({
-  dragActive: boolean,
-  dockPosition: MenuBarDockPosition
-}) | null;
-
-handleDragEnd = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) => {
+const handleDragEnd: (
+  event: DragEvent | TouchEvent,
+  clientCoordinates: Coordinates
+) => {
+  dragActive: boolean;
+  dockPosition: MenuBarDockPosition;
+} | null = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) => {
   const winHeight = window.innerHeight;
   const winWidth = window.innerWidth;
   let xThreshold = 0;
   let yThreshold = 0;
   const { x, y } = clientCoordinates;
 
-  let value = {
+  const value = {
     dragActive: false,
-    dockPosition: MenuBarDockPosition.NOT_AVAILABLE
-  }
+    dockPosition: MenuBarDockPosition.NOT_AVAILABLE,
+  };
 
   if (event instanceof DragEvent) {
     xThreshold = Math.round((x / winWidth) * 100);
     yThreshold = Math.round((y / winHeight) * 100);
   } else if (event instanceof TouchEvent) {
     const touches = event.changedTouches[0];
-    if (touches) {
+    if (Boolean(touches)) {
       const { clientX, clientY } = touches;
       xThreshold = Math.round((clientX / winWidth) * 100);
       yThreshold = Math.round((clientY / winHeight) * 100);
     }
   }
-
-  console.log(yThreshold)
-  console.log(xThreshold)
 
   if (xThreshold < 10) {
     value.dockPosition = MenuBarDockPosition.LEFT;
@@ -52,20 +51,16 @@ handleDragEnd = (event: DragEvent | TouchEvent, clientCoordinates: Coordinates) 
     value.dockPosition = MenuBarDockPosition.TOP;
   }
 
-  console.log(value);
-
   if (value.dockPosition !== MenuBarDockPosition.NOT_AVAILABLE) {
     return value;
   } else {
     return null;
   }
+};
 
-}
-
-
-let handleDragStart: (event: DragEvent | TouchEvent) => void;
-
-handleDragStart = (event: DragEvent | TouchEvent) => {
+const handleDragStart: (event: DragEvent | TouchEvent) => void = (
+  event: DragEvent | TouchEvent
+) => {
   // set a custom ghost image while dragging
   if (event instanceof DragEvent) {
     const img = new Image();
@@ -79,4 +74,3 @@ handleDragStart = (event: DragEvent | TouchEvent) => {
 };
 
 export default { handleDragEnd, handleDragStart };
-
