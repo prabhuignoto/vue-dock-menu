@@ -66,7 +66,7 @@ import { MenuBarItemModel } from "../models/MenuBarItemModel";
 import { MenuTheme } from "../models/Theme";
 import utils from "../utils/DragUtil";
 import { handleNav } from "../utils/keyboardNavigator";
-import isMobile from "./isMobileDevice";
+import { isMobile } from "./isMobileDevice";
 import MenuBarItem from "./MenuBarItem.vue";
 
 const remListener = document.removeEventListener;

@@ -11,6 +11,7 @@ specifiers:
   '@vitejs/plugin-vue': ^4.0.0
   '@vue/compiler-sfc': ^3.2.47
   eslint: ^8.33.0
+  eslint-config-prettier: ^8.6.0
   eslint-plugin-vue: ^9.9.0
   focus-visible: ^5.2.0
   husky: ^8.0.3
@@ -41,6 +42,7 @@ devDependencies:
   '@vitejs/plugin-vue': 4.0.0_vite@4.1.1+vue@3.2.47
   '@vue/compiler-sfc': 3.2.47
   eslint: 8.33.0
+  eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-vue: 9.9.0_eslint@8.33.0
   husky: 8.0.3
   lint-staged: 13.1.0
@@ -1249,6 +1251,15 @@ packages:
   /escape-string-regexp/4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+    dev: true
+
+  /eslint-config-prettier/8.6.0_eslint@8.33.0:
+    resolution: {integrity: sha512-bAF0eLpLVqP5oEVUFKpMA+NnRFICwn9X8B5jrR9FcqnYBuPbqWEjTEspPWMj5ye6czoSLDweCzSo3Ko7gGrZaA==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
+    dependencies:
+      eslint: 8.33.0
     dev: true
 
   /eslint-plugin-vue/9.9.0_eslint@8.33.0:

@@ -51,7 +51,7 @@ import {
 } from "vue";
 import DockMenu from "./Menu.vue";
 import { MenuTheme } from "../models/Theme";
-import isMobileDevice from "./isMobileDevice";
+import { isMobile } from "./isMobileDevice";
 
 export default defineComponent({
   name: "MenuBarItem",
@@ -135,7 +135,7 @@ export default defineComponent({
     const menuBarItemRef = ref<HTMLDivElement>();
     const menuBarItemActive = ref(false);
     const menuStyle = ref();
-    const isMobile = ref(isMobileDevice());
+    const isMobileRef = ref(isMobile());
     const menuOpen = ref(false);
 
     const getName = computed(() => {
@@ -243,7 +243,7 @@ export default defineComponent({
     onMounted(() => {
       computeMenuStyle();
       const menuBarItem = unref(menuBarItemRef);
-      const mobile = unref(isMobile);
+      const mobile = unref(isMobileRef);
 
       if (!menuBarItem) {
         return;
@@ -263,7 +263,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       const menuBarItem = unref(menuBarItemRef);
-      const mobile = unref(isMobile);
+      const mobile = unref(isMobileRef);
 
       if (!menuBarItem) {
         return;
