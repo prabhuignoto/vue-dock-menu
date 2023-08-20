@@ -21,7 +21,6 @@
     "lint:css": "stylelint src/**/*.vue --custom-syntax postcss-html",
     "lint:all": "pnpm eslint && pnpm lint:css",
     "prepare": "husky install",
-    "preinstall": "npx only-allow pnpm",
     "format": "prettier --write src/**/*.vue",
     "clean": "pnpm format && pnpm lint:all"
   },
