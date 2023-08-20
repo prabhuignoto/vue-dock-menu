@@ -20,14 +20,8 @@
     "eslint": "eslint src/**/*.vue --ext .vue --fix",
     "lint:css": "stylelint src/**/*.vue --custom-syntax postcss-html",
     "lint:all": "pnpm eslint && pnpm lint:css",
-    "prepare": "husky install",
     "format": "prettier --write src/**/*.vue",
     "clean": "pnpm format && pnpm lint:all"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "src/**/*.scss": [
@@ -55,7 +49,6 @@
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-vue": "^9.9.0",
-    "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "postcss-html": "^1.5.0",
     "rollup": "^3.13.0",
