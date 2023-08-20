@@ -112,7 +112,7 @@ export default defineComponent({
     onSelected: {
       required: true,
       type: Function as PropType<
-        ({ name, path }: { name: string; path: string }) => void
+        ({ name, path, id }: { name: string; path: string, id?: string }) => void
       >,
     },
     highlightFirstElement: {

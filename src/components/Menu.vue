@@ -45,6 +45,7 @@
             name: item.name,
             isParent: !!item.menu,
             disable: item.disable,
+            id: item.id,
           })
         "
         @touchend="
@@ -53,6 +54,7 @@
             name: item.name,
             isParent: !!item.menu,
             disable: item.disable,
+            id: item.id,
           })
         "
       >
@@ -144,7 +146,7 @@ export default defineComponent({
     onSelected: {
       required: true,
       type: Function as PropType<
-        ({ name, path }: { name: string; path: string }) => void
+        ({ name, path, id }: { name: string; path: string, id: string }) => void
       >,
     },
     initialHighlightIndex: {
@@ -193,11 +195,12 @@ export default defineComponent({
         return;
       }
 
-      const { path, name } = selectedItem;
+      const { path, name, id } = selectedItem;
 
       props.onSelected({
         name,
         path: `${props.parent}>${path ? path : name}`.toLowerCase(),
+        id,
       });
     };
 
@@ -210,7 +213,7 @@ export default defineComponent({
     const menuItems = ref(
       props.items.map((item) =>
         Object.assign({}, item, {
-          id: Math.random().toString(16).slice(2),
+          id: item.id || Math.random().toString(16).slice(2),
           showSubMenu: false,
         })
       )

@@ -4,4 +4,5 @@ export interface SelectedItemModel {
   event: MouseEvent | KeyboardEvent;
   isParent?: boolean;
   disable?: boolean;
+  id?: string;
 }

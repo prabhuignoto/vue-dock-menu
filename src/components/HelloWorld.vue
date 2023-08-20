@@ -86,7 +86,7 @@ export default defineComponent({
   },
   setup() {
     const selected = (data: SelectedItemModel) => {
-      alert(data.name + " _ " + data.path);
+      alert(data.name + "\n" + data.path + "\n" + data.id);
     };
 
     const style = computed(() => ({
@@ -105,39 +105,44 @@ export default defineComponent({
       count: 0,
       items: [
         {
+          id: "file",
           name: "file",
           menu: [
-            { name: "New File", iconSlot: "file" },
-            { name: "New Window", iconSlot: "window" },
-            { name: "Open File", iconSlot: "folderopen" },
+            { name: "New File", iconSlot: "file", id: "new-file" },
+            { name: "New Window", iconSlot: "window", id: "new-window" },
+            { name: "Open File", iconSlot: "folderopen", id: "open-file" },
             { isDivider: true },
             {
+              id: "preferences",
               name: "Preferences",
               iconSlot: "cog",
               menu: [
-                { name: "Settings", iconSlot: "hammer" },
+                { name: "Settings", iconSlot: "hammer", id: "settings" },
                 {
+                  id: "themes",
                   name: "Themes",
                   iconSlot: "brush",
                   menu: [
                     {
+                      id: "white",
                       name: "White",
-                      menu: [{ name: "white 1" }, { name: "white 2" }],
+                      menu: [{ name: "white 1", id: "white-1" }, { name: "white 2", id: "white-2" }],
                     },
                     {
+                      id: "black",
                       name: "Black",
                     },
                   ],
                 },
               ],
             },
-            { name: "Open Workspace", iconSlot: "brief" },
+            { name: "Open Workspace", iconSlot: "brief", id: "open-workspace" },
             { isDivider: true },
-            { name: "Save", disable: true, iconSlot: "save" },
-            { name: "Save As...", iconSlot: "save" },
+            { name: "Save", disable: true, iconSlot: "save", id: "save" },
+            { name: "Save As...", iconSlot: "save", id: "save-as" },
             { isDivider: true },
-            { name: "Close", iconSlot: "times" },
-            { name: "Exit", iconSlot: "signout" },
+            { name: "Close", iconSlot: "times", id: "close" },
+            { name: "Exit", iconSlot: "signout", id: "exit" },
           ],
         },
         {

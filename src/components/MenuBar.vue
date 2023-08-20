@@ -91,7 +91,7 @@ export default defineComponent({
     onSelected: {
       required: true,
       type: Function as PropType<
-        ({ name, path }: { name: string; path: string }) => void
+        ({ name, path, id }: { name: string; path: string, id?: string }) => void
       >,
     },
     draggable: {
@@ -150,7 +150,7 @@ export default defineComponent({
     const menuItems = ref<MenuBarItemModel[]>(
       props.items.map((item) =>
         Object.assign({}, item, {
-          id: Math.random().toString(16).slice(2),
+          id: item.id || Math.random().toString(16).slice(2),
         })
       )
     );
