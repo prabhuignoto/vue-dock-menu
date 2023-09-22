@@ -42,6 +42,7 @@
         @click="
           handleSelection({
             event: $event,
+            mid: item.mid,
             name: item.name,
             isParent: !!item.menu,
             disable: item.disable,
@@ -50,6 +51,7 @@
         @touchend="
           handleSelection({
             event: $event,
+            mid: item.mid,
             name: item.name,
             isParent: !!item.menu,
             disable: item.disable,
@@ -193,9 +195,10 @@ export default defineComponent({
         return;
       }
 
-      const { path, name } = selectedItem;
+      const { mid, path, name } = selectedItem;
 
       props.onSelected({
+        mid,
         name,
         path: `${props.parent}>${path ? path : name}`.toLowerCase(),
       });
@@ -208,12 +211,20 @@ export default defineComponent({
     }));
 
     const menuItems = ref(
-      props.items.map((item) =>
-        Object.assign({}, item, {
+      props.items.map((item) => {
+        let _item = Object.assign({}, item, {
           id: Math.random().toString(16).slice(2),
           showSubMenu: false,
-        })
-      )
+        });
+        
+        if ('mid' in item) {
+          return _item;
+        } else {
+          return Object.assign({}, _item, {
+            mid: _item.id,
+          });
+        }
+      })
     );
 
     const menuItemsLen = computed(() => menuItems.value.length);
@@ -308,6 +319,7 @@ export default defineComponent({
           });
         } else if (menuItem) {
           props.onSelected({
+            mid: menuItem.mid,
             name: menuItem.name as string,
             path: `${props.parent}>${menuItem.name}`.toLowerCase(),
           });
