@@ -86,7 +86,7 @@ export default defineComponent({
   },
   setup() {
     const selected = (data: SelectedItemModel) => {
-      alert(data.name + " _ " + data.path);
+      alert(data.mid + ": " + data.name + " | " + data.path);
     };
 
     const style = computed(() => ({
@@ -105,39 +105,44 @@ export default defineComponent({
       count: 0,
       items: [
         {
-          name: "file",
+          mid: "file",
+          name: "File",
           menu: [
-            { name: "New File", iconSlot: "file" },
-            { name: "New Window", iconSlot: "window" },
-            { name: "Open File", iconSlot: "folderopen" },
+            { mid: "new_file", name: "New File", iconSlot: "file" },
+            { mid: "new_win", name: "New Window", iconSlot: "window" },
+            { mid: "open_file", name: "Open File", iconSlot: "folderopen" },
             { isDivider: true },
             {
+              mid: "pref",
               name: "Preferences",
               iconSlot: "cog",
               menu: [
-                { name: "Settings", iconSlot: "hammer" },
+                { mid: "open_settings", name: "Settings", iconSlot: "hammer" },
                 {
+                  mid: "themes",
                   name: "Themes",
                   iconSlot: "brush",
                   menu: [
                     {
+                      mid: "set_theme_white",
                       name: "White",
                       menu: [{ name: "white 1" }, { name: "white 2" }],
                     },
                     {
+                      mid: "set_theme_black",
                       name: "Black",
                     },
                   ],
                 },
               ],
             },
-            { name: "Open Workspace", iconSlot: "brief" },
+            { mid: "open_ws", name: "Open Workspace", iconSlot: "brief" },
             { isDivider: true },
-            { name: "Save", disable: true, iconSlot: "save" },
-            { name: "Save As...", iconSlot: "save" },
+            { mid: "save_space", name: "Save", disable: true, iconSlot: "save" },
+            { mid: "save_as", name: "Save As...", iconSlot: "save" },
             { isDivider: true },
-            { name: "Close", iconSlot: "times" },
-            { name: "Exit", iconSlot: "signout" },
+            { mid: "close_ws", name: "Close", iconSlot: "times" },
+            { mid: "exit_ws", name: "Exit", iconSlot: "signout" },
           ],
         },
         {
