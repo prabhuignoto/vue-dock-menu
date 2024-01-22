@@ -1,46 +1,15 @@
 <template>
-  <div
-    ref="menuBarRef"
-    :class="[dockClass, 'menu-bar-container', expandClass]"
-    :draggable="draggable"
-    tabindex="0"
-    :style="menuBarStyle"
-    @dragover="handleDragMove"
-    @dragstart="handleDragStart"
-    @dragend="handleDragEnd"
-    @touchstart="handleDragStart"
-    @touchmove="handleDragMove"
-    @touchend="handleDragEnd"
-  >
-    <ul
-      :class="[dockClass, 'menu-bar-items']"
-      draggable="true"
-      @dragstart="handleDragCancel"
-    >
-      <li
-        v-for="item of menuItems"
-        :key="item.id"
-        :class="[dockClass, 'v-dock-menu-bar-item-wrapper']"
-      >
-        <menu-bar-item
-          :id="item.id"
-          :dock="dockPosition"
-          :menu-active="menuActive"
-          :menu-bar-dimensions="{ height: barHeight, width: barWidth }"
-          :menu="item.menu"
-          :name="item.name"
-          :menu-bar-active="menuBarActive"
-          :show-menu="item.showMenu"
-          :theme="theme"
-          :is-touch-device="isMobileDevice"
-          :on-selected="handleSelected"
-          :highlight-first-element="highlightFirstElement"
-          @deactivate="handleDeactivateMenu"
-          @activate="handleActivateMenu"
-          @activate-next="handleActivateDir"
-          @activate-previous="handleActivateDir"
-          @show="handleOnShowMenu"
-        >
+  <div ref="menuBarRef" :class="[dockClass, 'menu-bar-container', expandClass]" :draggable="draggable" tabindex="0"
+    :style="menuBarStyle" @dragover="handleDragMove" @dragstart="handleDragStart" @dragend="handleDragEnd"
+    @touchstart="handleDragStart" @touchmove="handleDragMove" @touchend="handleDragEnd">
+    <ul :class="[dockClass, 'menu-bar-items']" draggable="true" @dragstart="handleDragCancel">
+      <li v-for="item of menuItems" :key="item.id" :class="[dockClass, 'v-dock-menu-bar-item-wrapper']">
+        <menu-bar-item :id="item.id" :dock="dockPosition" :menu-active="menuActive"
+          :menu-bar-dimensions="{ height: barHeight, width: barWidth }" :menu="item.menu" :name="item.name"
+          :icon="item.icon" :menu-bar-active="menuBarActive" :show-menu="item.showMenu" :theme="theme"
+          :is-touch-device="isMobileDevice" :on-selected="handleSelected" :highlight-first-element="highlightFirstElement"
+          @deactivate="handleDeactivateMenu" @activate="handleActivateMenu" @activate-next="handleActivateDir"
+          @activate-previous="handleActivateDir" @show="handleOnShowMenu">
           <template v-for="slot in Object.keys($slots)" #[slot]="scope">
             <slot :name="slot" v-bind="scope" />
           </template>
@@ -254,10 +223,7 @@ export default defineComponent({
       const dragEndResult = utils.handleDragEnd(event, unref(clientCoords));
 
       if (dragEndResult) {
-        const {
-          dragActive: dragActiveNew,
-          dockPosition: positionNew,
-        } = dragEndResult;
+        const { dragActive: dragActiveNew, dockPosition: positionNew } = dragEndResult;
 
         dragActive.value = dragActiveNew;
         dockPosition.value = positionNew;

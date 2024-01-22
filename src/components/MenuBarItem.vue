@@ -1,31 +1,13 @@
 <template>
-  <div
-    ref="menuBarItemRef"
-    :class="[...menuBarStyle, 'menu-bar-item-container']"
-    :style="{ background: bgColor }"
-    tabindex="0"
-    @mouseenter="setMenuViewable(true)"
-    @mouseleave="setMenuViewable(false)"
-    @keyup="handleKeyUp"
-  >
-    <span
-      :class="[...menuBarStyle, 'name-container']"
-      :style="{ color: theme.textColor }"
-    >
-      {{ getName }}
+  <div ref="menuBarItemRef" :class="[...menuBarStyle, 'menu-bar-item-container']" :style="{ background: bgColor }"
+    tabindex="0" @mouseenter="setMenuViewable(true)" @mouseleave="setMenuViewable(false)" @keyup="handleKeyUp">
+    <span :class="[...menuBarStyle, 'name-container']" :style="{ color: theme.textColor }">
+      <i :class="icon"></i>
     </span>
     <span class="menu-container" :style="menuStyle">
       <transition name="fade">
-        <DockMenu
-          v-if="menuActive && showMenu"
-          :items="menu"
-          :dock="dock"
-          :parent="name"
-          :theme="theme"
-          :is-touch="isMobileDevice"
-          :on-selected="onSelected"
-          :initial-highlight-index="highlightIndex"
-        >
+        <DockMenu v-if="menuActive && showMenu" :items="menu" :dock="dock" :parent="name" :theme="theme"
+          :is-touch="isMobileDevice" :on-selected="onSelected" :initial-highlight-index="highlightIndex">
           <template v-for="slot in Object.keys($slots)" #[slot]="scope">
             <slot :name="slot" v-bind="scope" />
           </template>
@@ -64,6 +46,10 @@ export default defineComponent({
       default: "",
       required: true,
     },
+    icon: {
+      type: String,
+      required: true,
+    },
     menu: {
       type: Array as PropType<MenuItemModel[]>,
       required: true,
@@ -85,7 +71,7 @@ export default defineComponent({
     },
     menuBarDimensions: {
       type: Object as PropType<{ height: number; width: number }>,
-      default: () => {},
+      default: () => { },
       required: true,
     },
     dock: {
@@ -138,17 +124,6 @@ export default defineComponent({
     const isMobileRef = ref(isMobile());
     const menuOpen = ref(false);
 
-    const getName = computed(() => {
-      if (
-        props.dock === DockPosition.LEFT ||
-        props.dock === DockPosition.RIGHT
-      ) {
-        return !props.menuBarActive ? props.name[0] : props.name;
-      } else {
-        return props.name;
-      }
-    });
-
     // activate menu
     const setMenuViewable = (viewable: boolean) => {
       if (viewable) {
@@ -177,10 +152,7 @@ export default defineComponent({
         bottom?: string;
       } = {};
 
-      const {
-        clientHeight,
-        clientWidth,
-      } = menuBarItemRef.value as HTMLDivElement;
+      const { clientHeight, clientWidth } = menuBarItemRef.value as HTMLDivElement;
 
       if (props.dock === DockPosition.LEFT) {
         newStyle.top = "0px";
@@ -324,7 +296,6 @@ export default defineComponent({
     };
 
     return {
-      getName,
       menuBarItemRef,
       menuBarStyle,
       menuStyle,
