@@ -1,15 +1,32 @@
 <template>
   <div
-ref="menuBarItemRef" :class="[...menuBarStyle, 'menu-bar-item-container']" :style="{ background: bgColor }"
-    tabindex="0" @mouseenter="setMenuViewable(true)" @mouseleave="setMenuViewable(false)" @keyup="handleKeyUp">
-    <span :class="[...menuBarStyle, 'name-container']" :style="{ color: theme.textColor }">
-      <i :class="icon"></i>
+    ref="menuBarItemRef"
+    :class="[...menuBarStyle, 'menu-bar-item-container']"
+    :style="{ background: bgColor }"
+    tabindex="0"
+    @mouseenter="setMenuViewable(true)"
+    @mouseleave="setMenuViewable(false)"
+    @keyup="handleKeyUp"
+  >
+    <span
+      :class="[...menuBarStyle, 'name-container']"
+      :style="{ color: theme.textColor }"
+    >
+      <span v-if="!showIcon">{{ name }}</span>
+      <span v-else> <i :class="icon"></i> </span>
     </span>
     <span class="menu-container" :style="menuStyle">
       <transition name="fade">
         <DockMenu
-v-if="menuActive && showMenu" :items="menu" :dock="dock" :parent="name" :theme="theme"
-          :is-touch="isMobileDevice" :on-selected="onSelected" :initial-highlight-index="highlightIndex">
+          v-if="menuActive && showMenu"
+          :items="menu"
+          :dock="dock"
+          :parent="name"
+          :theme="theme"
+          :is-touch="isMobileDevice"
+          :on-selected="onSelected"
+          :initial-highlight-index="highlightIndex"
+        >
           <template v-for="slot in Object.keys($slots)" #[slot]="scope">
             <slot :name="slot" v-bind="scope" />
           </template>
@@ -43,6 +60,10 @@ export default defineComponent({
     DockMenu,
   },
   props: {
+    showIcon: {
+      type: Boolean,
+      default: false,
+    },
     name: {
       type: String,
       default: "",
@@ -73,7 +94,7 @@ export default defineComponent({
     },
     menuBarDimensions: {
       type: Object as PropType<{ height: number; width: number }>,
-      default: () => { },
+      default: () => {},
       required: true,
     },
     dock: {
