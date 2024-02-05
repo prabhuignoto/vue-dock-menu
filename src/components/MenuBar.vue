@@ -39,7 +39,7 @@
           :is-touch-device="isMobileDevice"
           :on-selected="handleSelected"
           :highlight-first-element="highlightFirstElement"
-          :showIcon="showIcon"
+          :show-icon="showIcon"
           @deactivate="handleDeactivateMenu"
           @activate="handleActivateMenu"
           @activate-next="handleActivateDir"
